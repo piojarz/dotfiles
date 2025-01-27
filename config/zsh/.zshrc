@@ -39,3 +39,5 @@ unset _rc
 if [[ ! "$PATH" == */opt/homebrew/opt/fzf/bin* ]]; then
   PATH="${PATH:+${PATH}:}/opt/homebrew/opt/fzf/bin"
 fi
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/pj/.lmstudio/bin"
