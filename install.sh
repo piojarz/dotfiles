@@ -182,6 +182,91 @@ setup_homebrew() {
   "$(brew --prefix)"/opt/fzf/install --key-bindings --completion --no-update-rc --no-bash --no-fish
 }
 
+setup_linux() {
+  sudo apt-get update
+  sudo apt install build-essential libreadline-dev unzip
+  sudo apt install apt-transport-https ca-certificates curl software-properties-common
+  sudo apt-get install kitty zsh-antidote firefox vlc anki
+  sudo apt-get install git xclip git-lfs git-delta gh sqlite3 stow bat cloc entr eza fd-find fzf gnupg grep highlight htop jq neofetch neovim python3 ripgrep shellcheck tmux tree wdiff wget zoxide zsh
+
+  # install glow
+  sudo mkdir -p /etc/apt/keyrings
+  curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
+  echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
+  sudo apt update && sudo apt install glow
+
+  # install lazygit
+  LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
+  curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+  tar xf lazygit.tar.gz lazygit
+  sudo install lazygit -D -t /usr/local/bin/
+
+  lazygit --version
+  rm lazygit.tar.gz
+  rm lazygit
+
+  # install VS Code
+  sudo apt-get install wget gpg
+  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+  sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+  echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" |sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+  rm -f packages.microsoft.gpg
+
+  sudo apt update
+  sudo apt install code # or code-insiders
+
+  # atuin
+  curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+
+  # Tmux Plugin Manager
+  git clone https://github.com/tmux-plugins/tpm ~/config/.tmux/plugins/tpm
+
+  # install fnm (Node.js version manager on mac it's asdf)
+  curl -fsSL https://fnm.vercel.app/install | bash
+
+  # install 1password
+  curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
+  sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg && \
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/$(dpkg --print-architecture) stable main" | \
+  sudo tee /etc/apt/sources.list.d/1password.list && \
+  sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/ && \
+  curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | \
+  sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol && \
+  sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22 && \
+  curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
+  sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg && \
+  sudo apt update && sudo apt install 1password-cli
+
+  op --version
+
+  # install docker
+  for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do
+    sudo apt-get remove $pkg;
+  done
+
+  sudo install -m 0755 -d /etc/apt/keyrings
+  sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+  sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+  # Add the repository to Apt sources:
+  echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+    $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  sudo apt-get update
+  sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  sudo usermod -aG docker ${USER}
+
+  # install chrome
+  wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  sudo dpkg -i google-chrome-stable_current_amd64.deb
+  sudo apt --fix-broken install
+  rm google-chrome-stable_current_amd64.deb
+
+  sudo apt autoremove
+  # missing slack sourcetree spotify notion lua luarocks stylua
+}
+
 setup_shell() {
   title "Configuring shell"
 
@@ -414,6 +499,8 @@ setup_symlinks
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   setup_homebrew
+else
+  setup_linux
 fi
 
 setup_shell
