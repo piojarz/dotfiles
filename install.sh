@@ -63,7 +63,7 @@ cleanup_symlinks() {
     fi
   done
 
-  if [[ "$OSTYPE" == "darwin"* ]]; then
+  if [[ "$(uname)" == "Darwin" ]]; then
     mac_config_files=$(find "$DOTFILES/config/macos" -maxdepth 1 2>/dev/null)
     for config in $mac_config_files; do
       target="$config_home/$(basename "$config")"
@@ -115,7 +115,7 @@ setup_symlinks() {
     fi
   done
 
-  if [[ "$OSTYPE" == "darwin"* ]]; then
+  if [[ "$(uname)" == "Darwin" ]]; then
     mac_config_files=$(find "$DOTFILES/config/macos" -maxdepth 1 2>/dev/null)
     for config in $mac_config_files; do
       target="$config_home/$(basename "$config")"
@@ -154,7 +154,7 @@ copy() {
     cp -R "$config" "$target"
   done
 
-  if [[ "$OSTYPE" == "darwin"* ]]; then
+  if [[ "$(uname)" == "Darwin" ]]; then
     mac_config_files=$(find "$DOTFILES/config/macos" -maxdepth 1 2>/dev/null)
     for config in $mac_config_files; do
       target="$config_home/$(basename "$config")"
@@ -497,7 +497,7 @@ setup_macos() {
 cleanup_symlinks
 setup_symlinks
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
+if [[ "$(uname)" == "Darwin" ]]; then
   setup_homebrew
 else
   setup_linux
@@ -505,7 +505,7 @@ fi
 
 setup_shell
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
+if [[ "$(uname)" == "Darwin" ]]; then
   setup_macos
 fi
 
