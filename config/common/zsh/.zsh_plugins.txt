@@ -17,9 +17,6 @@ belak/zsh-utils path:editor
 # History
 belak/zsh-utils path:history
 
-# Prompt
-romkatv/powerlevel10k
-
 # Utilities
 zshzoo/macos conditional:is-macos
 belak/zsh-utils path:utility

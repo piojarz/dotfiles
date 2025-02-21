@@ -86,3 +86,4 @@ brew "zsh" # zsh (latest)
 brew "pkgxdev/made/pkgx" # npx, but for anything
 brew "luarocks" # lua package manager
 brew "tpm" # tmux plugin manager
+brew "jandedobbeleer/oh-my-posh/oh-my-posh" # shell prompt
