@@ -2,9 +2,9 @@
 
 DOTFILES="$(pwd)"
 linkables=(
-    "config/zsh/.zshrc"
-    "config/zsh/.zshenv"
-    "config/zsh/.zstyles"
+    "config/common/zsh/.zshrc"
+    "config/common/zsh/.zshenv"
+    "config/common/zsh/.zstyles"
 )
 
 # Configuration home
@@ -62,6 +62,21 @@ cleanup_symlinks() {
       warning "Skipping \"$target\" because it does not exist"
     fi
   done
+
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    mac_config_files=$(find "$DOTFILES/config/macos" -maxdepth 1 2>/dev/null)
+    for config in $mac_config_files; do
+      target="$config_home/$(basename "$config")"
+      if [ -L "$target" ]; then
+        info "Cleaning up \"$target\""
+        rm "$target"
+      elif [ -e "$target" ]; then
+        warning "Skipping \"$target\" because it is not a symlink"
+      else
+        warning "Skipping \"$target\" because it does not exist"
+      fi
+    done
+  fi
 }
 
 setup_symlinks() {
@@ -89,7 +104,7 @@ setup_symlinks() {
     mkdir -p "$data_home"
   fi
 
-  config_files=$(find "$DOTFILES/config" -maxdepth 1 2>/dev/null)
+  config_files=$(find "$DOTFILES/config/common" -maxdepth 1 2>/dev/null)
   for config in $config_files; do
     target="$config_home/$(basename "$config")"
     if [ -e "$target" ]; then
@@ -99,6 +114,19 @@ setup_symlinks() {
       ln -s "$config" "$target"
     fi
   done
+
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    mac_config_files=$(find "$DOTFILES/config/macos" -maxdepth 1 2>/dev/null)
+    for config in $mac_config_files; do
+      target="$config_home/$(basename "$config")"
+      if [ -e "$target" ]; then
+        info "~${target#"$HOME"} already exists... Skipping."
+      else
+        info "Creating symlink for $config"
+        ln -s "$config" "$target"
+      fi
+    done
+  fi
 
   # symlink .zshenv into home directory to properly setup ZSH
   if [ ! -e "$HOME/.zshenv" ]; then
@@ -119,12 +147,21 @@ copy() {
     info "Creating $data_home"
     mkdir -p "$data_home"
   fi
-  config_files=$(find "$DOTFILES/config" -maxdepth 1 2>/dev/null)
+  config_files=$(find "$DOTFILES/config/common" -maxdepth 1 2>/dev/null)
   for config in $config_files; do
     target="$config_home/$(basename "$config")"
     info "copying $config to $config_home/$config"
     cp -R "$config" "$target"
   done
+
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    mac_config_files=$(find "$DOTFILES/config/macos" -maxdepth 1 2>/dev/null)
+    for config in $mac_config_files; do
+      target="$config_home/$(basename "$config")"
+      info "copying $config to $config_home/$config"
+      cp -R "$config" "$target"
+    done
+  fi
 }
 
 setup_homebrew() {
@@ -374,9 +411,16 @@ setup_macos() {
 
 cleanup_symlinks
 setup_symlinks
-setup_homebrew
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  setup_homebrew
+fi
+
 setup_shell
-setup_macos
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  setup_macos
+fi
 
 echo -e
 success "Done."
