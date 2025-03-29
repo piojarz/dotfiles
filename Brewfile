@@ -2,6 +2,7 @@
 # taps
 tap "koekeishiya/formulae"
 tap "pkgxdev/made"
+tap "jandedobbeleer/oh-my-posh"
 
 brew "antidote"
 
