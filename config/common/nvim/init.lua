@@ -70,29 +70,9 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
-
-	-- LSP Plugins
-	{
-		-- `lazydev` configures Lua LSP for Neovim config, runtime and plugins
-		-- used for completion, annotations and signatures of Neovim apis
-		"folke/lazydev.nvim",
-		ft = "lua",
-		opts = {
-			library = {
-				{ path = "luvit-meta/library", words = { "vim%.uv" } },
-			},
-		},
-	},
-	{ "Bilal2453/luvit-meta", lazy = true },
-	{
-		"folke/tokyonight.nvim",
-		priority = 1000, -- Make sure to load this before all the other start plugins.
-		init = function()
-			vim.cmd.colorscheme("tokyonight-night")
-			vim.cmd.hi("Comment gui=none")
-		end,
-	},
+	require("pj.plugins.sleuth"),
+	require("pj.plugins.lazydev"),
+	require("pj.plugins.tokyonight"),
 	require("pj.plugins.which-key"),
 	require("pj.plugins.debug"),
 	require("pj.plugins.indent_line"),
