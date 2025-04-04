@@ -25,7 +25,7 @@ setup_arch() {
   local core_packages=(
     kitty zsh firefox vlc anki
     git xclip git-lfs delta
-    sqlite3 stow bat cloc entr eza fd fzf gnupg grep highlight htop jq neofetch neovim python ripgrep shellcheck tmux tree wdiff wget zoxide zsh
+    sqlite3 stow bat cloc entr eza fd fzf gnupg grep highlight htop jq neofetch neovim python ripgrep shellcheck sesh-bin tmux tree wdiff wget zoxide zsh
   )
   
   for package in "${core_packages[@]}"; do
