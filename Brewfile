@@ -77,6 +77,7 @@ brew "ripgrep" # very fast file searcher
 brew "shellcheck" # diagnostics for shell sripts
 brew "stylua" # lua code formatter
 brew "tmux" # terminal multiplexer
+brew "sesh" # tmux session manager
 brew "tree" # pretty-print directory contents
 # neovim
 # brew "vim" # Vim (latest)
