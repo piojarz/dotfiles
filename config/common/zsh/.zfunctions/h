@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+h() {
+  cd $HOME/$1
+}
+
+_h() {
+  _files -W $HOME -/
+}
+compdef _h h 

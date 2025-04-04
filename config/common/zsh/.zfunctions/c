@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+c() {
+  cd $CODE_DIR/$1
+}
+
+_c() {
+  _files -W $CODE_DIR -/
+}
+compdef _c c 
