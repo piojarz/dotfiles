@@ -43,6 +43,13 @@ else
   alias l="ls -lah ${colorflag}"
   alias ll="ls -lFh ${colorflag}"
 fi
+alias rmf="rm -rf"
+
+# tmux aliases
+alias ta='tmux attach'
+alias tls='tmux ls'
+alias tat='tmux attach -t'
+alias tns='tmux new-session -s'
 
 # single character shortcuts - be sparing!
 alias _=sudo

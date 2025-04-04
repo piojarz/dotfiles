@@ -6,7 +6,7 @@
 # Completions
 mattmc3/ez-compinit
 zsh-users/zsh-completions kind:fpath path:src
-aloxaf/fzf-tab  # Remove if you don't use fzf
+aloxaf/fzf-tab
 
 # Completion styles
 belak/zsh-utils path:completion/functions kind:autoload post:compstyle_zshzoo_setup
@@ -27,3 +27,5 @@ ohmyzsh/ohmyzsh path:plugins/extract
 zdharma-continuum/fast-syntax-highlighting  # Syntax highlighting
 zsh-users/zsh-autosuggestions               # Auto-suggestions
 zsh-users/zsh-history-substring-search      # Up/Down to search history
+
+grigorii-zander/zsh-npm-scripts-autocomplete
