@@ -8,6 +8,7 @@ data_home="${XDG_DATA_HOME:-$HOME/.local/share}"
 
 # Define linkable files
 linkables=(
+    "config/common/tmux/.tmux.conf"
     "config/common/zsh/.zshrc"
     "config/common/zsh/.zshenv"
     "config/common/zsh/.zstyles"
