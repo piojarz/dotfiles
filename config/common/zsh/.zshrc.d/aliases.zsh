@@ -36,13 +36,9 @@ alias cleanup="find . -name '*.DS_Store' -type f -ls -delete"
 alias clsym="find -L . -name . -o -type d -prune -o -type l -exec rm {} +"
 
 # use eza if available
-if [[ -x "$(command -v eza)" ]]; then
-  alias ll="eza --icons --git --long"
-  alias l="eza --icons --git --all --long"
-else
-  alias l="ls -lah ${colorflag}"
-  alias ll="ls -lFh ${colorflag}"
-fi
+alias ll="eza --icons --git --long"
+alias l="eza --icons --git --all --long"
+
 alias rmf="rm -rf"
 
 # tmux aliases
@@ -51,9 +47,10 @@ alias tls='tmux ls'
 alias tat='tmux attach -t'
 alias tns='tmux new-session -s'
 
+alias cat="bat"
+
 # single character shortcuts - be sparing!
 alias _=sudo
-alias l="eza --icons --git"
 alias o=open
 alias g=git
 
