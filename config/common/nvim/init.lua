@@ -85,7 +85,7 @@ require("lazy").setup({
 	require("pj.plugins.nvim-cmp"),
 	require("pj.plugins.nvim-lspconfig"),
 	require("pj.plugins.nvim-treesitter"),
-	require("pj.plugins.telescope"),
+	require("pj.plugins.fzf-lua"),
 	require("pj.plugins.todo-comments"),
 }, {
 	ui = {
