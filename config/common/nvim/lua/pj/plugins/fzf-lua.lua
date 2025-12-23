@@ -10,6 +10,14 @@ return {
     require("fzf-lua").setup({
       -- Default options for all fzf-lua commands
       defaults = {
+          -- Global options for all commands
+        global_git_icons = true,
+        global_file_icons = true,
+        global_color_icons = true,
+        -- Global options for all commands
+        global_resume = true,
+        -- Global options for all commands
+        global_resume_query = true,
         -- Default options for all commands
         winopts = {
           -- Window options
@@ -34,14 +42,7 @@ return {
           ["alt-c"] = require("fzf-lua.actions").file_sel_to_cc,
         },
       },
-      -- Global options for all commands
-      global_git_icons = true,
-      global_file_icons = true,
-      global_color_icons = true,
-      -- Global options for all commands
-      global_resume = true,
-      -- Global options for all commands
-      global_resume_query = true,
+
       -- Global options for all commands
       global_working_dir_opts = {
         -- Global options for all commands
