@@ -1,4 +1,7 @@
 .DS_Store
 config/tmux/plugins
-config/common/zsh/.antidote
 config/zsh
+config/common/zsh/.antidote
+config/common/zsh/.zsh_plugins.zsh
+config/common/zsh/.zcompdump
+config/common/zsh/.zsh_history
