@@ -40,6 +40,15 @@ cleanup_symlinks() {
       cleanup_symlink "$target"
     done
   fi
+
+  # Clean up Linux specific symlinks
+  if ! is_macos; then
+    linux_config_files=$(find "$DOTFILES/config/linux" -maxdepth 1 2>/dev/null)
+    for config in $linux_config_files; do
+      target="$config_home/$(basename "$config")"
+      cleanup_symlink "$target"
+    done
+  fi
 }
 
 setup_symlinks() {
@@ -67,6 +76,15 @@ setup_symlinks() {
   if is_macos; then
     mac_config_files=$(find "$DOTFILES/config/macos" -maxdepth 1 2>/dev/null)
     for config in $mac_config_files; do
+      target="$config_home/$(basename "$config")"
+      create_symlink "$config" "$target"
+    done
+  fi
+
+  # Create Linux specific symlinks
+  if ! is_macos; then
+    linux_config_files=$(find "$DOTFILES/config/linux" -maxdepth 1 2>/dev/null)
+    for config in $linux_config_files; do
       target="$config_home/$(basename "$config")"
       create_symlink "$config" "$target"
     done

@@ -41,6 +41,12 @@ setup_arch() {
     glow
     google-chrome
     1password-cli
+    slack-desktop
+    sourcetree
+    spotify
+    notion-app-electron
+    luarocks
+    stylua
   )
   
   for package in "${aur_packages[@]}"; do
@@ -57,7 +63,11 @@ setup_arch() {
   # Tmux Plugin Manager
   git clone https://github.com/tmux-plugins/tpm ~/config/.tmux/plugins/tpm
 
-  # missing slack sourcetree spotify notion lua luarocks stylua
+
+
+  # Setup fonts
+  source "$(dirname "${BASH_SOURCE[0]}")/fonts.sh"
+  setup_fonts
 
   # fnm (Node.js version manager)
   curl -fsSL https://fnm.vercel.app/install | bash
