@@ -15,6 +15,9 @@ setup_fonts() {
     ttf-font-awesome
     noto-fonts
     noto-fonts-emoji
+    # Add fonts from Hyprland setup
+    ttf-dejavu
+    ttf-liberation
   )
   
   for package in "${font_packages[@]}"; do
@@ -25,6 +28,10 @@ setup_fonts() {
   local aur_fonts=(
     ttf-ms-fonts
     ttf-vista-fonts
+    # Add Nerd fonts from Hyprland setup
+    ttf-jetbrains-mono-nerd
+    ttf-firacode-nerd
+    ttf-hack-nerd
   )
   
   for font in "${aur_fonts[@]}"; do

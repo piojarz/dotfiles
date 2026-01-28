@@ -1,0 +1,19 @@
+
+(defsrc
+  caps
+  ralt
+)
+
+(defalias
+  ;; tap: escape, hold: control
+  csc (tap-hold 200 200 esc lctl)
+  
+  ;; hyper key (cmd+opt+ctrl+shift)
+  ;; lmeta is command on mac, lsuper/lwin on linux
+  hyper (multi lctl lalt lsft lmeta)
+)
+
+(deflayer default
+  @csc
+  @hyper
+)
