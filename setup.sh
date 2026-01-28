@@ -142,6 +142,44 @@ run_nix_setup() {
   fi
 }
 
+# Ensure Nix is installed
+ensure_nix() {
+  if ! command -v nix >/dev/null 2>&1; then
+    title "Installing Nix"
+    info "Nix not found. Installing via official multi-user script..."
+    
+    # Run the official installer
+    curl -L https://nixos.org/nix/install | sh -s -- --daemon
+    
+    # Source nix for the current session
+    if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
+      . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+    fi
+    
+    success "Nix installed successfully! You might need to restart your terminal if 'nix' command is not found."
+  else
+    info "Nix is already installed."
+  fi
+}
+
+# Ensure Home Manager is installed
+ensure_home_manager() {
+  if ! command -v home-manager >/dev/null 2>&1; then
+    title "Installing Home Manager"
+    info "Home Manager not found. Installing via nix profile..."
+    
+    # Ensure flakes are enabled for the installation
+    nix profile install --extra-experimental-features "nix-command flakes" nixpkgs#home-manager
+    
+    # Add newly installed bin to PATH for the rest of the script
+    export PATH="$HOME/.nix-profile/bin:$PATH"
+    
+    success "Home Manager installed successfully!"
+  else
+    info "Home Manager is already installed."
+  fi
+}
+
 # Main function
 main() {
   title "Dotfiles Setup"
@@ -159,10 +197,8 @@ main() {
     esac
   done
   
-  if ! command -v home-manager >/dev/null 2>&1; then
-    warning "home-manager not found. Please install Nix and Home Manager first."
-    exit 1
-  fi
+  ensure_nix
+  ensure_home_manager
 
   configure_git_identity
   run_nix_setup
