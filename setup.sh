@@ -133,7 +133,7 @@ run_nix_setup() {
   info "Selected host configuration: ${host_config}"
   
   # Use --impure to allow reading environment variables
-  if home-manager switch --flake .#${host_config} --impure; then
+  if home-manager switch --flake .#${host_config} --impure --extra-experimental-features "nix-command flakes"; then
     success "Nix Home Manager setup completed!"
     run_platform_setup
   else
@@ -159,6 +159,32 @@ ensure_nix() {
     success "Nix installed successfully! You might need to restart your terminal if 'nix' command is not found."
   else
     info "Nix is already installed."
+  fi
+}
+
+# Ensure Nix experimental features are enabled
+ensure_nix_experimental_features() {
+  local nix_conf_dir="$HOME/.config/nix"
+  local nix_conf="$nix_conf_dir/nix.conf"
+  
+  if [[ ! -d "$nix_conf_dir" ]]; then
+    mkdir -p "$nix_conf_dir"
+  fi
+  
+  if [[ ! -f "$nix_conf" ]]; then
+    info "Creating $nix_conf to enable experimental features..."
+    echo "experimental-features = nix-command flakes" > "$nix_conf"
+  elif ! grep -q "experimental-features" "$nix_conf"; then
+    info "Enabling Nix experimental features in $nix_conf..."
+    echo "experimental-features = nix-command flakes" >> "$nix_conf"
+  elif ! grep -q "nix-command" "$nix_conf" || ! grep -q "flakes" "$nix_conf"; then
+    info "Ensuring 'nix-command' and 'flakes' are in experimental-features..."
+    # Add to existing experimental-features line
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+      sed -i '' 's/^experimental-features = \(.*\)/experimental-features = \1 nix-command flakes/' "$nix_conf"
+    else
+      sed -i 's/^experimental-features = \(.*\)/experimental-features = \1 nix-command flakes/' "$nix_conf"
+    fi
   fi
 }
 
@@ -198,6 +224,7 @@ main() {
   done
   
   ensure_nix
+  ensure_nix_experimental_features
   ensure_home_manager
 
   configure_git_identity
