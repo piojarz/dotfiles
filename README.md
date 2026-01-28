@@ -56,9 +56,9 @@ config/                  # Preserved complex native configurations
 - **Linux integration**: Sets up AUR helpers (yay) and enables systemd services.
 
 ### Options
-- `--desktop` : Enable desktop environment setup (Linux only)
-- `--fish`    : Enable Fish shell configuration
-- `--help`    : Show all options
+- `--desktop`    : Enable desktop environment setup (Linux only, default: true on Arch)
+- `--no-desktop` : Disable desktop environment setup
+- `--help`       : Show all options
 
 ### Creating New Hosts
 
@@ -124,9 +124,8 @@ The setup uses a mutual exclusion strategy for terminals to ensure the best expe
 
 ### Linux Desktop (Hyprland)
 - **Compositor**: Hyprland
-- **Bar**: Waybar
+- **Desktop Shell**: [Noctalia](https://noctalia.dev/) (Handles Bar, Notifications, Dashboard)
 - **Launcher**: Rofi
-- **Notifications**: Mako
 - **Lock Screen**: Swaylock
 
 ### macOS System

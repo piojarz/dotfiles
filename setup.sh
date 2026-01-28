@@ -103,9 +103,13 @@ run_nix_setup() {
   title "Running Nix Home Manager Setup"
   
   # Export environment variables for Nix
-  export SETUP_DESKTOP=${SETUP_DESKTOP:-false}
-  export SETUP_FISH=${SETUP_FISH:-false}
-  export SETUP_CHROMIUM=${SETUP_CHROMIUM:-true}
+  if [[ -z "$SETUP_DESKTOP" ]]; then
+    if [[ -f /etc/arch-release ]]; then
+      export SETUP_DESKTOP=true
+    else
+      export SETUP_DESKTOP=false
+    fi
+  fi
   export USER=${USER:-$(whoami)}
   
   info "Setup variables:"
@@ -145,11 +149,10 @@ main() {
   while [[ $# -gt 0 ]]; do
     case $1 in
       --desktop) export SETUP_DESKTOP=true; shift ;;
-      --fish) export SETUP_FISH=true; shift ;;
-      --no-chromium) export SETUP_CHROMIUM=false; shift ;;
+      --no-desktop) export SETUP_DESKTOP=false; shift ;;
       --help|-h)
         echo "Usage: $0 [OPTIONS]"
-        echo "Options: --desktop, --fish, --no-chromium, --help"
+        echo "Options: --desktop, --no-desktop, --help"
         exit 0
         ;;
       *) warning "Unknown option: $1"; exit 1 ;;

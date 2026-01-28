@@ -4,28 +4,21 @@ This document explains the enhanced Arch Linux setup that now supports optional 
 
 ## Usage
 
-### Basic Setup (Development Tools Only)
+### Basic Setup (CLI Tools Only)
 ```bash
-./install.sh
+./setup.sh --no-desktop
 ```
 
-### Full Desktop Environment Setup
+### Full Desktop Environment Setup (Default on Arch)
 ```bash
-SETUP_DESKTOP=true ./install.sh
-```
-
-### Custom Setup Options
-```bash
-SETUP_DESKTOP=true SETUP_FISH=true SETUP_CHROMIUM=false ./install.sh
+./setup.sh
 ```
 
 ## Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `SETUP_DESKTOP` | `false` | Install Hyprland desktop environment with Waybar, SDDM, PipeWire |
-| `SETUP_FISH` | `false` | Install Fish shell alongside zsh with Starship prompt |
-| `SETUP_CHROMIUM` | `true` | Install Chromium browser in addition to Firefox |
+| `SETUP_DESKTOP` | `true` (on Arch) | Install Hyprland desktop environment with Noctalia, SDDM, PipeWire |
 
 ## What Gets Installed
 
@@ -38,18 +31,13 @@ SETUP_DESKTOP=true SETUP_FISH=true SETUP_CHROMIUM=false ./install.sh
 
 ### Desktop Environment (when `SETUP_DESKTOP=true`)
 - **Hyprland**: Wayland compositor with animations
-- **Waybar**: Customizable status bar
+- **Noctalia**: Modern desktop shell (Bar, Notifications, Dashboard)
 - **SDDM**: Display manager for login
 - **PipeWire**: Modern audio stack
-- **Mako**: Notification daemon
 - **Rofi**: Application launcher
 - **Thunar**: File manager
 - **Screenshot tools**: grim, slurp, swappy
 
-### Fish Shell (when `SETUP_FISH=true`)
-- **Fish**: Modern shell with autosuggestions
-- **Starship**: Custom prompt
-- Shell aliases and integrations
 
 ## Post-Installation
 
@@ -104,8 +92,7 @@ Edit `scripts/linux/arch.sh` and `scripts/linux/hyprland.sh` to add/remove packa
 ### Customize Desktop Environment
 Configuration files are in:
 - `config/linux/hypr/` - Hyprland settings
-- `config/linux/waybar/` - Status bar configuration
-- `config/linux/mako/` - Notification settings
+- `modules/linux/home/desktop/noctalia.nix` - Noctalia HM settings
 
 ### Add New Applications
 1. Install package via pacman or yay

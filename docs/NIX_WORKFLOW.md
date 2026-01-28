@@ -26,13 +26,12 @@ The new `setup.sh` script automatically detects and chooses appropriate method:
 # Auto-detect and use available method
 ./setup.sh
 
-# Force specific methods
-./setup.sh --nix --desktop --fish    # Nix with desktop + fish
-./setup.sh --shell                    # Shell script setup
+# Control desktop setup
+./setup.sh --desktop      # Force desktop setup
+./setup.sh --no-desktop   # Explicitly skip desktop setup
 
 # With environment variables
-SETUP_DESKTOP=true ./setup.sh             # Any method with desktop
-NIX_SETUP=true ./setup.sh                 # Force Nix method
+SETUP_DESKTOP=true ./setup.sh             # Force desktop setup
 ```
 
 ### Direct Nix Usage
@@ -78,12 +77,6 @@ Control behavior across both systems:
 ```bash
 # Desktop environment (Hyprland + ecosystem)
 export SETUP_DESKTOP=true
-
-# Fish shell alongside zsh
-export SETUP_FISH=true
-
-# Chromium browser (default: true)
-export SETUP_CHROMIUM=false
 ```
 
 **Apply with:**
@@ -92,7 +85,7 @@ export SETUP_CHROMIUM=false
 ./scripts/nix/nix-env.sh generate
 
 # For Nix
-SETUP_DESKTOP=true ./setup.sh --nix
+SETUP_DESKTOP=true ./setup.sh
 ```
 
 ## Package Management
@@ -111,7 +104,7 @@ Maintained in `scripts/linux/arch.sh` with the same organization:
 
 - Core packages (pacman)
 - AUR packages (yay)
-- Optional packages (desktop, fish, chromium)
+- Desktop-specific packages
 
 ### Package Synchronization
 Keep both systems synchronized:
@@ -176,7 +169,7 @@ Comprehensive validation and migration support:
 ./scripts/nix/validate.sh validate
 
 # 3. Build and switch
-./setup.sh --nix --desktop --fish
+./setup.sh
 ```
 
 ### Development Workflow
@@ -207,8 +200,8 @@ home-manager rollback           # Rollback
 # Shell script workflow
 ./install.sh                # Reinstall
 
-# Hybrid workflow
-./setup.sh --nix             # Choose method each time
+# Home Manager workflow
+home-manager switch --flake .
 ```
 
 ## Migration Path

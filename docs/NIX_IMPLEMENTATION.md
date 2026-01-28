@@ -10,28 +10,27 @@ Successfully implemented **dual-system dotfiles management** with both tradition
 - **flake.nix** - Main flake with environment variable support
 - **home.nix** - Primary Home Manager configuration with modular imports
 - **nix/modules/** - Five modular configuration files:
-  - `desktop.nix` - Hyprland, Waybar, Mako, Rofi with systemd services
-  - `terminal.nix` - Alacritty, Fish with existing config sourcing  
+  - `desktop.nix` - Hyprland, Noctalia, Rofi with systemd services
+  - `terminal.nix` - Alacritty with existing config sourcing  
   - `development.nix` - Git, Neovim, Docker, languages, applications
   - `packages.nix` - General utilities and tools
   - `themes.nix` - GTK themes, cursors, fonts with nerdfonts
 
 ### **Phase 2: Desktop Environment Integration**
 - **Hyprland**: Reads from existing `config/linux/hypr/hyprland.conf` + `env.conf`
-- **Waybar**: Reads JSON config + CSS style from existing files
-- **Mako**: Full configuration with colors, borders, timeouts
+- **Noctalia**: Modern desktop shell replacing Waybar and Mako
 - **Rofi**: Reads existing theme with proper Wayland support
 - **Systemd services**: PipeWire user services for audio stack
 
 ### **Phase 3: Terminal and Shell Integration**
 - **Alacritty**: TOML → Nix configuration translation
-- **Fish Shell**: Existing config sourcing with aliases, plugins, functions
+- **Shells**: Existing config sourcing for Zsh and Fish
 - **Cross-shell tools**: fzf, eza, bat, zoxide work in both systems
 
 ### **Phase 4: Unified Setup Script**
-- **setup.sh** - Intelligent detection of Nix vs shell script availability
-- **Command-line interface**: `--nix`, `--shell`, `--desktop`, `--fish` flags
-- **Environment variable support**: `SETUP_DESKTOP`, `SETUP_FISH`, `SETUP_CHROMIUM`
+- **setup.sh** - Intelligent detection of host OS
+- **Command-line interface**: `--desktop`, `--no-desktop` flags
+- **Environment variable support**: `SETUP_DESKTOP`
 - **Auto-username substitution**: Dynamic configuration for current user
 
 ### **Phase 5: Package Synchronization**
@@ -69,8 +68,8 @@ Successfully implemented **dual-system dotfiles management** with both tradition
 - **Zero duplication** - same files used by both systems
 
 ### **✅ Environment Variable Parity**
-- Same `SETUP_DESKTOP`, `SETUP_FISH`, `SETUP_CHROMIUM` variables work in both systems
-- **Conditional logic** based on these variables in both approaches
+- `SETUP_DESKTOP` variable works in both systems
+- **Conditional logic** based on this variable in both approaches
 - **Unified interface** - same flags work for both Nix and shell scripts
 
 ### **✅ Package Management**
@@ -91,13 +90,10 @@ Successfully implemented **dual-system dotfiles management** with both tradition
 ./setup.sh
 
 # Nix with desktop environment
-./setup.sh --nix --desktop
+./setup.sh --desktop
 
-# Shell script with fish shell
-./setup.sh --shell --fish
-
-# Environment variable approach
-SETUP_DESKTOP=true SETUP_FISH=true ./setup.sh --nix
+# Nix without desktop
+./setup.sh --no-desktop
 ```
 
 ### **Package Synchronization**

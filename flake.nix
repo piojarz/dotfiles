@@ -9,9 +9,13 @@
     };
     flake-utils.url = "github:numtide/flake-utils";
     hyprland.url = "github:hyprwm/Hyprland";
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, flake-utils, ... }:
+  outputs = { self, nixpkgs, home-manager, flake-utils, ... }@inputs:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
@@ -21,7 +25,7 @@
           "linux-desktop" = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             extraSpecialArgs = { 
-              inherit self;
+              inherit self inputs;
               username = builtins.getEnv "USER";
               gitName = builtins.getEnv "GIT_NAME";
               gitEmail = builtins.getEnv "GIT_EMAIL";
@@ -35,7 +39,7 @@
           "macos-laptop" = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             extraSpecialArgs = { 
-              inherit self;
+              inherit self inputs;
               username = builtins.getEnv "USER";
               gitName = builtins.getEnv "GIT_NAME";
               gitEmail = builtins.getEnv "GIT_EMAIL";
@@ -49,7 +53,7 @@
           "common-workstation" = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             extraSpecialArgs = { 
-              inherit self;
+              inherit self inputs;
               username = builtins.getEnv "USER";
               gitName = builtins.getEnv "GIT_NAME";
               gitEmail = builtins.getEnv "GIT_EMAIL";

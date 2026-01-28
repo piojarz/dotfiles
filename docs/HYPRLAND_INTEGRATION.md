@@ -15,13 +15,11 @@ Successfully integrated the comprehensive Hyprland desktop environment setup fro
 - **Created config/linux/** with complete Hyprland ecosystem configs:
   - `hypr/hyprland.conf` - Main compositor config
   - `hypr/env.conf` - Environment variables  
-  - `waybar/config` + `style.css` - Status bar
-  - `mako/config` - Notifications
+  - `noctalia.nix` - Desktop shell (Bar, Notifications, Dashboard)
   - `rofi/config.rasi` - Application launcher
   - `swaylock/config` - Screen lock
 - **Created config/common/** for cross-platform configs:
   - `alacritty/alacritty.toml` - Terminal emulator
-  - `fish/config.fish` - Modern shell setup
 
 ### ✅ Phase 3: Modular Script Architecture  
 - **Created scripts/linux/hyprland.sh** with modular functions:
@@ -39,9 +37,7 @@ Successfully integrated the comprehensive Hyprland desktop environment setup fro
 
 ### ✅ Phase 5: Setup Options
 **Environment Variables:**
-- `SETUP_DESKTOP=false` - Install Hyprland ecosystem
-- `SETUP_FISH=false` - Add Fish shell alongside zsh  
-- `SETUP_CHROMIUM=true` - Install Chromium browser
+- `SETUP_DESKTOP=true` - Install Hyprland ecosystem with Noctalia shell
 
 ### ✅ Phase 6: Documentation & Instructions
 - **Comprehensive post-install instructions** in setup scripts
@@ -51,14 +47,11 @@ Successfully integrated the comprehensive Hyprland desktop environment setup fro
 ## Usage Examples
 
 ```bash
-# Basic development setup (existing behavior)
-./install.sh
+# Basic CLI setup
+./setup.sh --no-desktop
 
-# Full desktop environment
-SETUP_DESKTOP=true ./install.sh
-
-# Custom configuration
-SETUP_DESKTOP=true SETUP_FISH=true SETUP_CHROMIUM=false ./install.sh
+# Full desktop environment (Default on Arch)
+./setup.sh
 ```
 
 ## Key Benefits
@@ -96,13 +89,10 @@ SETUP_DESKTOP=true SETUP_FISH=true SETUP_CHROMIUM=false ./install.sh
 ```
 config/linux/hypr/hyprland.conf
 config/linux/hypr/env.conf  
-config/linux/waybar/config
-config/linux/waybar/style.css
-config/linux/mako/config
+modules/linux/home/desktop/noctalia.nix
 config/linux/rofi/config.rasi
 config/linux/swaylock/config
 config/common/alacritty/alacritty.toml
-config/common/fish/config.fish
 scripts/linux/hyprland.sh
 docs/ARCH_SETUP.md
 ```

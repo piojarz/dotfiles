@@ -20,14 +20,9 @@ The hybrid approach provides several advantages:
 # Auto-detect and use best available method
 ./setup.sh
 
-# Force specific method
-./setup.sh --nix --desktop --fish    # Nix with desktop + fish
-./setup.sh --shell                    # Traditional shell scripts
-
-# With environment variables
-SETUP_DESKTOP=true ./setup.sh             # Desktop environment
-SETUP_FISH=true ./setup.sh                 # Fish shell
-SETUP_CHROMIUM=false ./setup.sh            # No Chrome
+# Control desktop setup
+./setup.sh --desktop         # Desktop environment (Default on Arch)
+./setup.sh --no-desktop      # Skip desktop setup
 ```
 
 ### Management Tools
@@ -54,20 +49,16 @@ SETUP_CHROMIUM=false ./setup.sh            # No Chrome
 
 | Situation | Recommended Approach | Command |
 |-----------|---------------------|---------|
-| New user, want Nix | Use Nix directly | `./setup.sh --nix` |
-| Existing Arch setup | Try Nix alongside | `./setup.sh --nix` |
-| System broken by Nix | Fall back to shell | `./setup.sh --shell` |
-| Testing new config | Use both for comparison | Test each separately |
-| Production stability | Use proven method | Choose what works best |
+| New user, want Nix | Use setup script | `./setup.sh` |
+| Server setup | CLI-only setup | `./setup.sh --no-desktop` |
+| System update | Full update | `./setup.sh` |
 
 ## Environment Variables
 
 Always available across both systems:
 
 ```bash
-export SETUP_DESKTOP=false    # Hyprland desktop environment
-export SETUP_FISH=false       # Fish shell alongside zsh
-export SETUP_CHROMIUM=true  # Chromium browser
+export SETUP_DESKTOP=true    # Hyprland desktop environment with Noctalia
 ```
 
 **Apply methods:**
@@ -96,8 +87,7 @@ home-manager switch --flake .
 config/common/alacritty/alacritty.toml  # Both systems
 config/common/fish/config.fish              # Both systems
 config/linux/hypr/hyprland.conf         # Both systems
-config/linux/waybar/config                # Nix (auto-read)
-config/linux/mako/config                   # Nix (auto-read)
+modules/linux/home/desktop/noctalia.nix   # Nix only
 ```
 
 ## Migration Workflow
@@ -124,20 +114,14 @@ config/linux/mako/config                   # Nix (auto-read)
 
 ### Phase 3: Gradual Transition
 ```bash
-# Use Nix for desktop, shell for dev tools
-./setup.sh --nix --desktop
-
-# Eventually switch completely to Nix
-./setup.sh --nix --desktop --fish
+# Ensure desktop environment is ready
+./setup.sh --desktop
 ```
 
 ### Phase 4: Nix-Only
 ```bash
 # Full Nix setup
-./setup.sh --nix --desktop --fish
-
-# Keep shell scripts for reference/fallback
-# Archive or remove shell scripts if desired
+./setup.sh
 ```
 
 ## Troubleshooting Hybrid Setup
@@ -147,13 +131,8 @@ config/linux/mako/config                   # Nix (auto-read)
 #### Nix Build Fails, Shell Scripts Work
 ```bash
 # Rollback to shell scripts
-./setup.sh --shell
-
-# Fix Nix issue
-./scripts/nix/validate.sh test
-
-# Try Nix again
-./setup.sh --nix
+# Try setup again
+./setup.sh
 ```
 
 #### Configuration Not Applied in Nix
@@ -256,7 +235,7 @@ Some modules load based on environment:
 
 ```nix
 # Only install desktop packages if requested
-home.packages = lib.mkIf (config.SETUP_DESKTOP) [hyprland waybar];
+home.packages = lib.mkIf (config.SETUP_DESKTOP) [hyprland noctalia];
 ```
 
 ### Cross-System Aliases
@@ -267,8 +246,8 @@ Create aliases that work in both systems:
 # In config/common/zsh/.zshrc.d/aliases.zsh (for Zsh)
 
 alias dots="./setup.sh"  # Unified setup command
-alias dots-shell="./setup.sh --shell"
-alias dots-nix="./setup.sh --nix"
+alias dots-desktop="./setup.sh --desktop"
+alias dots-nodektop="./setup.sh --no-desktop"
 ```
 
 ### Validation Integration

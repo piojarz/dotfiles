@@ -45,20 +45,32 @@ setup_wayland_environment() {
   info "Wayland environment configured"
 }
 
-# Configure notifications service
-setup_notifications() {
-  info "Configuring notification service"
+# Configure Noctalia shell service
+setup_noctalia() {
+  info "Configuring Noctalia shell service"
   
-  # Enable mako notification service
-  systemctl --user enable mako
-  
-  success "Notification service configured"
+  # Enable noctalia-shell service (if using systemd unit provided by package)
+  # Otherwise, Hyprland handles the execution via 'exec-once'
+  if systemctl --user list-unit-files | grep -q "noctalia-shell.service"; then
+    systemctl --user enable noctalia-shell
+    success "Noctalia shell service enabled"
+  else
+    info "No noctalia-shell systemd service found, relying on Hyprland autostart"
+  fi
 }
+
+# Disabled: Noctalia shell handles notifications now
+# setup_notifications() {
+#   info "Configuring notification service"
+#   # Enable mako notification service
+#   systemctl --user enable mako
+#   success "Notification service configured"
+# }
 
 main() {
   setup_wayland_environment
   setup_desktop_services
-  setup_notifications
+  setup_noctalia
   
   success "Hyprland desktop services setup complete"
   info "Desktop environment configuration is now handled by Nix Home Manager"
