@@ -8,6 +8,13 @@ source "$(dirname "${BASH_SOURCE[0]}")/../common/utils.sh"
 setup_arch_system() {
   title "Setting up Arch Linux system services"
   
+  # Enable multilib if not enabled
+  if ! grep -q "^\[multilib\]" /etc/pacman.conf; then
+    info "Enabling multilib repository..."
+    sudo sed -i '/^#\[multilib\]/,/Include/s/^#//' /etc/pacman.conf
+    sudo pacman -Sy
+  fi
+
   # Update system
   info "Updating system packages"
   sudo pacman -Syu --noconfirm
@@ -45,29 +52,38 @@ setup_desktop_environment() {
   title "Installing Desktop Environment (Hyprland + SDDM)"
   
   info "Installing system-level dependencies for Wayland/Hyprland"
-  # These are better handled by pacman for better hardware integration
-  sudo pacman -S --noconfirm \
-    hyprland \
-    sddm \
-    qt5-wayland \
-    qt6-wayland \
-    xdg-desktop-portal-hyprland \
-    polkit-kde-authentication-agent-1 \
-    pipewire \
-    pipewire-alsa \
-    pipewire-pulse \
-    pipewire-jack \
-    wireplumber \
-    network-manager-applet \
-    bluez \
-    bluez-utils \
-    blueman \
-    brightnessctl \
-    pamixer \
-    playerctl \
-    thunar \
-    gvfs \
-    tumbler
+  
+  # Base requirements
+  local packages=(
+    hyprland sddm qt5-wayland qt6-wayland xdg-desktop-portal-hyprland
+    polkit-kde-authentication-agent-1 mesa lib32-mesa
+    pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
+    network-manager-applet bluez bluez-utils blueman
+    brightnessctl pamixer playerctl thunar gvfs tumbler
+  )
+  
+  # GPU Drivers detection
+  if lscpu | grep -qi "Intel"; then
+    info "Intel GPU detected, adding drivers..."
+    packages+=(xf86-video-intel vulkan-intel libva-intel-driver)
+  fi
+  
+  if lspci | grep -qi "AMD"; then
+    info "AMD GPU detected, adding drivers..."
+    packages+=(xf86-video-amdgpu vulkan-radeon libva-mesa-driver)
+  fi
+  
+  if lspci | grep -qi "NVIDIA"; then
+    info "NVIDIA GPU detected, adding drivers..."
+    packages+=(nvidia nvidia-utils nvidia-settings lib32-nvidia-utils)
+    warning "NVIDIA detected. You may need to add 'nvidia-drm.modeset=1' to your kernel parameters."
+  fi
+  
+  sudo pacman -S --noconfirm "${packages[@]}"
+  
+  info "Configuring user permissions"
+  # Add user to video and render groups for GPU access
+  sudo usermod -aG video,render "$USER"
   
   info "Enabling system services"
   sudo systemctl enable sddm
