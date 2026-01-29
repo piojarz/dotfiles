@@ -13,9 +13,6 @@
 
   programs.swaylock = {
     enable = true;
+    package = pkgs.swaylock-effects;
   };
-
-  home.packages = with pkgs; [
-    swaylock-effects
-  ];
 }
