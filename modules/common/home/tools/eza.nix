@@ -5,7 +5,7 @@
     enable = true;
     enableZshIntegration = true;
     enableFishIntegration = true;
-    icons = true;
+    icons = "auto";
     git = true;
   };
 

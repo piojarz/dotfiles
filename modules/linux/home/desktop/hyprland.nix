@@ -3,8 +3,7 @@
 {
   wayland.windowManager.hyprland = {
     enable = true;
-    
-    # Link the existing Hyprland configuration
+    systemd.enable = false;
   };
 
   home.file.".config/hypr" = {

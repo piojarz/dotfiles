@@ -3,8 +3,96 @@
 {
   programs.git = {
     enable = true;
-    userName = gitName;
-    userEmail = gitEmail;
+    
+    settings = {
+      user = {
+        name = gitName;
+        email = gitEmail;
+      };
+      
+      init.defaultBranch = "main";
+      
+      color = {
+        interactive = "auto";
+        ui = "auto";
+      };
+      
+      color.branch = {
+        current = "green bold";
+        local = "green";
+        remote = "red bold";
+      };
+      
+      color.diff = {
+        meta = "yellow bold";
+        frag = "magenta bold";
+        old = "red bold";
+        new = "green bold";
+      };
+      
+      color.status = {
+        added = "green bold";
+        changed = "yellow bold";
+        untracked = "red";
+      };
+      
+      color.sh = {
+        branch = "yellow";
+      };
+      
+      push.default = "current";
+      
+      diff = {
+        renames = "copies";
+        mnemonicprefix = true;
+        compactionHeuristic = true;
+      };
+      
+      difftool.prompt = false;
+      
+      core = {
+        pager = "delta";
+        editor = "nvim";
+        whitespace = "cr-at-eol";
+      };
+      
+      delta = {
+        features = "unobtrusive-line-numbers decorations";
+        whitespace-error-style = "22 reverse";
+        syntax-theme = "base16-256";
+      };
+      
+      delta."unobtrusive-line-numbers" = {
+        line-numbers = true;
+        line-numbers-left-format = "{nm:>4}┊";
+        line-numbers-right-format = "{np:>4}│";
+        line-numbers-left-style = "blue";
+        line-numbers-right-style = "blue";
+      };
+      
+      delta.decorations = {
+        commit-decoration-style = "bold yellow box ul";
+        file-style = "bold yellow ul";
+        file-decoration-style = "none";
+        hunk-header-decoration-style = "yellow box";
+      };
+      
+      interactive.diffFilter = "delta --color-only";
+      
+      rerere.enabled = true;
+      
+      grep = {
+        extendRegexp = true;
+        lineNumber = true;
+      };
+      
+      credential.helper = "osxkeychain";
+      
+      rebase = {
+        instructionFormat = "[%an - %ar] %s";
+        autoStash = true;
+      };
+    };
     
     aliases = {
       # list all aliases
@@ -93,91 +181,6 @@
       rg = "!sh -c 'git ls-files --others --exclude-standard | grep $1 | xargs rm' -";
       
       remotes = "remote -v";
-    };
-    
-    extraConfig = {
-      init.defaultBranch = "main";
-      
-      color = {
-        interactive = "auto";
-        ui = "auto";
-      };
-      
-      color.branch = {
-        current = "green bold";
-        local = "green";
-        remote = "red bold";
-      };
-      
-      color.diff = {
-        meta = "yellow bold";
-        frag = "magenta bold";
-        old = "red bold";
-        new = "green bold";
-      };
-      
-      color.status = {
-        added = "green bold";
-        changed = "yellow bold";
-        untracked = "red";
-      };
-      
-      color.sh = {
-        branch = "yellow";
-      };
-      
-      push.default = "current";
-      
-      diff = {
-        renames = "copies";
-        mnemonicprefix = true;
-        compactionHeuristic = true;
-      };
-      
-      difftool.prompt = false;
-      
-      core = {
-        pager = "delta";
-        editor = "vim";
-        whitespace = "cr-at-eol";
-      };
-      
-      delta = {
-        features = "unobtrusive-line-numbers decorations";
-        whitespace-error-style = "22 reverse";
-        syntax-theme = "base16-256";
-      };
-      
-      delta."unobtrusive-line-numbers" = {
-        line-numbers = true;
-        line-numbers-left-format = "{nm:>4}┊";
-        line-numbers-right-format = "{np:>4}│";
-        line-numbers-left-style = "blue";
-        line-numbers-right-style = "blue";
-      };
-      
-      delta.decorations = {
-        commit-decoration-style = "bold yellow box ul";
-        file-style = "bold yellow ul";
-        file-decoration-style = "none";
-        hunk-header-decoration-style = "yellow box";
-      };
-      
-      interactive.diffFilter = "delta --color-only";
-      
-      rerere.enabled = true;
-      
-      grep = {
-        extendRegexp = true;
-        lineNumber = true;
-      };
-      
-      credential.helper = "osxkeychain";
-      
-      rebase = {
-        instructionFormat = "[%an - %ar] %s";
-        autoStash = true;
-      };
     };
   };
 
