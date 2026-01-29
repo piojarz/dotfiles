@@ -7,6 +7,6 @@
 
   xdg.configFile."kanata/kanata.kbd".source = builtins.path {
     name = "kanata-config";
-    path = ../../../../../config/common/kanata/kanata.kbd;
+    path = ../../../../config/common/kanata/kanata.kbd;
   };
 }
