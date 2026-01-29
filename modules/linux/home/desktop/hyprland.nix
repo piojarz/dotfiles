@@ -16,7 +16,13 @@
 
   home.packages = with pkgs; [
     hyprland
-    # Add any additional Hyprland-related packages
     xwayland
+    swayidle
+    grim
+    slurp
+    swappy
+    wl-clipboard
+    cliphist
+    networkmanagerapplet
   ];
 }

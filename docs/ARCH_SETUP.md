@@ -87,7 +87,7 @@ If you previously used the separate `hyprland_setup.sh` script:
 ## Customization
 
 ### Modify Package Lists
-Edit `scripts/linux/arch.sh` and `scripts/linux/hyprland.sh` to add/remove packages.
+Edit `scripts/linux/system-setup.sh` and `scripts/linux/desktop-services.sh` to add/remove packages.
 
 ### Customize Desktop Environment
 Configuration files are in:
