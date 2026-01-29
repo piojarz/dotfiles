@@ -6,24 +6,20 @@
     atuin      # better history
     cloc       # lines of code counter
     entr       # file watcher
-    fd         # find alternative
-    gh         # GitHub CLI
     git-lfs    # large files for git
     glow       # markdown viewer
     gnupg      # GPG
     htop       # a top alternative
     jq         # work with JSON files
     neofetch   # pretty system info
-    ripgrep    # very fast file searcher
     tree       # pretty-print directory contents
     wget       # internet file retriever
-    zoxide     # smart cd
 
     # Deployment / Dev Ops
-    fzf        # often used in scripts too
+    # fzf is managed in its own module
     
     # Editors & Text
-    neovim     # fallback if module not used
+    # neovim is managed by its own module
     
     # Formatters & Linters
     shellcheck # diagnostics for shell sripts

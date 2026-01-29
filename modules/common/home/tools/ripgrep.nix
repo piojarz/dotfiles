@@ -15,7 +15,4 @@
     recursive = true;
   };
 
-  home.packages = with pkgs; [
-    ripgrep
-  ];
 }

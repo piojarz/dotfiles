@@ -100,9 +100,5 @@
     enableZshIntegration = true;
   };
 
-  # Packages moved to tool modules
-  home.packages = with pkgs; [
-    starship
-    zoxide
-  ];
+  # Packages are managed by programs.*.enable settings above
 }

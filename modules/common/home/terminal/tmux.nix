@@ -132,6 +132,6 @@ in
     tmux
     sesh
     gum
-    fzf
+    # fzf is managed in its own module
   ];
 }

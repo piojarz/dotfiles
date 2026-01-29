@@ -20,7 +20,6 @@
   };
 
   home.packages = with pkgs; [
-    neovim
     # Add any additional tools used by neovim
     lua-language-server
     nil # Nix language server
