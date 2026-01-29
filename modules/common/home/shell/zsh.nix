@@ -23,7 +23,7 @@
       vim = "nvim";
     };
 
-    initExtra = ''
+    initContent = ''
       # Environment variables
       export EDITOR=nvim
       export VISUAL=nvim

@@ -3,8 +3,9 @@
 {
   # Link the existing mako configuration
   
-  home.file.".config/mako/config" = {
-    source = ../../../../config/linux/mako/config;
+  home.file.".config/mako" = {
+    source = ../../../../config/linux/mako;
+    recursive = true;
   };
 
   services.mako = {

@@ -25,9 +25,9 @@
         pkgs = nixpkgs.legacyPackages.${system};
         extraSpecialArgs = { 
           inherit self inputs;
-          username = builtins.getEnv "USER";
-          gitName = builtins.getEnv "GIT_NAME";
-          gitEmail = builtins.getEnv "GIT_EMAIL";
+          username = let envUser = builtins.getEnv "USER"; in if envUser != "" then envUser else "pj";
+          gitName = let envName = builtins.getEnv "GIT_NAME"; in if envName != "" then envName else "Piotr Jarosz";
+          gitEmail = let envEmail = builtins.getEnv "GIT_EMAIL"; in if envEmail != "" then envEmail else "piojarosz@gmail.com";
         };
         modules = [
           ./hosts/${host}

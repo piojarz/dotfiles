@@ -3,8 +3,9 @@
 {
   # Link the existing swaylock configuration
   
-  home.file.".config/swaylock/config" = {
-    source = ../../../../config/linux/swaylock/config;
+  home.file.".config/swaylock" = {
+    source = ../../../../config/linux/swaylock;
+    recursive = true;
   };
 
   programs.swaylock = {
