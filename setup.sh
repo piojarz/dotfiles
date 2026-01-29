@@ -132,8 +132,15 @@ run_nix_setup() {
 
   info "Selected host configuration: ${host_config}"
   
+  # Determine Home Manager command (use nix run for bootstrap)
+  local switch_cmd=(home-manager switch)
+  if ! command -v home-manager >/dev/null 2>&1; then
+    info "Home Manager not found in PATH, using 'nix run' for initial bootstrap..."
+    switch_cmd=(nix run --extra-experimental-features "nix-command flakes" github:nix-community/home-manager -- switch)
+  fi
+
   # Use --impure to allow reading environment variables
-  if home-manager switch --flake .#${host_config} --impure --extra-experimental-features "nix-command flakes"; then
+  if "${switch_cmd[@]}" --flake .#${host_config} --impure --extra-experimental-features "nix-command flakes"; then
     success "Nix Home Manager setup completed!"
     run_platform_setup
   else
@@ -188,21 +195,20 @@ ensure_nix_experimental_features() {
   fi
 }
 
-# Ensure Home Manager is installed
+# Ensure Home Manager is available
 ensure_home_manager() {
+  title "Checking Home Manager"
+  
+  # Check if home-manager is installed via nix profile (which conflicts with HM-managed profiles)
+  if nix profile list --extra-experimental-features "nix-command flakes" 2>/dev/null | grep -q "home-manager"; then
+    info "Detected 'home-manager' in nix profile. Removing to prevent conflicts with activation..."
+    nix profile remove home-manager --extra-experimental-features "nix-command flakes" || true
+  fi
+
   if ! command -v home-manager >/dev/null 2>&1; then
-    title "Installing Home Manager"
-    info "Home Manager not found. Installing via nix profile..."
-    
-    # Ensure flakes are enabled for the installation
-    nix profile install --extra-experimental-features "nix-command flakes" nixpkgs#home-manager
-    
-    # Add newly installed bin to PATH for the rest of the script
-    export PATH="$HOME/.nix-profile/bin:$PATH"
-    
-    success "Home Manager installed successfully!"
+    info "Home Manager not installed. Will use 'nix run' for the initial bootstrap."
   else
-    info "Home Manager is already installed."
+    info "Home Manager is already available."
   fi
 }
 
