@@ -42,10 +42,8 @@ setup_arch_system() {
   # Set up user services
   setup_user_services
   
-  # Install Desktop Environment if requested
-  if [[ "${SETUP_DESKTOP:-false}" == "true" ]]; then
-    setup_desktop_environment
-  fi
+  # Install Desktop Environment (Hyprland + SDDM)
+  setup_desktop_environment
 }
 
 setup_desktop_environment() {
@@ -89,6 +87,7 @@ setup_desktop_environment() {
   sudo systemctl enable sddm
   sudo systemctl enable bluetooth
   sudo systemctl enable NetworkManager
+  sudo systemctl set-default graphical.target
 }
 
 setup_user_services() {

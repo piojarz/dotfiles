@@ -91,7 +91,7 @@ run_platform_setup() {
       bash "$linux_setup"
     fi
     
-    if [[ "${SETUP_DESKTOP:-false}" == "true" && -f "$desktop_setup" ]]; then
+    if [[ -f "$desktop_setup" ]]; then
       info "Executing Linux desktop services setup..."
       bash "$desktop_setup"
     fi
@@ -102,14 +102,6 @@ run_platform_setup() {
 run_nix_setup() {
   title "Running Nix Home Manager Setup"
   
-  # Export environment variables for Nix
-  if [[ -z "$SETUP_DESKTOP" ]]; then
-    if [[ -f /etc/arch-release ]]; then
-      export SETUP_DESKTOP=true
-    else
-      export SETUP_DESKTOP=false
-    fi
-  fi
   export USER=${USER:-$(whoami)}
   
   info "Setup variables:"
@@ -218,11 +210,9 @@ main() {
   
   while [[ $# -gt 0 ]]; do
     case $1 in
-      --desktop) export SETUP_DESKTOP=true; shift ;;
-      --no-desktop) export SETUP_DESKTOP=false; shift ;;
       --help|-h)
         echo "Usage: $0 [OPTIONS]"
-        echo "Options: --desktop, --no-desktop, --help"
+        echo "Options: --help"
         exit 0
         ;;
       *) warning "Unknown option: $1"; exit 1 ;;

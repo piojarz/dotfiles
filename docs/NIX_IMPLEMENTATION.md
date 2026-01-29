@@ -28,9 +28,8 @@ Successfully implemented **dual-system dotfiles management** with both tradition
 - **Cross-shell tools**: fzf, eza, bat, zoxide work in both systems
 
 ### **Phase 4: Unified Setup Script**
-- **setup.sh** - Intelligent detection of host OS
-- **Command-line interface**: `--desktop`, `--no-desktop` flags
-- **Environment variable support**: `SETUP_DESKTOP`
+- **setup.sh** - Intelligent detection of host OS and automatic host selection
+- **Command-line interface**: simplified with automatic host detection
 - **Auto-username substitution**: Dynamic configuration for current user
 
 ### **Phase 5: Package Synchronization**
@@ -67,10 +66,11 @@ Successfully implemented **dual-system dotfiles management** with both tradition
 - Nix modules read from existing configurations using `builtins.readFile`
 - **Zero duplication** - same files used by both systems
 
-### **✅ Environment Variable Parity**
-- `SETUP_DESKTOP` variable works in both systems
-- **Conditional logic** based on this variable in both approaches
-- **Unified interface** - same flags work for both Nix and shell scripts
+### **✅ Host-Based Configuration**
+- **linux-desktop**: Full desktop environment with Wayland/Hyprland
+- **macos-laptop**: macOS-specific configuration
+- **common-workstation**: Minimal cross-platform setup
+- **Automatic host detection** - no environment variables needed
 
 ### **✅ Package Management**
 - **Arch packages** → Nix package mapping with `sync-packages.sh`

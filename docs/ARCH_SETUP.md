@@ -4,32 +4,20 @@ This document explains the enhanced Arch Linux setup that now supports optional 
 
 ## Usage
 
-### Basic Setup (CLI Tools Only)
-```bash
-./setup.sh --no-desktop
-```
-
-### Full Desktop Environment Setup (Default on Arch)
 ```bash
 ./setup.sh
 ```
 
-## Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `SETUP_DESKTOP` | `true` (on Arch) | Install Hyprland desktop environment with Noctalia, SDDM, PipeWire |
-
 ## What Gets Installed
 
-### Always Installed
+### Core Components
 - Core development tools (git, neovim, docker, etc.)
 - AUR helper (yay)
 - Shell utilities (fzf, eza, bat, ripgrep, etc.)
 - Fonts and terminal setup
 - Productivity applications (VS Code, Slack, Spotify, etc.)
 
-### Desktop Environment (when `SETUP_DESKTOP=true`)
+### Desktop Environment
 - **Hyprland**: Wayland compositor with animations
 - **Noctalia**: Modern desktop shell (Bar, Notifications, Dashboard)
 - **SDDM**: Display manager for login

@@ -53,18 +53,18 @@ The hybrid approach provides several advantages:
 | Server setup | CLI-only setup | `./setup.sh --no-desktop` |
 | System update | Full update | `./setup.sh` |
 
-## Environment Variables
+## Host Configurations
 
-Always available across both systems:
+Different configurations are automatically selected based on the system:
 
 ```bash
-export SETUP_DESKTOP=true    # Hyprland desktop environment with Noctalia
+# Desktop environments automatically include Hyprland + Noctalia
+# linux-desktop and macos-laptop hosts include appropriate desktop packages
 ```
 
 **Apply methods:**
-- Export in shell before running setup
-- Use command-line flags with `setup.sh`
-- Edit in `scripts/nix/nix-env.sh`
+- Host is automatically detected by the setup script
+- Use specific host configurations with `home-manager switch --flake .#<host>`
 
 ## Configuration File Management
 
@@ -234,8 +234,9 @@ du -sh ~/.local/share/nix/profile
 Some modules load based on environment:
 
 ```nix
-# Only install desktop packages if requested
-home.packages = lib.mkIf (config.SETUP_DESKTOP) [hyprland noctalia];
+# Desktop packages are included in linux-desktop host configuration
+# No conditional logic needed - host determines what gets installed
+home.packages = [hyprland noctalia];
 ```
 
 ### Cross-System Aliases

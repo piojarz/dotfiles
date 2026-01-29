@@ -30,8 +30,7 @@ The new `setup.sh` script automatically detects and chooses appropriate method:
 ./setup.sh --desktop      # Force desktop setup
 ./setup.sh --no-desktop   # Explicitly skip desktop setup
 
-# With environment variables
-SETUP_DESKTOP=true ./setup.sh             # Force desktop setup
+# Desktop setup is now enabled by default on desktop/laptop environments
 ```
 
 ### Direct Nix Usage
@@ -70,22 +69,21 @@ config/common/              # Cross-platform configs
 config/linux/              # Linux-specific configs
 ```
 
-## Environment Variables
+## Host Configurations
 
-Control behavior across both systems:
+Different configurations are automatically selected based on the system:
 
-```bash
-# Desktop environment (Hyprland + ecosystem)
-export SETUP_DESKTOP=true
-```
+- **linux-desktop**: Full desktop environment with Wayland/Hyprland
+- **macos-laptop**: macOS-specific configuration 
+- **common-workstation**: Minimal cross-platform setup
 
 **Apply with:**
 ```bash
 # For shell scripts
 ./scripts/nix/nix-env.sh generate
 
-# For Nix
-SETUP_DESKTOP=true ./setup.sh
+# For Nix (automatically detects host configuration)
+./setup.sh
 ```
 
 ## Package Management
@@ -299,15 +297,14 @@ programs.alacritty = {
 };
 ```
 
-### Conditional Configuration
-Use environment variables for flexible setups:
+### Host-Specific Configuration
+Different host configurations automatically include appropriate modules:
 
-```nix
-# In home.nix
-home.packages = lib.mkIf (config.SETUP_DESKTOP or false) (with pkgs; [
-  # Only install if desktop environment requested
-]);
-```
+- **linux-desktop**: Includes desktop environment modules
+- **macos-laptop**: Includes macOS-specific modules  
+- **common-workstation**: Includes only common modules
+
+No environment variables needed - the host is determined automatically.
 
 ## Contributing
 

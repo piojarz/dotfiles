@@ -36,8 +36,10 @@ Successfully integrated the comprehensive Hyprland desktop environment setup fro
 - **Docker service** maintained from existing setup
 
 ### ✅ Phase 5: Setup Options
-**Environment Variables:**
-- `SETUP_DESKTOP=true` - Install Hyprland ecosystem with Noctalia shell
+**Host-Based Configuration:**
+- **linux-desktop** - Automatically includes Hyprland ecosystem with Noctalia shell
+- **macos-laptop** - macOS-specific window management and tools
+- **common-workstation** - Minimal setup without desktop environment
 
 ### ✅ Phase 6: Documentation & Instructions
 - **Comprehensive post-install instructions** in setup scripts
@@ -47,11 +49,11 @@ Successfully integrated the comprehensive Hyprland desktop environment setup fro
 ## Usage Examples
 
 ```bash
-# Basic CLI setup
-./setup.sh --no-desktop
-
-# Full desktop environment (Default on Arch)
+# Desktop environment (automatically detected on linux-desktop host)
 ./setup.sh
+
+# Minimal workstation setup
+home-manager switch --flake .#common-workstation
 ```
 
 ## Key Benefits
