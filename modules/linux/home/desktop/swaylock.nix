@@ -4,7 +4,10 @@
   # Link the existing swaylock configuration
   
   home.file.".config/swaylock" = {
-    source = ../../../../config/linux/swaylock;
+    source = builtins.path {
+      name = "swaylock-config-dir";
+      path = ../../../../config/linux/swaylock;
+    };
     recursive = true;
   };
 

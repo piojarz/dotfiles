@@ -4,7 +4,10 @@
   # Link the existing mako configuration
   
   home.file.".config/mako" = {
-    source = ../../../../config/linux/mako;
+    source = builtins.path {
+      name = "mako-config-dir";
+      path = ../../../../config/linux/mako;
+    };
     recursive = true;
   };
 

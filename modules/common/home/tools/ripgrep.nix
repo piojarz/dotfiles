@@ -8,7 +8,10 @@
   };
 
   home.file.".config/ripgrep" = {
-    source = ../../../../config/common/ripgrep;
+    source = builtins.path {
+      name = "ripgrep-config-dir";
+      path = ../../../../config/common/ripgrep;
+    };
     recursive = true;
   };
 

@@ -7,8 +7,12 @@
     # Link the existing alacritty configuration
   };
 
-  home.file.".config/alacritty/alacritty.toml" = {
-    source = ../../../../config/common/alacritty/alacritty.toml;
+  home.file.".config/alacritty" = {
+    source = builtins.path {
+      name = "alacritty-config-dir";
+      path = ../../../../config/common/alacritty;
+    };
+    recursive = true;
   };
 
   home.packages = with pkgs; [

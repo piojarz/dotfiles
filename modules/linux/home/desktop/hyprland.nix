@@ -7,7 +7,10 @@
   };
 
   home.file.".config/hypr" = {
-    source = ../../../../config/linux/hypr;
+    source = builtins.path {
+      name = "hyprland-config-dir";
+      path = ../../../../config/linux/hypr;
+    };
     recursive = true;
   };
 

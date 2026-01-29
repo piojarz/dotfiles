@@ -4,7 +4,10 @@
   # Link the existing rofi configuration
   
   home.file.".config/rofi" = {
-    source = ../../../../config/linux/rofi;
+    source = builtins.path {
+      name = "rofi-config-dir";
+      path = ../../../../config/linux/rofi;
+    };
     recursive = true;
   };
 

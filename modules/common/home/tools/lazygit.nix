@@ -7,8 +7,12 @@
     # Link the existing lazygit configuration
   };
 
-  home.file.".config/lazygit/config.yml" = {
-    source = ../../../../config/common/lazygit/config.yml;
+  home.file.".config/lazygit" = {
+    source = builtins.path {
+      name = "lazygit-config-dir";
+      path = ../../../../config/common/lazygit;
+    };
+    recursive = true;
   };
 
   home.packages = with pkgs; [

@@ -12,7 +12,10 @@
   };
 
   home.file.".config/nvim" = {
-    source = ../../../../config/common/nvim;
+    source = builtins.path {
+      name = "neovim-config-dir";
+      path = ../../../../config/common/nvim;
+    };
     recursive = true;
   };
 

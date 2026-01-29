@@ -8,7 +8,10 @@
   };
 
   home.file.".config/waybar" = {
-    source = ../../../../config/linux/waybar;
+    source = builtins.path {
+      name = "waybar-config-dir";
+      path = ../../../../config/linux/waybar;
+    };
     recursive = true;
   };
 

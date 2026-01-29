@@ -4,7 +4,10 @@
   # Link the existing kitty configuration (Linux-specific)
   
   home.file.".config/kitty" = {
-    source = ../../../../config/linux/kitty;
+    source = builtins.path {
+      name = "kitty-config-dir";
+      path = ../../../../config/linux/kitty;
+    };
     recursive = true;
   };
 
