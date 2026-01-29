@@ -24,6 +24,7 @@
   # when a new Home Manager release introduces backwards
   # incompatible changes.
   home.stateVersion = "24.05";
+  xdg.enable = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
