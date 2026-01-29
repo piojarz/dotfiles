@@ -99,9 +99,6 @@
       init.defaultBranch = "main";
       
       color = {
-        diff = "auto";
-        status = "auto";
-        branch = "auto";
         interactive = "auto";
         ui = "auto";
       };
