@@ -2,8 +2,13 @@
 
 source "$(dirname "${BASH_SOURCE[0]}")/../common/utils.sh"
 
-# System-level setup for Arch Linux - Nix handles packages
-# This script only handles system services and AUR helpers that Nix can't manage
+# System-level setup for Arch Linux - Nix handles applications
+# This script only handles system services that archinstall doesn't configure
+# 
+# PREREQUISITE: Install Hyprland + SDDM via archinstall first:
+# - wayland hyprland sddm (and GPU drivers if offered)
+# 
+# This script then configures: system services, user permissions, AUR helper
 
 setup_arch_system() {
   title "Setting up Arch Linux system services"
@@ -47,37 +52,12 @@ setup_arch_system() {
 }
 
 setup_desktop_environment() {
-  title "Installing Desktop Environment (Hyprland + SDDM)"
+  title "Configuring Desktop Environment (Assumes Hyprland installed via archinstall)"
   
-  info "Installing system-level dependencies for Wayland/Hyprland"
+  info "Setting up system services for Wayland/Hyprland"
   
-  # Base requirements
-  local packages=(
-    hyprland sddm qt5-wayland qt6-wayland xdg-desktop-portal-hyprland
-    polkit-kde-authentication-agent-1 mesa lib32-mesa
-    pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
-    network-manager-applet bluez bluez-utils blueman
-    brightnessctl pamixer playerctl thunar gvfs tumbler
-  )
-  
-  # GPU Drivers detection
-  if lscpu | grep -qi "Intel"; then
-    info "Intel GPU detected, adding drivers..."
-    packages+=(xf86-video-intel vulkan-intel libva-intel-driver)
-  fi
-  
-  if lspci | grep -qi "AMD"; then
-    info "AMD GPU detected, adding drivers..."
-    packages+=(xf86-video-amdgpu vulkan-radeon libva-mesa-driver)
-  fi
-  
-  if lspci | grep -qi "NVIDIA"; then
-    info "NVIDIA GPU detected, adding drivers..."
-    packages+=(nvidia nvidia-utils nvidia-settings lib32-nvidia-utils)
-    warning "NVIDIA detected. You may need to add 'nvidia-drm.modeset=1' to your kernel parameters."
-  fi
-  
-  sudo pacman -S --noconfirm "${packages[@]}"
+  # Note: Hyprland, SDDM, and base Wayland packages should be installed via archinstall
+  # This script only handles system services and configuration that archinstall can't do
   
   info "Configuring user permissions"
   # Add user to video and render groups for GPU access
@@ -88,6 +68,15 @@ setup_desktop_environment() {
   sudo systemctl enable bluetooth
   sudo systemctl enable NetworkManager
   sudo systemctl set-default graphical.target
+  
+  # Install system-level services that archinstall typically doesn't include
+  local service_packages=(
+    polkit-kde-authentication-agent-1
+    pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
+    network-manager-applet bluez bluez-utils blueman
+  )
+  
+  sudo pacman -S --noconfirm "${service_packages[@]}"
 }
 
 setup_user_services() {
@@ -101,18 +90,17 @@ setup_user_services() {
   fi
 }
 
-# Font installation - keep this as Nix font handling is complex
-setup_fonts() {
-  if [ "$SETUP_FONTS" = "true" ]; then
-    info "Installing fonts"
-    sudo pacman -S --noconfirm \
-      noto-fonts \
-      ttf-font-awesome \
-      ttf-jetbrains-mono \
-      ttf-fira-code \
-      ttf-fira-sans
-  fi
-}
+  # Font installation - keep this as Nix font handling is complex
+  setup_fonts() {
+    info "Skipping system font installation - fonts are managed by Nix Home Manager"
+    info "To install system fonts manually, uncomment the section below"
+    # sudo pacman -S --noconfirm \
+    #   noto-fonts \
+    #   ttf-font-awesome \
+    #   ttf-jetbrains-mono \
+    #   ttf-fira-code \
+    #   ttf-fira-sans
+  }
 
 main() {
   setup_arch_system

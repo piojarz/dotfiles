@@ -68,12 +68,12 @@ setup_noctalia() {
 # }
 
 main() {
-  setup_wayland_environment
   setup_desktop_services
   setup_noctalia
   
   success "Hyprland desktop services setup complete"
-  info "Desktop environment configuration is now handled by Nix Home Manager"
+  info "Assumes Hyprland/SDDM were installed via archinstall"
+  info "Application configuration is handled by Nix Home Manager"
   info "Apply Nix configuration with: home-manager switch --flake .#linux-desktop"
 }
 
