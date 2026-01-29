@@ -16,60 +16,42 @@
   };
 
   outputs = { self, nixpkgs, home-manager, flake-utils, ... }@inputs:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
+    let
+      # Linux systems usually use x86_64-linux, macOS uses aarch64-darwin (M1/M2/M3) or x86_64-darwin (Intel)
+      linuxSystem = "x86_64-linux";
+      macosSystem = "aarch64-darwin";
+
+      mkHomeConfig = system: host: home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${system};
-      in {
-        homeConfigurations = {
-          # Linux desktop with Wayland/Hyprland
-          "linux-desktop" = home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-            extraSpecialArgs = { 
-              inherit self inputs;
-              username = builtins.getEnv "USER";
-              gitName = builtins.getEnv "GIT_NAME";
-              gitEmail = builtins.getEnv "GIT_EMAIL";
-            };
-            modules = [
-              ./hosts/linux-desktop
-            ];
-          };
-
-          # macOS laptop configuration
-          "macos-laptop" = home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-            extraSpecialArgs = { 
-              inherit self inputs;
-              username = builtins.getEnv "USER";
-              gitName = builtins.getEnv "GIT_NAME";
-              gitEmail = builtins.getEnv "GIT_EMAIL";
-            };
-            modules = [
-              ./hosts/macos-laptop
-            ];
-          };
-
-          # Common workstation (minimal, cross-platform)
-          "common-workstation" = home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-            extraSpecialArgs = { 
-              inherit self inputs;
-              username = builtins.getEnv "USER";
-              gitName = builtins.getEnv "GIT_NAME";
-              gitEmail = builtins.getEnv "GIT_EMAIL";
-            };
-            modules = [
-              ./hosts/common-workstation
-            ];
-          };
+        extraSpecialArgs = { 
+          inherit self inputs;
+          username = builtins.getEnv "USER";
+          gitName = builtins.getEnv "GIT_NAME";
+          gitEmail = builtins.getEnv "GIT_EMAIL";
         };
+        modules = [
+          ./hosts/${host}
+        ];
+      };
+    in
+    {
+      homeConfigurations = {
+        # Linux desktop with Wayland/Hyprland
+        "linux-desktop" = mkHomeConfig linuxSystem "linux-desktop";
 
-        # Development shell
-        devShells.default = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            home-manager
-            nixfmt
-          ];
-        };
-      });
+        # macOS laptop configuration
+        "macos-laptop" = mkHomeConfig macosSystem "macos-laptop";
+
+        # Common workstation (minimal, cross-platform)
+        "common-workstation" = mkHomeConfig linuxSystem "common-workstation";
+      };
+    } // flake-utils.lib.eachDefaultSystem (system: {
+      # Development shell
+      devShells.default = nixpkgs.legacyPackages.${system}.mkShell {
+        buildInputs = with nixpkgs.legacyPackages.${system}; [
+          home-manager
+          nixfmt
+        ];
+      };
+    });
 }
