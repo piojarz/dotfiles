@@ -2,9 +2,10 @@
 
 source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 
-# Get the directory where this script is located, then go up one level to dotfiles root
+# Get the directory where this script is located, then go up two levels to dotfiles root
+# (scripts/common/ -> scripts/ -> dotfiles root)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DOTFILES="$(dirname "$SCRIPT_DIR")"
+DOTFILES="$(dirname "$(dirname "$SCRIPT_DIR")")"
 config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
 data_home="${XDG_DATA_HOME:-$HOME/.local/share}"
 
