@@ -57,7 +57,7 @@ if [[ "$PKG_MANAGER" == "pacman" ]]; then
     # Polkit
     $INSTALL_CMD \
         polkit \
-        polkit-kde-agent
+        lxqt-policykit
     
     # Graphics drivers (optional but recommended)
     echo ""
@@ -93,6 +93,34 @@ if [[ "$PKG_MANAGER" == "pacman" ]]; then
     systemctl --user enable --now pipewire.service
     systemctl --user enable --now pipewire-pulse.service
     systemctl --user enable --now wireplumber.service
+    
+    # Enable services required by Noctalia (if available)
+    echo ""
+    echo "Enabling Noctalia-required system services..."
+    
+    # NetworkManager (for wifi support)
+    if systemctl list-unit-files | grep -q "NetworkManager.service"; then
+        sudo systemctl enable --now NetworkManager.service 2>/dev/null || true
+        info "NetworkManager enabled"
+    fi
+    
+    # Bluetooth (for bluetooth support)
+    if systemctl list-unit-files | grep -q "bluetooth.service"; then
+        sudo systemctl enable --now bluetooth.service 2>/dev/null || true
+        info "Bluetooth service enabled"
+    fi
+    
+    # Power Profiles Daemon (for power-profile support)
+    if systemctl list-unit-files | grep -q "power-profiles-daemon.service"; then
+        sudo systemctl enable --now power-profiles-daemon.service 2>/dev/null || true
+        info "Power Profiles Daemon enabled"
+    fi
+    
+    # UPower (for battery support)
+    if systemctl list-unit-files | grep -q "upower.service"; then
+        sudo systemctl enable --now upower.service 2>/dev/null || true
+        info "UPower enabled"
+    fi
     
     echo "✓ System dependencies installed successfully"
 

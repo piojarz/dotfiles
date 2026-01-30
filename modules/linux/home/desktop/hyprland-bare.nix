@@ -53,7 +53,7 @@
     
     # Session management
     polkit
-    lxqt-policykit-agent  # LXQt polkit agent (replaces removed polkit-kde-agent)
+    lxqt.lxqt-policykit  # LXQt polkit agent (replaces removed polkit-kde-agent)
     xdg-desktop-portal-hyprland
     xdg-desktop-portal-gtk
     
@@ -131,7 +131,7 @@
         };
         Service = {
           Type = "simple";
-          ExecStart = "${pkgs.lxqt-policykit-agent}/bin/lxqt-policykit-agent";
+          ExecStart = "${pkgs.lxqt.lxqt-policykit}/bin/lxqt-policykit-agent";
           Restart = "on-failure";
           RestartSec = 1;
           TimeoutStopSec = 10;
