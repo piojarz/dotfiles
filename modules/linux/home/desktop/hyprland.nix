@@ -58,7 +58,7 @@
     
     # Session management
     polkit
-    polkit-kde-agent
+    lxqt-policykit-agent  # LXQt polkit agent (replaces removed polkit-kde-agent)
     xdg-desktop-portal-hyprland
     xdg-desktop-portal-gtk
     
@@ -123,16 +123,16 @@
   # Enable systemd user services for Hyprland
   systemd.user = {
     services = {
-      # Polkit authentication agent
-      polkit-kde-agent = {
+      # Polkit authentication agent (LXQt replacement for removed kde-agent)
+      polkit-agent = {
         Unit = {
-          Description = "Polkit KDE Authentication Agent";
+          Description = "Polkit Authentication Agent";
           After = [ "graphical-session.target" ];
           PartOf = [ "graphical-session.target" ];
         };
         Service = {
           Type = "simple";
-          ExecStart = "${pkgs.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";
+          ExecStart = "${pkgs.lxqt-policykit-agent}/bin/lxqt-policykit-agent";
           Restart = "on-failure";
           RestartSec = 1;
           TimeoutStopSec = 10;
