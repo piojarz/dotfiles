@@ -1,6 +1,6 @@
 # dotfiles
 
-Personal dotfiles organized in the style of [nexxeln/dots](https://github.com/nexxeln/dots) with platform separation support for Linux, macOS, and common configurations.
+Personal dotfiles with platform separation support for Linux, macOS, and common configurations.
 
 ## Structure
 

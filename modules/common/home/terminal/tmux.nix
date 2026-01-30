@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  # vesper colors (same theme as nexxeln)
+  # vesper colors
   colors = {
     bg = "#101010";
     bg_elevated = "#1A1A1A";

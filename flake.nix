@@ -1,5 +1,5 @@
 {
-  description = "Personal dotfiles - nexxeln-style organization with platform separation";
+  description = "Personal dotfiles - with platform separation";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
