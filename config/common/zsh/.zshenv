@@ -54,8 +54,9 @@ if [[ "$(uname)" != "Darwin" ]]; then
     # Java applications
     export _JAVA_AWT_WM_NONREPARENTING=1
     
-    # Cliphist (clipboard history)
-    export CLIPHIST_IGNORE="passwordsecretkeytoken"
+    # Cliphist (clipboard history) - ignore sensitive patterns
+    # Use regex pattern with word boundaries
+    export CLIPHIST_IGNORE="password|secret|key|token|api_key|private_key|credential"
     
     # Set desktop environment only if not already set
     if [[ -z "$XDG_CURRENT_DESKTOP" ]]; then

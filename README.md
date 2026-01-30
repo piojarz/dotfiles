@@ -365,6 +365,24 @@ chmod +x install.sh update.sh
 chmod +x bin/*
 ```
 
+### Backup Restoration
+
+If something goes wrong, you can restore from the automatic backup:
+
+```bash
+# List available backups
+ls -la ~/.dotfiles-backup/
+
+# Restore a specific backup (replace YYYYMMDD-HHMMSS with actual timestamp)
+cp -r ~/.dotfiles-backup/YYYYMMDD-HHMMSS/* ~/
+
+# Or restore the latest backup
+latest=$(ls -t ~/.dotfiles-backup/ | head -1)
+cp -r ~/.dotfiles-backup/$latest/* ~/
+```
+
+**Note**: Be careful when restoring to not overwrite new files you've created since the backup.
+
 ## Shellcheck Validation
 
 All shell scripts are validated with Shellcheck in CI. To check locally:

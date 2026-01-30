@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 # Source common utilities
 source "$(dirname "${BASH_SOURCE[0]}")/scripts/common/utils.sh"
 
@@ -7,6 +9,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/scripts/common/utils.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/scripts/common/symlinks.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/scripts/common/shell.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/scripts/common/git-setup.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/scripts/common/preflight.sh"
 
 # Source OS-specific scripts
 if is_macos; then
@@ -19,6 +22,9 @@ fi
 
 # Main installation process
 main() {
+  # Run pre-flight checks
+  preflight_check
+  
   # Clean up existing symlinks
   cleanup_symlinks
   

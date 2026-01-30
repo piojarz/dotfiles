@@ -65,6 +65,17 @@ setup_git_user() {
     return 1
   fi
   
+  # Basic email format validation
+  if [[ ! "$git_email" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
+    warning "Email format may be invalid: $git_email"
+    read -p "Continue anyway? (y/N) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+      info "Aborted. Please re-run and provide a valid email."
+      return 1
+    fi
+  fi
+  
   # Configure git
   git config --global user.name "$git_name"
   git config --global user.email "$git_email"
