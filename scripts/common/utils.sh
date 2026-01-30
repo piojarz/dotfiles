@@ -37,7 +37,15 @@ create_symlink() {
   local source=$1
   local target=$2
   if [ -e "$target" ]; then
-    info "~${target#"$HOME"} already exists... Skipping."
+    if [ -L "$target" ]; then
+      info "~${target#"$HOME"} is already a symlink... Skipping."
+    else
+      # Backup existing file/directory before replacing
+      backup_if_exists "$target"
+      info "Removing existing file and creating symlink for $source"
+      rm -rf "$target"
+      ln -s "$source" "$target"
+    fi
   else
     info "Creating symlink for $source"
     ln -s "$source" "$target"
@@ -62,6 +70,27 @@ ensure_directory() {
   if [ ! -d "$dir" ]; then
     info "Creating $dir"
     mkdir -p "$dir"
+  fi
+}
+
+# Backup directory
+BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
+
+# Backup management
+backup_file() {
+  local file=$1
+  if [ -e "$file" ] && [ ! -L "$file" ]; then
+    ensure_directory "$BACKUP_DIR"
+    local backup_path="$BACKUP_DIR/$(basename "$file")"
+    info "Backing up existing file: $file -> $backup_path"
+    cp -r "$file" "$backup_path"
+  fi
+}
+
+backup_if_exists() {
+  local target=$1
+  if [ -e "$target" ] && [ ! -L "$target" ]; then
+    backup_file "$target"
   fi
 }
 
@@ -90,6 +119,17 @@ is_macos() {
 
 is_arch() {
   [ -f /etc/arch-release ]
+}
+
+# Show backup summary
+show_backup_summary() {
+  if [ -d "$BACKUP_DIR" ] && [ "$(ls -A "$BACKUP_DIR" 2>/dev/null)" ]; then
+    title "Backup Summary"
+    info "Your existing configurations have been backed up to:"
+    success "$BACKUP_DIR"
+    info "Backed up files:"
+    ls -la "$BACKUP_DIR"
+  fi
 }
 
  

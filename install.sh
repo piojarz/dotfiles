@@ -35,6 +35,9 @@ main() {
   # Setup shell
   setup_shell
 
+  # Show backup summary if any backups were made
+  show_backup_summary
+
   success "Installation complete!"
 }
 

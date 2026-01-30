@@ -64,7 +64,20 @@ if [[ ! -d ${ZDOTDIR:-$HOME}/.antidote ]]; then
 fi
 
 # Create an amazing Zsh config using antidote plugins.
-source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
+# Try multiple locations for antidote (macOS Homebrew, Linux, or local install)
+if [[ -f $(brew --prefix 2>/dev/null)/opt/antidote/share/antidote/antidote.zsh ]]; then
+  # macOS with Homebrew
+  source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
+elif [[ -f /usr/share/antidote/antidote.zsh ]]; then
+  # Arch Linux system package
+  source /usr/share/antidote/antidote.zsh
+elif [[ -f ${ZDOTDIR:-$HOME}/.antidote/antidote.zsh ]]; then
+  # Local install
+  source ${ZDOTDIR:-$HOME}/.antidote/antidote.zsh
+else
+  echo "Warning: antidote not found. Some zsh features may not work."
+  return 1
+fi
 antidote load
 
 # Source anything in .zshrc.d.

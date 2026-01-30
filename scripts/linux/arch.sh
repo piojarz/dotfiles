@@ -61,20 +61,33 @@ setup_arch() {
   sudo systemctl start docker
   sudo usermod -aG docker ${USER}
 
-  # Tmux Plugin Manager
-  git clone https://github.com/tmux-plugins/tpm ~/config/.tmux/plugins/tpm
-
-
+  # Tmux Plugin Manager (idempotent check)
+  if [[ ! -d ~/.config/tmux/plugins/tpm ]]; then
+    info "Installing Tmux Plugin Manager (TPM)..."
+    git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+  else
+    info "TPM already installed, skipping..."
+  fi
 
   # Setup fonts
   source "$(dirname "${BASH_SOURCE[0]}")/fonts.sh"
   setup_fonts
 
-  # fnm (Node.js version manager)
-  curl -fsSL https://fnm.vercel.app/install | bash
+  # fnm (Node.js version manager) - idempotent
+  if ! command -v fnm &> /dev/null; then
+    info "Installing fnm..."
+    curl -fsSL https://fnm.vercel.app/install | bash
+  else
+    info "fnm already installed, skipping..."
+  fi
 
-  # Setup kanata keyboard remapping
-  setup_kanata_linux
+  # Setup kanata keyboard remapping (idempotent check)
+  if ! command -v kanata &> /dev/null; then
+    setup_kanata_linux
+  else
+    info "Kanata already installed, skipping setup..."
+    setup_kanata_service_only
+  fi
 }
 
 setup_kanata_linux() {
@@ -117,4 +130,37 @@ EOF
   info "To enable kanata on startup: systemctl --user enable kanata.service"
   info "To start kanata now: systemctl --user start kanata.service"
   info "Note: You may need to log out and back in for input group changes to take effect"
+}
+
+setup_kanata_service_only() {
+  title "Updating Kanata systemd service"
+  
+  # Only create/update the systemd service file if it doesn't exist
+  local systemd_user_dir="$HOME/.config/systemd/user"
+  local service_file="$systemd_user_dir/kanata.service"
+  
+  if [[ ! -f "$service_file" ]]; then
+    info "Creating kanata systemd service file..."
+    ensure_directory "$systemd_user_dir"
+    
+    cat > "$service_file" << 'EOF'
+[Unit]
+Description=Kanata keyboard remapper
+Documentation=https://github.com/jtroo/kanata
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/kanata --cfg %h/.config/kanata/kanata.kbd
+Restart=no
+
+[Install]
+WantedBy=default.target
+EOF
+    
+    systemctl --user daemon-reload
+    success "Kanata systemd service created"
+    info "To enable kanata on startup: systemctl --user enable kanata.service"
+  else
+    info "Kanata service file already exists, skipping..."
+  fi
 } 

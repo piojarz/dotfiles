@@ -24,15 +24,31 @@ setup_homebrew() {
 setup_kanata() {
   title "Setting up Kanata keyboard remapping"
   
+  # Detect architecture for correct Homebrew path
+  local kanata_path
+  if [[ "$(uname -m)" == "arm64" ]]; then
+    # Apple Silicon
+    kanata_path="/opt/homebrew/bin/kanata"
+  else
+    # Intel
+    kanata_path="/usr/local/bin/kanata"
+  fi
+  
+  # Verify kanata is installed
+  if [[ ! -f "$kanata_path" ]]; then
+    error "Kanata not found at $kanata_path. Please ensure Homebrew installation completed."
+  fi
+  
   # Kanata is installed via Homebrew from the Brewfile
   # The configuration is symlinked from config/common/kanata
   
-  info "Kanata configuration should be available at ~/.config/kanata/kanata.kbd"
+  info "Kanata configuration available at ~/.config/kanata/kanata.kbd"
+  info "Kanata binary location: $kanata_path"
   info "To run kanata manually: kanata --cfg ~/.config/kanata/kanata.kbd"
   info ""
-  info "To set up kanata as a macOS service:"
-  info "1. Create a LaunchAgent plist file:"
-  info "2. Load the service: launchctl load ~/Library/LaunchAgents/com.kanata.kanata.plist"
+  info "IMPORTANT: Grant accessibility permissions:"
+  info "System Preferences → Security & Privacy → Privacy → Accessibility"
+  info "Add: $kanata_path"
   info ""
   
   # Create LaunchAgent plist for automatic startup
@@ -43,7 +59,8 @@ setup_kanata() {
     info "Creating LaunchAgent for kanata..."
     ensure_directory "$launch_agent_dir"
     
-    cat > "$plist_file" << 'EOF'
+    # Create plist with correct paths
+    cat > "$plist_file" << EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -52,9 +69,9 @@ setup_kanata() {
     <string>com.kanata.kanata</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/opt/homebrew/bin/kanata</string>
+        <string>${kanata_path}</string>
         <string>--cfg</string>
-        <string>/Users/USERNAME/.config/kanata/kanata.kbd</string>
+        <string>/Users/${USER}/.config/kanata/kanata.kbd</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
@@ -68,12 +85,23 @@ setup_kanata() {
 </plist>
 EOF
     
-    # Replace USERNAME with actual username
-    sed -i '' "s/USERNAME/$USER/g" "$plist_file"
-    
     success "LaunchAgent created at $plist_file"
     info "To enable kanata service, run: launchctl load $plist_file"
     info "Note: You may need to grant accessibility permissions in System Preferences > Security & Privacy > Accessibility"
+    
+    # Check if kanata is already running
+    if launchctl list | grep -q "com.kanata.kanata"; then
+      info "Kanata service is already loaded"
+    else
+      info "Kanata service is not running yet. Load it with: launchctl load $plist_file"
+    fi
+  else
+    info "LaunchAgent already exists at $plist_file"
+    # Check if the plist has the correct kanata path
+    if ! grep -q "$kanata_path" "$plist_file"; then
+      warning "Existing LaunchAgent may have incorrect kanata path for your architecture"
+      info "Consider deleting $plist_file and re-running the installer"
+    fi
   fi
 }
 
