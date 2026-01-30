@@ -38,7 +38,6 @@ setup_arch() {
     wl-clipboard cliphist
     mako libnotify
     grim slurp
-    wlogout
     brightnessctl
     playerctl
     papirus-icon-theme
@@ -66,6 +65,8 @@ setup_arch() {
     # Hyprland AUR packages
     hyprpanel
     rofi-wayland
+    # Wayland utilities (AUR)
+    wlogout
   )
   
   # Install all AUR packages at once (more efficient)
