@@ -10,7 +10,7 @@ setup_arch() {
   sudo pacman -Syu --noconfirm
 
   # Install base packages
-  install_package "base-devel git curl wget unzip" "pacman"
+  install_package "pacman" base-devel git curl wget unzip
 
   # Install AUR helper (yay)
   if ! command -v yay &> /dev/null; then
@@ -44,9 +44,8 @@ setup_arch() {
     papirus-icon-theme
   )
   
-  for package in "${core_packages[@]}"; do
-    install_package "$package" "pacman"
-  done
+  # Install all core packages at once (more efficient)
+  install_package "pacman" "${core_packages[@]}"
 
   # AUR packages
   local aur_packages=(
@@ -69,13 +68,14 @@ setup_arch() {
     rofi-wayland
   )
   
-  for package in "${aur_packages[@]}"; do
-    info "Installing AUR package: $package"
-    yay -S --noconfirm "$package"
-  done
+  # Install all AUR packages at once (more efficient)
+  if [[ ${#aur_packages[@]} -gt 0 ]]; then
+    info "Installing AUR packages: ${aur_packages[*]}"
+    yay -S --noconfirm "${aur_packages[@]}"
+  fi
 
   # Docker setup
-  install_package "docker" "pacman"
+  install_package "pacman" docker
   sudo systemctl enable docker
   sudo systemctl start docker
   sudo usermod -aG docker ${USER}

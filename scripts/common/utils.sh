@@ -96,15 +96,24 @@ backup_if_exists() {
 
 # Package installation helpers
 install_package() {
-  local package=$1
-  local package_manager=$2
-  info "Installing $package"
+  local package_manager=$1
+  shift
+  local packages=("$@")
+  
+  if [[ ${#packages[@]} -eq 0 ]]; then
+    error "No packages specified"
+    return 1
+  fi
+  
+  info "Installing: ${packages[*]}"
   case $package_manager in
     "pacman")
-      sudo pacman -S --noconfirm "$package"
+      sudo pacman -S --noconfirm "${packages[@]}"
       ;;
     "brew")
-      brew install "$package"
+      for package in "${packages[@]}"; do
+        brew install "$package"
+      done
       ;;
     *)
       error "Unsupported package manager: $package_manager"

@@ -17,9 +17,8 @@ setup_fonts() {
     noto-fonts-emoji
   )
   
-  for package in "${font_packages[@]}"; do
-    install_package "$package" "pacman"
-  done
+  # Install all font packages at once (more efficient)
+  install_package "pacman" "${font_packages[@]}"
   
   # Install AUR fonts
   local aur_fonts=(
@@ -27,10 +26,11 @@ setup_fonts() {
     ttf-vista-fonts
   )
   
-  for font in "${aur_fonts[@]}"; do
-    info "Installing AUR font: $font"
-    yay -S --noconfirm "$font"
-  done
+  # Install AUR fonts at once (more efficient)
+  if [[ ${#aur_fonts[@]} -gt 0 ]]; then
+    info "Installing AUR fonts: ${aur_fonts[*]}"
+    yay -S --noconfirm "${aur_fonts[@]}"
+  fi
   
   # Rebuild font cache
   info "Rebuilding font cache"
