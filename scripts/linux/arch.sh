@@ -47,6 +47,7 @@ setup_arch() {
     notion-app-electron
     luarocks
     stylua
+    kanata-bin
   )
   
   for package in "${aur_packages[@]}"; do
@@ -71,4 +72,49 @@ setup_arch() {
 
   # fnm (Node.js version manager)
   curl -fsSL https://fnm.vercel.app/install | bash
+
+  # Setup kanata keyboard remapping
+  setup_kanata_linux
+}
+
+setup_kanata_linux() {
+  title "Setting up Kanata keyboard remapping"
+  
+  # Ensure uinput module is loaded
+  if ! lsmod | grep -q uinput; then
+    info "Loading uinput kernel module..."
+    sudo modprobe uinput
+  fi
+  
+  # Ensure user has access to input devices
+  if ! groups $USER | grep -q input; then
+    info "Adding user to input group..."
+    sudo usermod -aG input $USER
+  fi
+  
+  # Create systemd user service for kanata
+  local systemd_user_dir="$HOME/.config/systemd/user"
+  ensure_directory "$systemd_user_dir"
+  
+  cat > "$systemd_user_dir/kanata.service" << 'EOF'
+[Unit]
+Description=Kanata keyboard remapper
+Documentation=https://github.com/jtroo/kanata
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/kanata --cfg %h/.config/kanata/kanata.kbd
+Restart=no
+
+[Install]
+WantedBy=default.target
+EOF
+  
+  # Reload systemd user daemon
+  systemctl --user daemon-reload
+  
+  success "Kanata systemd service created"
+  info "To enable kanata on startup: systemctl --user enable kanata.service"
+  info "To start kanata now: systemctl --user start kanata.service"
+  info "Note: You may need to log out and back in for input group changes to take effect"
 } 

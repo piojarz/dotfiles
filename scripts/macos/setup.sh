@@ -16,6 +16,65 @@ setup_homebrew() {
   # install fzf
   info "Installing fzf"
   "$(brew --prefix)"/opt/fzf/install --key-bindings --completion --no-update-rc --no-bash --no-fish
+
+  # Setup kanata keyboard remapping
+  setup_kanata
+}
+
+setup_kanata() {
+  title "Setting up Kanata keyboard remapping"
+  
+  # Kanata is installed via Homebrew from the Brewfile
+  # The configuration is symlinked from config/common/kanata
+  
+  info "Kanata configuration should be available at ~/.config/kanata/kanata.kbd"
+  info "To run kanata manually: kanata --cfg ~/.config/kanata/kanata.kbd"
+  info ""
+  info "To set up kanata as a macOS service:"
+  info "1. Create a LaunchAgent plist file:"
+  info "2. Load the service: launchctl load ~/Library/LaunchAgents/com.kanata.kanata.plist"
+  info ""
+  
+  # Create LaunchAgent plist for automatic startup
+  local launch_agent_dir="$HOME/Library/LaunchAgents"
+  local plist_file="$launch_agent_dir/com.kanata.kanata.plist"
+  
+  if [ ! -f "$plist_file" ]; then
+    info "Creating LaunchAgent for kanata..."
+    ensure_directory "$launch_agent_dir"
+    
+    cat > "$plist_file" << 'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.kanata.kanata</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/kanata</string>
+        <string>--cfg</string>
+        <string>/Users/USERNAME/.config/kanata/kanata.kbd</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/tmp/kanata.out</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/kanata.err</string>
+</dict>
+</plist>
+EOF
+    
+    # Replace USERNAME with actual username
+    sed -i '' "s/USERNAME/$USER/g" "$plist_file"
+    
+    success "LaunchAgent created at $plist_file"
+    info "To enable kanata service, run: launchctl load $plist_file"
+    info "Note: You may need to grant accessibility permissions in System Preferences > Security & Privacy > Accessibility"
+  fi
 }
 
 setup_macos_preferences() {

@@ -71,9 +71,6 @@ install_package() {
   local package_manager=$2
   info "Installing $package"
   case $package_manager in
-    "apt")
-      sudo apt-get install -y "$package"
-      ;;
     "pacman")
       sudo pacman -S --noconfirm "$package"
       ;;
@@ -95,6 +92,4 @@ is_arch() {
   [ -f /etc/arch-release ]
 }
 
-is_ubuntu() {
-  [ -f /etc/lsb-release ]
-} 
+ 

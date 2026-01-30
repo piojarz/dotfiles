@@ -12,10 +12,8 @@ if is_macos; then
   source "$(dirname "${BASH_SOURCE[0]}")/scripts/macos/setup.sh"
 elif is_arch; then
   source "$(dirname "${BASH_SOURCE[0]}")/scripts/linux/arch.sh"
-elif is_ubuntu; then
-  source "$(dirname "${BASH_SOURCE[0]}")/scripts/linux/ubuntu.sh"
 else
-  error "Unsupported operating system"
+  error "Unsupported operating system (only macOS and Arch Linux are supported)"
 fi
 
 # Main installation process
@@ -31,11 +29,7 @@ main() {
     setup_homebrew
     setup_macos_preferences
   else
-    if is_arch; then
-      setup_arch
-    else
-      setup_ubuntu
-    fi
+    setup_arch
   fi
 
   # Setup shell

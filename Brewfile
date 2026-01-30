@@ -14,7 +14,7 @@ cask "kitty" # a better terminal emulator
 cask "imageoptim" # a tool to optimize images
 cask "1password/tap/1password-cli"
 # cask "wezterm" # a better terminal emulator
-cask "karabiner-elements" # keyboard customizer
+brew "kanata" # keyboard remapping for macOS and Linux
 cask "docker"
 cask "firefox"
 cask "google-chrome"

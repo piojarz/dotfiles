@@ -1,0 +1,39 @@
+;; Kanata configuration for macOS and Linux
+;; Shared key remapping:
+;; - Caps Lock: Escape when tapped alone, Control when held
+;; - Right Alt/Option: Hyper key (Shift+Cmd+Alt+Ctrl)
+
+(defcfg
+  ;; Linux configuration
+  linux-dev /dev/input/event*
+  
+  ;; macOS configuration - uses the kanata macos-invoker
+  macos-devs-include (
+    "Apple Internal Keyboard / Trackpad"
+    "Apple Internal Keyboard"
+    "Magic Keyboard"
+  )
+)
+
+(defsrc
+  ;; Standard keyboard layout
+  caps
+  ralt
+)
+
+(deflayer base
+  ;; Base layer with remapped keys
+  ;; caps: tap for escape, hold for control
+  ;; ralt: hyper key (shift+cmd+alt+ctrl)
+  @caps
+  @hyper
+)
+
+(defalias
+  ;; Caps Lock: Escape when tapped alone, Control when held with other keys
+  caps (tap-hold-release 200 200 esc lctl)
+  
+  ;; Right Alt/Option as Hyper key
+  ;; Hyper = Shift + Command + Option + Control
+  hyper (multi lshift lmet lalt lctl)
+)
