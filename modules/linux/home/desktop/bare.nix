@@ -2,12 +2,15 @@
 
 {
   imports = [
-    ./hyprland.nix
-    ./noctalia.nix    # Noctalia shell configuration
+    ./hyprland-bare.nix  # Bare hyprland without Noctalia
+    ./waybar.nix
+    ./rofi.nix
+    ./mako.nix
+    ./swaylock.nix
   ];
 
-  # Additional desktop utilities
-  # These complement Noctalia without conflicting
+  # Bare Hyprland desktop utilities
+  # No Noctalia - uses waybar, rofi, mako separately
   home.packages = with pkgs; [
     # File managers
     nautilus         # GNOME file manager

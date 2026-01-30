@@ -131,7 +131,34 @@ run_nix_setup() {
   if [[ "$OSTYPE" == "darwin"* ]]; then
     host_config="macos-laptop"
   elif [[ -f /etc/arch-release ]]; then
-    host_config="linux-desktop"
+    # Linux desktop - ask user which desktop environment they want
+    title "Desktop Environment Selection"
+    info "Choose your desktop environment:"
+    echo ""
+    echo -e "${COLOR_GREEN}1)${COLOR_NONE} Noctalia - Full desktop shell with integrated bar, notifications, and dashboard"
+    echo -e "${COLOR_GREEN}2)${COLOR_NONE} Bare Hyprland - Minimal setup with waybar, rofi, mako, and swaylock"
+    echo ""
+    
+    while true; do
+      echo -n -e "${COLOR_YELLOW}Enter your choice [1/2]: ${COLOR_NONE}"
+      read de_choice
+      
+      case "$de_choice" in
+        1)
+          host_config="linux-desktop"
+          info "Selected: Noctalia desktop environment"
+          break
+          ;;
+        2)
+          host_config="linux-desktop-bare"
+          info "Selected: Bare Hyprland environment"
+          break
+          ;;
+        *)
+          warning "Invalid choice. Please enter 1 or 2."
+          ;;
+      esac
+    done
   else
     host_config="common-workstation"
   fi

@@ -23,16 +23,11 @@
   };
 
   # Install Hyprland and essential Wayland packages
-  # NOTE: This module is designed to work WITH Noctalia
-  # We do NOT install:
-  # - waybar (Noctalia provides its own bar)
-  # - mako/dunst (Noctalia handles notifications)
-  # - rofi (Noctalia has built-in launcher)
-  # - swaylock (Noctalia provides lock screen)
+  # Bare Hyprland version - includes waybar, mako, rofi
   home.packages = with pkgs; [
     # Core Wayland compositor
     hyprland
-    hyprpaper  # Wallpaper daemon (Noctalia can use this)
+    hyprpaper  # Wallpaper daemon
     hyprpicker # Color picker
     
     # Wayland protocols and libraries
@@ -87,12 +82,11 @@
     pamixer
     playerctl
     
-    # Noctalia dependencies
-    # Quickshell is needed for Noctalia (it's built with it)
-    quickshell
-    
-    # Matugen for Material You theming (used by Noctalia)
-    matugen
+    # Bare Hyprland specific - these are managed by separate modules
+    # waybar - managed by waybar.nix
+    # mako - managed by mako.nix
+    # rofi-wayland - managed by rofi.nix
+    # swaylock - managed by swaylock.nix
   ];
 
   # XDG Desktop Portal configuration
@@ -113,12 +107,17 @@
   };
 
   # Link Hyprland config from your config directory
-  # This assumes your config is in ~/.dotfiles/config/linux/hypr
+  # Uses the bare config that starts waybar/mako instead of noctalia
   xdg.configFile."hypr" = {
     source = config.lib.file.mkOutOfStoreSymlink 
       "${config.home.homeDirectory}/.dotfiles/config/linux/hypr";
     recursive = true;
   };
+
+  # Also link the bare-specific config as the main config
+  # This overrides the default hyprland.conf with hyprland-bare.conf
+  xdg.configFile."hypr/hyprland.conf".source = config.lib.file.mkOutOfStoreSymlink
+    "${config.home.homeDirectory}/.dotfiles/config/linux/hypr/hyprland-bare.conf";
 
   # Enable systemd user services for Hyprland
   systemd.user = {

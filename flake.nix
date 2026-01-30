@@ -36,8 +36,11 @@
     in
     {
       homeConfigurations = {
-        # Linux desktop with Wayland/Hyprland
+        # Linux desktop with Wayland/Hyprland + Noctalia
         "linux-desktop" = mkHomeConfig linuxSystem "linux-desktop";
+
+        # Linux desktop with bare Hyprland (waybar, rofi, mako - no Noctalia)
+        "linux-desktop-bare" = mkHomeConfig linuxSystem "linux-desktop-bare";
 
         # macOS laptop configuration
         "macos-laptop" = mkHomeConfig macosSystem "macos-laptop";
