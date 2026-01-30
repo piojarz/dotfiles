@@ -1,0 +1,101 @@
+{
+  "theme": {
+    "name": "tokyo-night",
+    "font": {
+      "name": "JetBrains Mono",
+      "size": 13
+    }
+  },
+  "layout": {
+    "bar": {
+      "position": "top",
+      "height": 36,
+      "margin": {
+        "top": 6,
+        "bottom": 0,
+        "left": 10,
+        "right": 10
+      },
+      "border": {
+        "width": 2,
+        "radius": 12
+      }
+    }
+  },
+  "modules": {
+    "left": [
+      "workspaces",
+      "window_title"
+    ],
+    "center": [
+      "media"
+    ],
+    "right": [
+      "systray",
+      "notifications",
+      "volume",
+      "network",
+      "bluetooth",
+      "battery",
+      "clock"
+    ]
+  },
+  "workspaces": {
+    "show_icons": false,
+    "show_number": true,
+    "show_name": false,
+    "spacing": 8
+  },
+  "clock": {
+    "format": "%H:%M",
+    "tooltip_format": "%A, %B %d %Y",
+    "interval": 1000
+  },
+  "battery": {
+    "show_percentage": true,
+    "show_icon": true,
+    "low_threshold": 20,
+    "critical_threshold": 10
+  },
+  "volume": {
+    "show_percentage": true,
+    "show_icon": true,
+    "scroll_step": 5
+  },
+  "network": {
+    "show_icon": true,
+    "show_ssid": false,
+    "truncate_ssid": 10
+  },
+  "bluetooth": {
+    "show_icon": true,
+    "show_name": false
+  },
+  "media": {
+    "show_artist": true,
+    "show_title": true,
+    "truncate_length": 30,
+    "scroll": true
+  },
+  "notifications": {
+    "show_count": true,
+    "show_icon": true
+  },
+  "window_title": {
+    "truncate_length": 50,
+    "show_icon": true
+  },
+  "systray": {
+    "spacing": 8
+  },
+  "colors": {
+    "background": "#1a1b26",
+    "foreground": "#c0caf5",
+    "primary": "#7aa2f7",
+    "secondary": "#bb9af7",
+    "success": "#9ece6a",
+    "warning": "#e0af68",
+    "error": "#f7768e",
+    "border": "#7aa2f7"
+  }
+}

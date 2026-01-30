@@ -8,7 +8,9 @@ A comprehensive dotfiles repository for macOS and Arch Linux, featuring automate
 - **Keyboard Remapping**: Kanata replaces Karabiner (caps→esc/ctrl, right alt→hyper)
 - **Modern Shell**: Zsh with Oh-My-Posh, Antidote plugin manager
 - **Development Tools**: Neovim, Tmux, FZF, Ripgrep, and more
-- **Window Management**: Aerospace (macOS tiling window manager)
+- **Window Management**: Aerospace (macOS) / Hyprland (Arch Linux Wayland compositor)
+- **Status Bar**: Hyprpanel with Tokyo Night theme
+- **Application Launcher**: Rofi with Tokyo Night theme
 - **Automated Setup**: One-command installation with backup support
 
 ## Prerequisites
@@ -93,6 +95,90 @@ Then start it:
 open -a Aerospace
 ```
 
+### Hyprland (Arch Linux Wayland Compositor)
+
+Hyprland is configured with auto-start on TTY1 login.
+
+#### First Time Setup
+
+1. **Place a wallpaper** (required for hyprpaper and hyprlock):
+   ```bash
+   mkdir -p ~/wallpapers
+   cp /path/to/your/wallpaper.jpg ~/wallpapers/default.jpg
+   ```
+
+2. **Login on TTY1** - Hyprland will auto-start automatically
+   - If not on TTY1, switch with `Ctrl+Alt+F1`
+   - Or manually start with: `Hyprland`
+
+3. **Configure displays** (if needed):
+   ```bash
+   # List monitors
+   hyprctl monitors
+   
+   # Add to ~/.config/hypr/hyprland.conf:
+   # monitor=DP-1,1920x1080@144,0x0,1
+   ```
+
+#### Hyprland Key Bindings
+
+| Shortcut | Action |
+|----------|--------|
+| `Super+Return` | Open terminal (kitty) |
+| `Super+Space` | Application launcher (rofi) |
+| `Super+Tab` | Window switcher (rofi) |
+| `Super+Q` | Close window |
+| `Super+F` | Toggle fullscreen |
+| `Super+T` | Toggle floating |
+| `Super+H/J/K/L` | Focus left/down/up/right |
+| `Super+Shift+H/J/K/L` | Move window |
+| `Super+R` | Resize mode |
+| `Super+[0-9]` | Switch workspace |
+| `Super+Shift+[0-9]` | Move window to workspace |
+| `Super+Escape` | Lock screen (hyprlock) |
+| `Super+Shift+E` | Logout menu (wlogout) |
+| `Super+Shift+S` | Screenshot (selection) |
+| `Super+Print` | Screenshot (full screen) |
+
+#### Hyprpanel
+
+Top status bar with:
+- Workspaces
+- Window title
+- Media controls
+- System tray
+- Volume/Network/Bluetooth/Battery
+- Clock
+
+#### Troubleshooting Hyprland
+
+**Black screen / no wallpaper:**
+```bash
+# Check if wallpaper exists
+ls ~/wallpapers/default.jpg
+
+# Restart hyprpaper
+killall hyprpaper && hyprpaper
+```
+
+**Kanata not working:**
+```bash
+# Check kanata status
+systemctl --user status kanata
+
+# Restart kanata
+systemctl --user restart kanata
+```
+
+**Hyprland won't auto-start:**
+```bash
+# Check .zprofile exists
+cat ~/.zprofile
+
+# Start manually
+Hyprland
+```
+
 ### TPM (Tmux Plugin Manager)
 
 After first tmux launch, install plugins:
@@ -141,6 +227,10 @@ Ctrl-a + I (capital i)
 │   │   ├── sesh/          # Tmux session manager
 │   │   ├── tmux/
 │   │   └── zsh/
+│   ├── linux/             # Arch Linux-specific configs
+│   │   ├── hypr/          # Hyprland compositor
+│   │   ├── hyprpanel/     # Status bar
+│   │   └── rofi/          # Application launcher
 │   └── macos/             # macOS-specific configs
 │       ├── aerospace/     # Window manager
 │       └── hammerspoon/   # Automation

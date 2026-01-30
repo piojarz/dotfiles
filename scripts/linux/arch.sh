@@ -26,6 +26,20 @@ setup_arch() {
     kitty zsh firefox vlc anki
     git xclip git-lfs delta
     sqlite3 stow bat cloc entr eza fd fzf gnupg grep highlight htop jq neofetch neovim python ripgrep shellcheck sesh-bin tmux tree wdiff wget zoxide zsh
+    # Hyprland ecosystem
+    hyprland hyprpaper hyprlock hypridle
+    xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
+    qt5-wayland qt6-wayland
+    polkit-kde-agent
+    xorg-xwayland
+    # Wayland utilities
+    wl-clipboard cliphist
+    mako libnotify
+    grim slurp
+    wlogout
+    brightnessctl
+    playerctl
+    papirus-icon-theme
   )
   
   for package in "${core_packages[@]}"; do
@@ -48,6 +62,9 @@ setup_arch() {
     luarocks
     stylua
     kanata-bin
+    # Hyprland AUR packages
+    hyprpanel
+    rofi-wayland
   )
   
   for package in "${aur_packages[@]}"; do
@@ -88,6 +105,9 @@ setup_arch() {
     info "Kanata already installed, skipping setup..."
     setup_kanata_service_only
   fi
+
+  # Setup Hyprland
+  setup_hyprland
 }
 
 setup_kanata_linux() {
@@ -163,4 +183,55 @@ EOF
   else
     info "Kanata service file already exists, skipping..."
   fi
+}
+
+setup_hyprland() {
+  title "Setting up Hyprland"
+  
+  # Create wallpapers directory
+  if [[ ! -d "$HOME/wallpapers" ]]; then
+    info "Creating wallpapers directory..."
+    mkdir -p "$HOME/wallpapers"
+    info "Place your wallpaper at ~/wallpapers/default.jpg"
+  fi
+  
+  # Setup auto-start on TTY login
+  setup_hyprland_autostart
+  
+  success "Hyprland setup complete!"
+  info "To start Hyprland:"
+  info "  - From TTY: login and Hyprland will auto-start"
+  info "  - Or run: Hyprland"
+  info ""
+  info "First time setup:"
+  info "  1. Place wallpaper at ~/wallpapers/default.jpg"
+  info "  2. Log out and log back in to TTY"
+  info "  3. Hyprland will start automatically"
+}
+
+setup_hyprland_autostart() {
+  title "Configuring Hyprland auto-start"
+  
+  # Add to .zprofile for auto-start on TTY login
+  local zprofile="$HOME/.zprofile"
+  local autostart_marker="# Hyprland auto-start"
+  
+  if [[ -f "$zprofile" ]] && grep -q "$autostart_marker" "$zprofile"; then
+    info "Hyprland auto-start already configured"
+    return
+  fi
+  
+  info "Adding Hyprland auto-start to .zprofile..."
+  
+  cat >> "$zprofile" << 'EOF'
+
+# Hyprland auto-start
+# Auto-start Hyprland on TTY login (not in SSH sessions)
+if [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
+  exec Hyprland
+fi
+EOF
+  
+  success "Hyprland will auto-start on TTY1 login"
+  info "You can disable this by editing ~/.zprofile"
 } 

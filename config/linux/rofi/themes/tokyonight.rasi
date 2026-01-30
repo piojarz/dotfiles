@@ -1,0 +1,177 @@
+/* Tokyo Night Rofi Theme
+ * Matching the Tokyo Night color scheme
+ */
+
+* {
+    background-color: #1a1b26;
+    border-color: #7aa2f7;
+    text-color: #c0caf5;
+    font: "JetBrains Mono 13";
+    spacing: 4;
+    margin: 0;
+    padding: 0;
+}
+
+window {
+    width: 700;
+    height: 450;
+    border: 2px;
+    border-radius: 12px;
+    border-color: #7aa2f7;
+    background-color: #1a1b26;
+    location: center;
+    anchor: center;
+    x-offset: 0;
+    y-offset: 0;
+    padding: 16;
+}
+
+mainbox {
+    background-color: transparent;
+    children: [inputbar, listview, mode-switcher];
+    spacing: 12;
+}
+
+inputbar {
+    background-color: #24283b;
+    border-radius: 8px;
+    padding: 12 16;
+    children: [prompt, entry];
+    spacing: 12;
+}
+
+prompt {
+    background-color: transparent;
+    text-color: #7aa2f7;
+    font: "JetBrains Mono Bold 14";
+}
+
+entry {
+    background-color: transparent;
+    text-color: #c0caf5;
+    placeholder: "Search...";
+    placeholder-color: #565f89;
+    cursor: text;
+}
+
+listview {
+    background-color: transparent;
+    fixed-height: true;
+    lines: 8;
+    columns: 1;
+    spacing: 4;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    scrollbar: false;
+}
+
+element {
+    background-color: transparent;
+    padding: 10 14;
+    border-radius: 6px;
+    spacing: 12;
+}
+
+element-icon {
+    background-color: transparent;
+    size: 24;
+}
+
+element-text {
+    background-color: transparent;
+    text-color: #c0caf5;
+    vertical-align: 0.5;
+}
+
+element selected {
+    background-color: #283457;
+    border: 1px;
+    border-color: #7aa2f7;
+    border-radius: 6px;
+}
+
+element selected.normal {
+    background-color: #283457;
+    text-color: #c0caf5;
+}
+
+element selected.active {
+    background-color: #283457;
+    text-color: #7aa2f7;
+}
+
+element selected.urgent {
+    background-color: #283457;
+    text-color: #f7768e;
+}
+
+element normal.normal {
+    background-color: transparent;
+    text-color: #c0caf5;
+}
+
+element normal.active {
+    background-color: transparent;
+    text-color: #7aa2f7;
+}
+
+element normal.urgent {
+    background-color: #3d2838;
+    text-color: #f7768e;
+}
+
+element alternate.normal {
+    background-color: transparent;
+    text-color: #c0caf5;
+}
+
+element alternate.active {
+    background-color: transparent;
+    text-color: #7aa2f7;
+}
+
+element alternate.urgent {
+    background-color: #3d2838;
+    text-color: #f7768e;
+}
+
+mode-switcher {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    spacing: 8;
+}
+
+button {
+    background-color: #24283b;
+    text-color: #565f89;
+    padding: 8 16;
+    border-radius: 6px;
+    font: "JetBrains Mono 12";
+}
+
+button selected {
+    background-color: #7aa2f7;
+    text-color: #1a1b26;
+    border-radius: 6px;
+}
+
+message {
+    background-color: #24283b;
+    border-radius: 8px;
+    padding: 12;
+}
+
+textbox {
+    background-color: transparent;
+    text-color: #c0caf5;
+}
+
+error-message {
+    background-color: #1a1b26;
+    border: 2px;
+    border-color: #f7768e;
+    border-radius: 12px;
+    padding: 16;
+}

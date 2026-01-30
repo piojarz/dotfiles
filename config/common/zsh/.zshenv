@@ -34,3 +34,27 @@ path=(
   /usr/local/{,s}bin(N)
   $path
 )
+
+# Wayland-specific environment variables (Linux only)
+if [[ "$(uname)" != "Darwin" ]]; then
+  # Firefox native Wayland support
+  export MOZ_ENABLE_WAYLAND=1
+  
+  # Qt applications
+  export QT_QPA_PLATFORM=wayland
+  export QT_QPA_PLATFORMTHEME=gtk2
+  
+  # SDL applications
+  export SDL_VIDEODRIVER=wayland
+  
+  # Java applications
+  export _JAVA_AWT_WM_NONREPARENTING=1
+  
+  # Set desktop environment
+  export XDG_CURRENT_DESKTOP=Hyprland
+  export XDG_SESSION_TYPE=wayland
+  export XDG_SESSION_DESKTOP=Hyprland
+  
+  # Cliphist (clipboard history)
+  export CLIPHIST_IGNORE="passwordsecretkeytoken"
+fi

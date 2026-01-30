@@ -1,0 +1,37 @@
+/* Rofi Configuration for Wayland
+ * Application launcher and window switcher
+ * Matching Tokyo Night theme
+ */
+
+configuration {
+    modi: "drun,window,run";
+    font: "JetBrains Mono 13";
+    show-icons: true;
+    icon-theme: "Papirus-Dark";
+    terminal: "kitty";
+    drun-display-format: "{name}";
+    location: 0;
+    disable-history: false;
+    hide-scrollbar: true;
+    sidebar-mode: false;
+    
+    /* Key bindings */
+    kb-row-up: "Up,Ctrl+k";
+    kb-row-down: "Down,Ctrl+j";
+    kb-row-left: "Ctrl+h";
+    kb-row-right: "Ctrl+l";
+    kb-accept-entry: "Return,KP_Enter";
+    kb-cancel: "Escape,Ctrl+g";
+    kb-mode-next: "Shift+Right,Ctrl+Tab";
+    kb-mode-previous: "Shift+Left,Ctrl+Shift+Tab";
+    kb-page-prev: "Page_Up,Ctrl+u";
+    kb-page-next: "Page_Down,Ctrl+d";
+}
+
+/* Import theme */
+@theme "tokyonight"
+
+/* Additional settings */
+element-padding: 8;
+element-margin: 4;
+spacing: 4;
