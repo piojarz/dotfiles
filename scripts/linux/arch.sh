@@ -27,7 +27,7 @@ setup_arch() {
   local core_packages=(
     kitty zsh firefox vlc anki
     git xclip git-lfs delta
-    sqlite3 stow bat cloc entr eza fd fzf gnupg grep highlight htop jq neofetch neovim python ripgrep shellcheck tmux tree wdiff wget zoxide zsh
+    sqlite3 stow bat cloc entr eza fd fzf gnupg grep highlight htop jq neovim python ripgrep shellcheck tmux tree wdiff wget zoxide zsh
     # Hyprland ecosystem
     hyprland hyprpaper hyprlock hypridle
     xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
@@ -63,6 +63,7 @@ setup_arch() {
     stylua
     kanata-bin
     sesh-bin
+    neofetch
     # Hyprland AUR packages
     hyprpanel
     rofi-wayland
