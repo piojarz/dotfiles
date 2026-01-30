@@ -85,6 +85,14 @@ run_platform_setup() {
   elif [[ -f /etc/arch-release ]]; then
     local linux_setup="scripts/linux/system-setup.sh"
     local desktop_setup="scripts/linux/desktop-services.sh"
+    local system_deps="scripts/install-system-deps.sh"
+    local hyprland_session="scripts/setup-hyprland-session.sh"
+    
+    # Install system-level dependencies for desktop environment
+    if [[ -f "$system_deps" ]]; then
+      info "Installing system-level dependencies for Hyprland..."
+      bash "$system_deps"
+    fi
     
     if [[ -f "$linux_setup" ]]; then
       info "Executing Arch Linux system setup (Services & AUR)..."
@@ -94,6 +102,12 @@ run_platform_setup() {
     if [[ -f "$desktop_setup" ]]; then
       info "Executing Linux desktop services setup..."
       bash "$desktop_setup"
+    fi
+    
+    # Set up Hyprland session for display managers
+    if [[ -f "$hyprland_session" ]]; then
+      info "Setting up Hyprland session entry..."
+      bash "$hyprland_session"
     fi
   fi
 }
@@ -226,7 +240,31 @@ main() {
   configure_git_identity
   run_nix_setup
   
-  success "Setup completed successfully!"
+  # Show completion messages for Linux desktop setup
+  if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -f /etc/arch-release ]]; then
+    echo ""
+    echo "================================================================"
+    success "Setup completed successfully!"
+    echo "================================================================"
+    echo ""
+    info "Hyprland has been installed and configured."
+    echo ""
+    echo "${COLOR_GREEN}To start Hyprland:${COLOR_NONE}"
+    echo "  1. Log out and log back in"
+    echo "  2. Select 'Hyprland' from your display manager"
+    echo "  3. Or run 'Hyprland' from a TTY (Ctrl+Alt+F2)"
+    echo ""
+    echo "${COLOR_BLUE}Configuration location:${COLOR_NONE} ~/.config/hypr/hyprland.conf"
+    echo ""
+    echo "${COLOR_YELLOW}Quick start:${COLOR_NONE}"
+    echo "  ${COLOR_BLUE}Super+Q${COLOR_NONE} - Open terminal (Kitty)"
+    echo "  ${COLOR_BLUE}Super+D${COLOR_NONE} - Open application launcher (Rofi)"
+    echo "  ${COLOR_BLUE}Print${COLOR_NONE} - Take screenshot"
+    echo "  ${COLOR_BLUE}Super+1-9${COLOR_NONE} - Switch workspaces"
+    echo ""
+  else
+    success "Setup completed successfully!"
+  fi
 }
 
 # Run main function

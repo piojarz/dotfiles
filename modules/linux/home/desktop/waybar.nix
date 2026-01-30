@@ -3,19 +3,17 @@
 {
   programs.waybar = {
     enable = true;
-    
-    # Link the existing waybar configuration
+    systemd = {
+      enable = true;
+      target = "graphical-session.target";
+    };
   };
 
-  home.file.".config/waybar" = {
-    source = builtins.path {
-      name = "waybar-config-dir";
-      path = ../../../../config/linux/waybar;
-    };
+  # Link your custom waybar config
+  # If you're using Noctalia instead, you can comment this out
+  xdg.configFile."waybar" = {
+    source = config.lib.file.mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/.dotfiles/config/linux/waybar";
     recursive = true;
   };
-
-  home.packages = with pkgs; [
-    waybar
-  ];
 }
