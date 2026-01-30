@@ -25,7 +25,7 @@ setup_arch() {
 
   # Core packages
   local core_packages=(
-    kitty zsh firefox vlc anki
+    kitty zsh firefox vlc
     git xclip git-lfs
     sqlite3 stow bat cloc entr eza fd fzf gnupg grep highlight htop jq neovim python ripgrep shellcheck tmux tree wdiff wget zoxide zsh
     # Hyprland ecosystem
@@ -65,6 +65,7 @@ setup_arch() {
     sesh-bin
     neofetch
     delta
+    anki
     # Hyprland AUR packages
     hyprpanel
     rofi-wayland
