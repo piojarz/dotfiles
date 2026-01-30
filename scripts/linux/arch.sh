@@ -15,10 +15,12 @@ setup_arch() {
   # Install AUR helper (yay)
   if ! command -v yay &> /dev/null; then
     info "Installing yay AUR helper"
-    git clone https://aur.archlinux.org/yay.git
-    cd yay
+    local temp_dir=$(mktemp -d)
+    git clone https://aur.archlinux.org/yay.git "$temp_dir/yay"
+    cd "$temp_dir/yay"
     makepkg -si --noconfirm
-    cd ..
+    cd -
+    rm -rf "$temp_dir"
   fi
 
   # Core packages
@@ -125,18 +127,22 @@ setup_kanata_linux() {
     sudo usermod -aG input $USER
   fi
   
+  # Find kanata binary location
+  local kanata_bin
+  kanata_bin=$(which kanata 2>/dev/null || echo "/usr/bin/kanata")
+  
   # Create systemd user service for kanata
   local systemd_user_dir="$HOME/.config/systemd/user"
   ensure_directory "$systemd_user_dir"
   
-  cat > "$systemd_user_dir/kanata.service" << 'EOF'
+  cat > "$systemd_user_dir/kanata.service" << EOF
 [Unit]
 Description=Kanata keyboard remapper
 Documentation=https://github.com/jtroo/kanata
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/kanata --cfg %h/.config/kanata/kanata.kbd
+ExecStart=${kanata_bin} --cfg %h/.config/kanata/kanata.kbd
 Restart=no
 
 [Install]
@@ -159,18 +165,22 @@ setup_kanata_service_only() {
   local systemd_user_dir="$HOME/.config/systemd/user"
   local service_file="$systemd_user_dir/kanata.service"
   
+  # Find kanata binary location
+  local kanata_bin
+  kanata_bin=$(which kanata 2>/dev/null || echo "/usr/bin/kanata")
+  
   if [[ ! -f "$service_file" ]]; then
     info "Creating kanata systemd service file..."
     ensure_directory "$systemd_user_dir"
     
-    cat > "$service_file" << 'EOF'
+    cat > "$service_file" << EOF
 [Unit]
 Description=Kanata keyboard remapper
 Documentation=https://github.com/jtroo/kanata
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/kanata --cfg %h/.config/kanata/kanata.kbd
+ExecStart=${kanata_bin} --cfg %h/.config/kanata/kanata.kbd
 Restart=no
 
 [Install]

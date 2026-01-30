@@ -2,7 +2,9 @@
 
 source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 
-DOTFILES="$(pwd)"
+# Get the directory where this script is located, then go up one level to dotfiles root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES="$(dirname "$SCRIPT_DIR")"
 config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
 data_home="${XDG_DATA_HOME:-$HOME/.local/share}"
 
@@ -90,8 +92,4 @@ setup_symlinks() {
     done
   fi
 
-  # Create .zshenv symlink
-  if [ ! -e "$HOME/.zshenv" ]; then
-    create_symlink "$DOTFILES/zsh/.zshenv" "$HOME/.zshenv"
-  fi
 } 

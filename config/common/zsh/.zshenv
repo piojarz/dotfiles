@@ -19,8 +19,10 @@ elif [[ -d "$HOME/.dotfiles" ]]; then
 elif [[ -d "$HOME/.config/dotfiles" ]]; then
   export DOTFILES=$HOME/.config/dotfiles
 else
-  # Fallback to XDG_CONFIG_HOME
-  export DOTFILES=$XDG_CONFIG_HOME
+  # No dotfiles directory found - set to a sane default but warn user
+  export DOTFILES=$HOME/.config
+  echo "Warning: Dotfiles directory not found in expected locations." >&2
+  echo "Please clone your dotfiles to ~/dotfiles or ~/.dotfiles" >&2
 fi
 
 # Ensure path arrays do not contain duplicates.
@@ -35,26 +37,32 @@ path=(
   $path
 )
 
-# Wayland-specific environment variables (Linux only)
+# Wayland-specific environment variables (Linux only, and only when running under Wayland)
 if [[ "$(uname)" != "Darwin" ]]; then
-  # Firefox native Wayland support
-  export MOZ_ENABLE_WAYLAND=1
-  
-  # Qt applications
-  export QT_QPA_PLATFORM=wayland
-  export QT_QPA_PLATFORMTHEME=gtk2
-  
-  # SDL applications
-  export SDL_VIDEODRIVER=wayland
-  
-  # Java applications
-  export _JAVA_AWT_WM_NONREPARENTING=1
-  
-  # Set desktop environment
-  export XDG_CURRENT_DESKTOP=Hyprland
-  export XDG_SESSION_TYPE=wayland
-  export XDG_SESSION_DESKTOP=Hyprland
-  
-  # Cliphist (clipboard history)
-  export CLIPHIST_IGNORE="passwordsecretkeytoken"
+  # Check if running under Wayland
+  if [[ -n "$WAYLAND_DISPLAY" ]] || [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+    # Firefox native Wayland support
+    export MOZ_ENABLE_WAYLAND=1
+    
+    # Qt applications
+    export QT_QPA_PLATFORM=wayland
+    export QT_QPA_PLATFORMTHEME=gtk2
+    
+    # SDL applications
+    export SDL_VIDEODRIVER=wayland
+    
+    # Java applications
+    export _JAVA_AWT_WM_NONREPARENTING=1
+    
+    # Cliphist (clipboard history)
+    export CLIPHIST_IGNORE="passwordsecretkeytoken"
+    
+    # Set desktop environment only if not already set
+    if [[ -z "$XDG_CURRENT_DESKTOP" ]]; then
+      export XDG_CURRENT_DESKTOP=Hyprland
+    fi
+    if [[ -z "$XDG_SESSION_DESKTOP" ]]; then
+      export XDG_SESSION_DESKTOP=Hyprland
+    fi
+  fi
 fi

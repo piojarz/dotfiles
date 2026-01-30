@@ -19,6 +19,9 @@ setup_homebrew() {
 
   # Setup kanata keyboard remapping
   setup_kanata
+  
+  # Setup macOS-specific git credentials
+  setup_macos_git_credentials
 }
 
 setup_kanata() {
@@ -71,7 +74,7 @@ setup_kanata() {
     <array>
         <string>${kanata_path}</string>
         <string>--cfg</string>
-        <string>/Users/${USER}/.config/kanata/kanata.kbd</string>
+        <string>${HOME}/.config/kanata/kanata.kbd</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
@@ -102,6 +105,20 @@ EOF
       warning "Existing LaunchAgent may have incorrect kanata path for your architecture"
       info "Consider deleting $plist_file and re-running the installer"
     fi
+  fi
+}
+
+setup_macos_git_credentials() {
+  title "Configuring macOS Git credentials"
+  
+  # Set up macOS keychain credential helper for Git
+  # This stores git credentials securely in macOS Keychain
+  if git config --global credential.helper 2>/dev/null | grep -q osxkeychain; then
+    info "macOS Git credential helper already configured"
+  else
+    info "Setting up macOS Keychain credential helper for Git..."
+    git config --global credential.helper osxkeychain
+    success "Git credentials will be stored in macOS Keychain"
   fi
 }
 

@@ -26,12 +26,16 @@ alias df='df -h' # disk free, in Gigabytes, not bytes
 alias du='du -h -c' # calculate disk usage for a folder
 alias lpath='echo $PATH | tr ":" "\n"' # list the PATH separated by new lines
 
-# Hide/show all desktop icons (useful when presenting)
-alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
-alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
-
-# Recursively delete `.DS_Store` files
-alias cleanup="find . -name '*.DS_Store' -type f -ls -delete"
+# Platform-specific aliases
+if [[ "$(uname)" == "Darwin" ]]; then
+  # macOS-specific aliases
+  # Hide/show all desktop icons (useful when presenting)
+  alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+  alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+  
+  # Recursively delete `.DS_Store` files (macOS only)
+  alias cleanup="find . -name '*.DS_Store' -type f -ls -delete"
+fi
 # remove broken symlinks
 alias clsym="find -L . -name . -o -type d -prune -o -type l -exec rm {} +"
 
@@ -51,7 +55,14 @@ alias cat="bat"
 
 # single character shortcuts - be sparing!
 alias _=sudo
-alias o=open
+
+# Platform-specific open command
+if [[ "$(uname)" == "Darwin" ]]; then
+  alias o=open
+else
+  alias o=xdg-open
+fi
+
 alias g=git
 
 alias vim="nvim"

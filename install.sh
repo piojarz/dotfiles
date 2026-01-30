@@ -6,6 +6,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/scripts/common/utils.sh"
 # Source platform-specific scripts
 source "$(dirname "${BASH_SOURCE[0]}")/scripts/common/symlinks.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/scripts/common/shell.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/scripts/common/git-setup.sh"
 
 # Source OS-specific scripts
 if is_macos; then
@@ -34,6 +35,9 @@ main() {
 
   # Setup shell
   setup_shell
+
+  # Setup git user
+  setup_git_user
 
   # Show backup summary if any backups were made
   show_backup_summary

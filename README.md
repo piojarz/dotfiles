@@ -39,11 +39,62 @@ A comprehensive dotfiles repository for macOS and Arch Linux, featuring automate
    The installer will:
    - Backup existing configurations
    - Create symlinks for all configs
+   - Configure git user (interactive prompt)
    - Install required packages
    - Set up Kanata keyboard remapping
    - Configure your shell
 
 3. **Restart your terminal** to apply all changes.
+
+### Git Configuration (Done During Install)
+
+The installer will prompt you for your git name and email if not already configured. **Most git settings (aliases, delta config, colors) are defined in the config file** and symlinked to `~/.gitconfig`.
+
+To verify or update later:
+
+```bash
+# Check current config
+git config --global user.name
+git config --global user.email
+
+# Update manually
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
+
+**Note**: If you need to override any settings from the dotfiles git config, create `~/.gitconfig-local`:
+
+```bash
+# Create local overrides
+cat > ~/.gitconfig-local << 'EOF'
+[user]
+    name = Your Specific Name
+    email = specific@example.com
+[core]
+    # Override pager for this specific machine
+    pager = less
+EOF
+```
+
+**Credential Storage** (platform-specific):
+- **macOS**: Credentials stored in macOS Keychain (`credential.helper = osxkeychain`)
+- **Linux**: Uses default git credential cache (configure manually if needed)
+
+**Configured git aliases** (from config file):
+- `git s` → `git status --short --branch`
+- `git st` → `git status`
+- `git co` → `git checkout`
+- `git br` → `git branch -v`
+- `git ci` → `git commit`
+- `git l` / `git lg` → Pretty log with graph
+- `git d` → Diff ignoring whitespace
+- `git cane` → Commit amend no-edit
+- `git pnb` → Push new branch
+- `git browse` → Open repo in browser (via gh)
+- `git churn` → Show file change frequency
+- `git forget` → Clean up gone branches
+- `git undo` → Undo last commit (soft)
+- And many more...
 
 ## Post-Installation
 
