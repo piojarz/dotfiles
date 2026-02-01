@@ -135,7 +135,7 @@ setup_macos_preferences() {
   set_dock_preferences
   
   # Mail preferences
-  set_mail_preferences
+  # set_mail_preferences
   
   # Calendar preferences
   set_calendar_preferences
