@@ -42,7 +42,7 @@ cask "font-symbols-only-nerd-font"
 cask "font-recursive-code"
 cask "font-monaspace"
 
-cask  "minisim" # A simple way to launch mobile simulators
+# cask  "minisim" # A simple way to launch mobile simulators
 
 tap "homebrew/bundle"
 
