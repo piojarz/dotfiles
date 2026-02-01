@@ -27,6 +27,7 @@ cask "spotify"
 cask "visual-studio-code"
 cask "vlc"
 cask "notion"
+cask "caffeine"
 # cask "alt-tab" # windows like alt-tab
 cask "anki" # memory training application
 
