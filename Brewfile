@@ -2,6 +2,7 @@
 # taps
 tap "koekeishiya/formulae"
 tap "pkgxdev/made"
+tap "asmvik/formulae"
 # Note: Using starship instead of oh-my-posh for better performance
 
 brew "antidote"
@@ -31,8 +32,9 @@ cask "caffeine"
 # cask "alt-tab" # windows like alt-tab
 cask "anki" # memory training application
 
-# Aerospace
-cask "nikitabobko/tap/aerospace"
+# Yabai
+brew "koekeishiya/formulae/yabai"
+brew "koekeishiya/formulae/skhd"
 
 # Fonts
 cask "font-fira-code"

@@ -20,6 +20,9 @@ setup_homebrew() {
   # Setup kanata keyboard remapping
   setup_kanata
   
+  # Setup yabai window manager
+  setup_yabai
+  
   # Setup macOS-specific git credentials
   setup_macos_git_credentials
 }
@@ -106,6 +109,50 @@ EOF
       info "Consider deleting $plist_file and re-running the installer"
     fi
   fi
+}
+
+setup_yabai() {
+  title "Setting up Yabai window manager"
+  
+  # Install yabai and skhd if not already installed
+  if ! command -v yabai &> /dev/null; then
+    info "Installing yabai..."
+    brew install koekeishiya/formulae/yabai
+  else
+    info "yabai already installed"
+  fi
+  
+  if ! command -v skhd &> /dev/null; then
+    info "Installing skhd..."
+    brew install koekeishiya/formulae/skhd
+  else
+    info "skhd already installed"
+  fi
+  
+  # Create symlinks to config files
+  info "Setting up yabai and skhd configurations..."
+  rm -f ~/.yabairc ~/.skhdrc
+  ln -s /Users/pj/code/dotfiles_new/config/macos/yabai/yabairc ~/.yabairc
+  ln -s /Users/pj/code/dotfiles_new/config/macos/yabai/skhdrc ~/.skhdrc
+  chmod +x ~/.yabairc
+  chmod +x ~/.skhdrc
+  
+  # Start services
+  info "Starting yabai and skhd services..."
+  brew services start yabai 2>/dev/null || true
+  brew services start skhd 2>/dev/null || true
+  
+  success "Yabai and SKHD setup complete!"
+  info ""
+  info "IMPORTANT: Grant required permissions:"
+  info "1. System Settings → Privacy & Security → Accessibility"
+  info "   - Add: /usr/local/bin/yabai"
+  info "   - Add: /usr/local/bin/skhd"
+  info "2. System Settings → Privacy & Security → Screen Recording"
+  info "   - Add: /usr/local/bin/yabai"
+  info ""
+  info "Then reboot to ensure permissions take effect"
+  info "To reload configs: yabai --load-config && skhd --reload"
 }
 
 setup_macos_git_credentials() {
