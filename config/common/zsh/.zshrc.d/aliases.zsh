@@ -83,3 +83,11 @@ alias zjd='zellij delete-session'     # Delete zellij session
 # Quick zellij layouts
 alias zdev='zellij --layout dev'       # Start zellij with dev layout
 alias zsimple='zellij --layout simple' # Start zellij with simple layout
+
+# Worktree aliases (also available as git aliases)
+alias wtc='git wtc'                   # Create worktree with smart naming
+alias wtcj='git wtcj'                 # Create JIRA worktree
+alias wtcc='git wtcc'                 # Create chore worktree
+alias wtcf='git wtcf'                 # Create fix worktree
+alias wtcr='git wtcr'                 # Create refactor worktree
+alias bare-clone='git bare-clone'     # Clone bare repo for worktrees

@@ -105,6 +105,23 @@
     rg = "!sh -c 'git ls-files --others --exclude-standard | grep $1 | xargs rm' -"
 
     remotes = remote -v
+
+    # Worktree creation with smart naming
+    # Usage: git wtc "description" [--jira|--chore|--fix|--refactor]
+    wtc = !"f() { \"$DOTFILES/bin/git-worktree-create\" \"$@\"; }; f"
+    wtcj = !"f() { \"$DOTFILES/bin/git-worktree-create\" --jira \"$@\"; }; f"
+    wtcc = !"f() { \"$DOTFILES/bin/git-worktree-create\" --chore \"$@\"; }; f"
+    wtcf = !"f() { \"$DOTFILES/bin/git-worktree-create\" --fix \"$@\"; }; f"
+    wtcr = !"f() { \"$DOTFILES/bin/git-worktree-create\" --refactor \"$@\"; }; f"
+    
+    # List worktrees with full details
+    wt = worktree
+    wtl = worktree list
+    wtp = worktree prune
+    
+    # Clone bare repository for worktrees
+    # Usage: git bare-clone <repository-url> [destination]
+    bare-clone = !"$DOTFILES/bin/git-bare-clone"
 [color]
     diff = auto
     status = auto
