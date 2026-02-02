@@ -10,8 +10,9 @@ setup_arch() {
   sudo pacman -Syu --noconfirm
 
   # Install base packages
-  install_package "pacman" base-devel git curl wget unzip
-
+  install_package "pacman" base-devel git curl wget unzip xdg-user-dirs
+  # Update user directories
+  xdg-user-dirs-update --force
   # Install AUR helper (yay)
   if ! command -v yay &> /dev/null; then
     info "Installing yay AUR helper"
@@ -30,16 +31,27 @@ setup_arch() {
     sqlite3 stow bat cloc entr eza fd fzf gnupg grep highlight btop jq neovim python ripgrep shellcheck tmux tree wdiff wget zoxide zsh
     # Hyprland ecosystem
     hyprland hyprpaper hyprlock hypridle
+    uwsm
     xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
     qt5-wayland qt6-wayland
     polkit-kde-agent
     xorg-xwayland
+    # Audio (Pipewire)
+    pipewire wireplumber pipewire-audio pipewire-alsa pipewire-pulse pipewire-jack
+    pavucontrol
+    # Bluetooth & Network
+    bluez bluez-utils blueman
+    networkmanager network-manager-applet
+    # Storage & File Management
+    udiskie gvfs thunar thunar-archive-plugin
     # Wayland utilities
     wl-clipboard cliphist
     mako libnotify
+    hyprpicker hyprsunset
     grim slurp
     brightnessctl
     playerctl
+    imv zathura zathura-pdf-mupdf
     papirus-icon-theme
   )
   
@@ -74,6 +86,8 @@ setup_arch() {
     # Hyprland AUR packages
     hyprpanel
     rofi-wayland
+    hyprls-bin # Hyprland LSP
+    ly # TUI Login Manager
     # Wayland utilities (AUR)
     wlogout
   )
@@ -84,10 +98,14 @@ setup_arch() {
     yay -S --noconfirm "${aur_packages[@]}"
   fi
 
+  # System services
+  sudo systemctl enable --now bluetooth
+  sudo systemctl enable --now NetworkManager
+  sudo systemctl enable ly.service
+
   # Docker setup
   install_package "pacman" docker
-  sudo systemctl enable docker
-  sudo systemctl start docker
+  sudo systemctl enable --now docker
   sudo usermod -aG docker ${USER}
 
   # Tmux Plugin Manager (idempotent check)
@@ -209,43 +227,13 @@ setup_hyprland() {
     info "Place your wallpaper at ~/wallpapers/default.jpg"
   fi
   
-  # Setup auto-start on TTY login
-  setup_hyprland_autostart
-  
   success "Hyprland setup complete!"
   info "To start Hyprland:"
-  info "  - From TTY: login and Hyprland will auto-start"
+  info "  - The 'ly' login manager is enabled and will start on next boot"
   info "  - Or run: Hyprland"
   info ""
   info "First time setup:"
   info "  1. Place wallpaper at ~/wallpapers/default.jpg"
-  info "  2. Log out and log back in to TTY"
-  info "  3. Hyprland will start automatically"
+  info "  2. Reboot or run 'sudo systemctl start ly'"
 }
-
-setup_hyprland_autostart() {
-  title "Configuring Hyprland auto-start"
-  
-  # Add to .zprofile for auto-start on TTY login
-  local zprofile="$HOME/.zprofile"
-  local autostart_marker="# Hyprland auto-start"
-  
-  if [[ -f "$zprofile" ]] && grep -q "$autostart_marker" "$zprofile"; then
-    info "Hyprland auto-start already configured"
-    return
-  fi
-  
-  info "Adding Hyprland auto-start to .zprofile..."
-  
-  cat >> "$zprofile" << 'EOF'
-
-# Hyprland auto-start
-# Auto-start Hyprland on TTY login (not in SSH sessions)
-if [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-  exec Hyprland
-fi
-EOF
-  
-  success "Hyprland will auto-start on TTY1 login"
-  info "You can disable this by editing ~/.zprofile"
-} 
+ 
