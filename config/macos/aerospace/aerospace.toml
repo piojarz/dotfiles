@@ -1,6 +1,7 @@
 # AeroSpace Configuration
 # i3-like tiling window manager for macOS
 # Documentation: https://nikitabobko.github.io/AeroSpace/guide
+# Aligned with Hyprland key bindings for consistency
 
 # After starting AeroSpace for the first time:
 # 1. System Preferences -> Security & Privacy -> Accessibility
@@ -25,34 +26,42 @@ outer.bottom = 8
 outer.top = 8
 outer.right = 8
 
-# Main mode (prefix)
+# Main mode (using alt to avoid system conflicts)
 [mode.main.binding]
-# Launch applications
+# Terminal (matches Hyprland: SUPER+Return → alt+Return)
 alt-enter = 'exec-and-forget open -na kitty'
-alt-b = 'exec-and-forget open -na Safari'
-alt-t = 'exec-and-forget open -na Telegram'
 
-# Window management
+# Launcher (matches Hyprland: SUPER+Space → alt+Space)
+# alt-space = 'exec-and-forget open -a "Spotlight"'
+
+# Launch specific apps
+# alt-b = 'exec-and-forget open -na Safari'
+# alt-t = 'exec-and-forget open -na Telegram'
+
+# Window management (matches Hyprland mapping)
 alt-q = 'close'
 alt-f = 'fullscreen'
+alt-t = 'layout floating tiling'  # Toggle floating
+alt-p = 'layout tiles horizontal vertical'  # Pseudo-tile equivalent
+alt-s = 'layout accordion horizontal vertical'  # Split toggle equivalent
 
-# Focus navigation
+# Focus navigation (matches Hyprland vim keys)
 alt-h = 'focus left'
 alt-j = 'focus down'
 alt-k = 'focus up'
 alt-l = 'focus right'
 
-# Window movement
+# Window movement (matches Hyprland)
 alt-shift-h = 'move left'
 alt-shift-j = 'move down'
 alt-shift-k = 'move up'
 alt-shift-l = 'move right'
 
-# Resize windows
-alt-minus = 'resize smart -50'
+# Resize windows (matches Hyprland's resize mode concept)
+alt-r = 'resize smart -50'
 alt-equal = 'resize smart +50'
 
-# Workspace navigation
+# Workspace navigation (matches Hyprland)
 alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
 alt-3 = 'workspace 3'
@@ -64,7 +73,7 @@ alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
 alt-0 = 'workspace 10'
 
-# Move window to workspace
+# Move window to workspace (matches Hyprland)
 alt-shift-1 = 'move-node-to-workspace 1'
 alt-shift-2 = 'move-node-to-workspace 2'
 alt-shift-3 = 'move-node-to-workspace 3'
@@ -76,13 +85,22 @@ alt-shift-8 = 'move-node-to-workspace 8'
 alt-shift-9 = 'move-node-to-workspace 9'
 alt-shift-0 = 'move-node-to-workspace 10'
 
-# Layout toggles
+# Special workspace (scratchpad equivalent)
+alt-minus = 'workspace special'
+alt-shift-minus = 'move-node-to-workspace special'
+
+# Layout toggles (additional bindings)
 alt-slash = 'layout tiles horizontal vertical'
 alt-comma = 'layout accordion horizontal vertical'
-alt-m = 'layout floating tiling'
 
-# Workspace layout
+# Workspace layout balance
 alt-shift-space = 'balance-sizes'
+
+# Screenshot (macOS equivalent to Hyprland's grim)
+alt-shift-s = 'exec-and-forget screencapture -i ~/Desktop/screenshot-$(date +%Y%m%d_%H%M%S).png'
+
+# Lock screen (macOS equivalent)
+alt-esc = 'exec-and-forget pmset displaysleepnow'
 
 # Service mode (for reloading config)
 alt-shift-semicolon = 'mode service'
