@@ -11,7 +11,7 @@ setup_fonts() {
     ttf-hack
     ttf-jetbrains-mono
     ttf-cascadia-code
-    ttf-recursive-std
+    ttf-recursive-nerd
     ttf-font-awesome
     noto-fonts
     noto-fonts-emoji
