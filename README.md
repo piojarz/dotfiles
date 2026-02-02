@@ -1,446 +1,213 @@
-# Dotfiles
+# Dotfiles Keybindings
 
-A comprehensive dotfiles repository for macOS and Arch Linux, featuring automated setup, keyboard remapping with Kanata, and modern CLI tools.
+Quick reference for all keyboard shortcuts across applications.
 
-## Features
-
-- **Cross-Platform**: Works on macOS and Arch Linux
-- **Keyboard Remapping**: Kanata replaces Karabiner (caps→esc/ctrl, right alt→hyper)
-- **Modern Shell**: Zsh with Oh-My-Posh, Antidote plugin manager
-- **Development Tools**: Neovim, Tmux, FZF, Ripgrep, and more
-- **Window Management**: Aerospace (macOS) / Hyprland (Arch Linux Wayland compositor)
-- **Status Bar**: Hyprpanel with Tokyo Night theme
-- **Application Launcher**: Rofi with Tokyo Night theme
-- **Automated Setup**: One-command installation with backup support
-
-## Prerequisites
-
-### macOS
-- macOS 11.0 (Big Sur) or later
-- Homebrew will be installed automatically if not present
-
-### Arch Linux
-- Base Arch installation with `sudo` access
-- `base-devel` package group
-
-## Installation
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
-   cd ~/dotfiles
-   ```
-
-2. **Run the installer**:
-   ```bash
-   ./install.sh
-   ```
-
-   The installer will:
-   - Backup existing configurations
-   - Create symlinks for all configs
-   - Configure git user (interactive prompt)
-   - Install required packages
-   - Set up Kanata keyboard remapping
-   - Configure your shell
-
-3. **Restart your terminal** to apply all changes.
-
-### Git Configuration (Done During Install)
-
-The installer will prompt you for your git name and email if not already configured. **Most git settings (aliases, delta config, colors) are defined in the config file** and symlinked to `~/.gitconfig`.
-
-To verify or update later:
-
-```bash
-# Check current config
-git config --global user.name
-git config --global user.email
-
-# Update manually
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
-```
-
-**Note**: If you need to override any settings from the dotfiles git config, create `~/.gitconfig-local`:
-
-```bash
-# Create local overrides
-cat > ~/.gitconfig-local << 'EOF'
-[user]
-    name = Your Specific Name
-    email = specific@example.com
-[core]
-    # Override pager for this specific machine
-    pager = less
-EOF
-```
-
-**Credential Storage** (platform-specific):
-- **macOS**: Credentials stored in macOS Keychain (`credential.helper = osxkeychain`)
-- **Linux**: Uses default git credential cache (configure manually if needed)
-
-**Configured git aliases** (from config file):
-- `git s` → `git status --short --branch`
-- `git st` → `git status`
-- `git co` → `git checkout`
-- `git br` → `git branch -v`
-- `git ci` → `git commit`
-- `git l` / `git lg` → Pretty log with graph
-- `git d` → Diff ignoring whitespace
-- `git cane` → Commit amend no-edit
-- `git pnb` → Push new branch
-- `git browse` → Open repo in browser (via gh)
-- `git churn` → Show file change frequency
-- `git forget` → Clean up gone branches
-- `git undo` → Undo last commit (soft)
-- And many more...
-
-## Post-Installation
-
-### Kanata Keyboard Remapping (Required)
-
-Kanata provides your custom keyboard mappings and requires manual setup:
-
-#### macOS
-1. Grant accessibility permissions:
-   - System Preferences → Security & Privacy → Privacy → Accessibility
-   - Click the lock and add `/opt/homebrew/bin/kanata` (Apple Silicon) or `/usr/local/bin/kanata` (Intel)
-
-2. Start the service:
-   ```bash
-   launchctl load ~/Library/LaunchAgents/com.kanata.kanata.plist
-   ```
-
-3. Verify it's working:
-   ```bash
-   launchctl list | grep kanata
-   ```
-
-#### Arch Linux
-1. Add your user to the `input` group (log out and back in after):
-   ```bash
-   sudo usermod -aG input $USER
-   ```
-
-2. Enable and start the service:
-   ```bash
-   systemctl --user enable kanata.service
-   systemctl --user start kanata.service
-   ```
-
-3. Verify it's working:
-   ```bash
-   systemctl --user status kanata.service
-   ```
-
-### Aerospace (macOS Window Management)
-
-Aerospace is installed but needs accessibility permissions:
-
-1. System Preferences → Security & Privacy → Privacy → Accessibility
-2. Add `/Applications/Aerospace.app`
-
-Then start it:
-```bash
-open -a Aerospace
-```
-
-### Hyprland (Arch Linux Wayland Compositor)
-
-Hyprland is configured with auto-start on TTY1 login.
-
-#### First Time Setup
-
-1. **Place a wallpaper** (required for hyprpaper and hyprlock):
-   ```bash
-   mkdir -p ~/wallpapers
-   cp /path/to/your/wallpaper.jpg ~/wallpapers/default.jpg
-   ```
-
-2. **Login on TTY1** - Hyprland will auto-start automatically
-   - If not on TTY1, switch with `Ctrl+Alt+F1`
-   - Or manually start with: `Hyprland`
-
-3. **Configure displays** (if needed):
-   ```bash
-   # List monitors
-   hyprctl monitors
-   
-   # Add to ~/.config/hypr/hyprland.conf:
-   # monitor=DP-1,1920x1080@144,0x0,1
-   ```
-
-#### Hyprland Key Bindings
-
-| Shortcut | Action |
-|----------|--------|
-| `Super+Return` | Open terminal (kitty) |
-| `Super+Space` | Application launcher (rofi) |
-| `Super+Tab` | Window switcher (rofi) |
-| `Super+Q` | Close window |
-| `Super+F` | Toggle fullscreen |
-| `Super+T` | Toggle floating |
-| `Super+H/J/K/L` | Focus left/down/up/right |
-| `Super+Shift+H/J/K/L` | Move window |
-| `Super+R` | Resize mode |
-| `Super+[0-9]` | Switch workspace |
-| `Super+Shift+[0-9]` | Move window to workspace |
-| `Super+Escape` | Lock screen (hyprlock) |
-| `Super+Shift+E` | Logout menu (wlogout) |
-| `Super+Shift+S` | Screenshot (selection) |
-| `Super+Print` | Screenshot (full screen) |
-
-#### Hyprpanel
-
-Top status bar with:
-- Workspaces
-- Window title
-- Media controls
-- System tray
-- Volume/Network/Bluetooth/Battery
-- Clock
-
-#### Troubleshooting Hyprland
-
-**Black screen / no wallpaper:**
-```bash
-# Check if wallpaper exists
-ls ~/wallpapers/default.jpg
-
-# Restart hyprpaper
-killall hyprpaper && hyprpaper
-```
-
-**Kanata not working:**
-```bash
-# Check kanata status
-systemctl --user status kanata
-
-# Restart kanata
-systemctl --user restart kanata
-```
-
-**Hyprland won't auto-start:**
-```bash
-# Check .zprofile exists
-cat ~/.zprofile
-
-# Start manually
-Hyprland
-```
-
-### TPM (Tmux Plugin Manager)
-
-After first tmux launch, install plugins:
-```bash
-# Inside tmux
-Ctrl-a + I (capital i)
-```
-
-## Keyboard Mappings
-
-### Kanata Remappings
+## System (Kanata)
 
 | Key | Action |
 |-----|--------|
-| `Caps Lock` (tap) | Escape |
-| `Caps Lock` (hold) | Control |
-| `Right Alt/Option` | Hyper (⌘⌥⇧⌃) |
+| `Caps` (tap) | Escape |
+| `Caps` (hold) | Control |
+| `Right Alt` | Hyper (⌘⌥⇧⌃) |
 
-### Tmux Prefix
-`Ctrl-a` (changed from default Ctrl-b)
+---
 
-### Common Shortcuts
+## Common (All Platforms)
 
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl-a c` | New window |
-| `Ctrl-a ,` | Rename window |
-| `Ctrl-a &` | Kill window |
-| `Ctrl-a %` | Split vertical |
-| `Ctrl-a "` | Split horizontal |
-| `Ctrl-a h/j/k/l` | Navigate panes |
+### Neovim
 
-## Directory Structure
+**Leader:** `Space`
 
-```
-.
-├── bin/                    # Utility scripts
-├── config/
-│   ├── common/            # Shared configs (Linux & macOS)
-│   │   ├── git/
-│   │   ├── kanata/        # Keyboard remapping config
-│   │   ├── kitty/         # Terminal emulator
-│   │   ├── lazygit/
-│   │   ├── nvim/          # Neovim config
-│   │   ├── ripgrep/
-│   │   ├── sesh/          # Tmux session manager
-│   │   ├── tmux/
-│   │   └── zsh/
-│   ├── linux/             # Arch Linux-specific configs
-│   │   ├── hypr/          # Hyprland compositor
-│   │   ├── hyprpanel/     # Status bar
-│   │   └── rofi/          # Application launcher
-│   └── macos/             # macOS-specific configs
-│       ├── aerospace/     # Window manager
-│       └── hammerspoon/   # Automation
-├── scripts/
-│   ├── common/            # Shared installation scripts
-│   ├── linux/             # Arch Linux setup
-│   └── macos/             # macOS setup
-├── Brewfile               # macOS packages
-├── install.sh             # Main installer
-├── update.sh              # Update dotfiles
-└── README.md
-```
+#### Navigation
+| Key | Action |
+|-----|--------|
+| `Ctrl+h/j/k/l` | Move between windows |
+| `\` | Toggle Neo-tree |
+| `]c` / `[c` | Next/previous git change |
 
-## Managing Dotfiles
+#### Search (fzf-lua)
+| Key | Action |
+|-----|--------|
+| `<leader>sf` | Search files |
+| `<leader>sg` | Live grep |
+| `<leader>sw` | Search word under cursor |
+| `<leader>sb` | Search buffers |
+| `<leader>sh` | Search help |
+| `<leader>sd` | Search diagnostics |
+| `<leader>s.` | Recent files |
+| `<leader>/` | Search in buffer |
+| `<leader><leader>` | Find buffers |
 
-### Update Configurations
+#### LSP
+| Key | Action |
+|-----|--------|
+| `gd` | Go to definition |
+| `gr` | Find references |
+| `gI` | Go to implementation |
+| `gD` | Go to declaration |
+| `<leader>D` | Type definition |
+| `<leader>ds` | Document symbols |
+| `<leader>ws` | Workspace symbols |
+| `<leader>rn` | Rename |
+| `<leader>ca` | Code action |
+| `<leader>th` | Toggle inlay hints |
 
-To update your dotfiles after making changes:
+#### Git (gitsigns)
+| Key | Action |
+|-----|--------|
+| `<leader>hs` | Stage hunk |
+| `<leader>hr` | Reset hunk |
+| `<leader>hS` | Stage buffer |
+| `<leader>hu` | Undo stage |
+| `<leader>hR` | Reset buffer |
+| `<leader>hp` | Preview hunk |
+| `<leader>hb` | Blame line |
+| `<leader>hd` | Diff against index |
+| `<leader>hD` | Diff against last commit |
+| `<leader>tb` | Toggle blame line |
+| `<leader>tD` | Toggle deleted |
+
+#### Debug (DAP)
+| Key | Action |
+|-----|--------|
+| `F5` | Start/Continue |
+| `F1` | Step into |
+| `F2` | Step over |
+| `F3` | Step out |
+| `F7` | Toggle DAP UI |
+| `<leader>b` | Toggle breakpoint |
+| `<leader>B` | Set conditional breakpoint |
+
+### Tmux
+
+**Prefix:** `Ctrl+a`
+
+| Key | Action |
+|-----|--------|
+| `Ctrl+a c` | New window |
+| `Ctrl+a ,` | Rename window |
+| `Ctrl+a &` | Kill window |
+| `Ctrl+a |` | Split vertical |
+| `Ctrl+a -` | Split horizontal |
+| `Ctrl+a h/j/k/l` | Navigate panes |
+| `Ctrl+a H/J/K/L` | Resize panes |
+| `Ctrl+a r` | Reload config |
+| `Ctrl+a y` | Sync panes |
+| `Ctrl+a g` | Lazygit popup |
+| `Ctrl+a s` | Session switcher (sesh) |
+| `Ctrl+a T` | Toggle status bar |
+| `Ctrl+a [` | Enter copy mode |
+| `Ctrl+a p` | Paste |
+
+### Kitty
+
+| Key | Action |
+|-----|--------|
+| `Cmd/Ctrl+Shift+t` | New tab |
+| `Cmd/Ctrl+Shift+w` | Close tab |
+| `Cmd/Ctrl+Shift+c` | Copy |
+| `Cmd/Ctrl+Shift+v` | Paste |
+| `Cmd+1-9` | Go to tab (macOS) |
+
+### Yazi (File Manager)
+
+**Vim-style navigation**
+
+| Key | Action |
+|-----|--------|
+| `h/j/k/l` | Navigate (up/down/enter/leave) |
+| `gg` / `G` | Go to top/bottom |
+| `Ctrl+d/u` | Scroll half page |
+| `~` / `/` | Go to home/root |
+| `Space` | Toggle selection |
+| `v` / `V` | Visual mode |
+| `y` / `x` / `p` | Yank/cut/paste |
+| `d` / `D` | Delete/trash |
+| `a` / `A` | Create file/directory |
+| `r` | Rename |
+| `s` / `S` | Search (rg/fzf) |
+| `t` | New tab |
+| `[]` | Prev/next tab |
+| `1-9` | Go to tab |
+| `m` / `'` | Bookmarks |
+| `w` | Task manager |
+| `T` | Toggle preview |
+| `q` / `Ctrl+c` | Quit |
+
+---
+
+## macOS Only
+
+### Aerospace (Window Manager)
+
+| Key | Action |
+|-----|--------|
+| `Alt+Enter` | Open terminal |
+| `Alt+b` | Open browser |
+| `Alt+q` | Close window |
+| `Alt+f` | Fullscreen |
+| `Alt+h/j/k/l` | Focus window |
+| `Alt+Shift+h/j/k/l` | Move window |
+| `Alt+1-9/0` | Go to workspace |
+| `Alt+Shift+1-9/0` | Move to workspace |
+| `Alt+minus/equal` | Resize window |
+| `Alt+slash` | Toggle layout (tiles) |
+| `Alt+comma` | Toggle layout (accordion) |
+| `Alt+m` | Toggle floating |
+| `Alt+Shift+space` | Balance sizes |
+| `Alt+Shift+;` | Service mode |
+
+**Service Mode:**
+| Key | Action |
+|-----|--------|
+| `Esc` | Reload config |
+| `r` | Reset layout |
+| `f` | Toggle floating |
+| `Backspace` | Close all but current |
+
+---
+
+## Linux Only
+
+### Hyprland
+
+**Modifier:** `Super` (Windows key)
+
+| Key | Action |
+|-----|--------|
+| `Super+Return` | Open terminal |
+| `Super+Space` | App launcher (rofi) |
+| `Super+Tab` | Window switcher |
+| `Super+q` | Close window |
+| `Super+f` | Fullscreen |
+| `Super+t` | Toggle floating |
+| `Super+h/j/k/l` | Focus window |
+| `Super+Shift+h/j/k/l` | Move window |
+| `Super+r` | Resize mode |
+| `Super+1-9/0` | Go to workspace |
+| `Super+Shift+1-9/0` | Move to workspace |
+| `Super+minus` | Toggle scratchpad |
+| `Super+Escape` | Lock screen |
+| `Super+Shift+e` | Logout menu |
+| `Super+Shift+s` | Screenshot (area) |
+| `Super+Print` | Screenshot (full) |
+| `XF86AudioUp/Down` | Volume |
+| `XF86BrightnessUp/Down` | Brightness |
+
+**Resize Mode:**
+| Key | Action |
+|-----|--------|
+| `h/j/k/l` | Resize direction |
+| `Esc` | Exit resize mode |
+
+---
+
+## Quick Start
 
 ```bash
+# Install everything
+./install.sh
+
+# Update
 ./update.sh
 ```
-
-This will:
-- Pull latest changes from git
-- Update all git submodules and plugins
-- Reload shell configurations
-- Update zsh plugins via antidote
-
-### Add New Configurations
-
-Use the provided helper script:
-
-```bash
-./bin/dotfiles-add path/to/new/config
-```
-
-This will:
-- Copy the config to the appropriate location
-- Create the necessary symlink
-- Stage it for commit
-
-### Edit Configurations
-
-Edit files directly in `~/dotfiles/` and changes are immediately reflected.
-
-### Backup Location
-
-All backed up configurations are stored in:
-```
-~/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)/
-```
-
-## Troubleshooting
-
-### Kanata not working on macOS
-
-1. Check accessibility permissions (most common issue)
-2. Verify kanata is running: `ps aux | grep kanata`
-3. Check logs: `cat /tmp/kanata.out` and `cat /tmp/kanata.err`
-4. Test manually: `kanata --cfg ~/.config/kanata/kanata.kbd`
-
-### Kanata not working on Linux
-
-1. Verify uinput module: `lsmod | grep uinput`
-2. Check user groups: `groups $USER` should include `input`
-3. Test manually: `kanata --cfg ~/.config/kanata/kanata.kbd`
-4. Check service logs: `journalctl --user -u kanata`
-
-### Zsh plugins not loading
-
-1. Ensure antidote is installed: `ls -la ~/.antidote`
-2. Reload zsh: `source ~/.zshrc`
-3. Update plugins: `antidote update`
-
-### Permission denied errors
-
-Make sure scripts are executable:
-```bash
-chmod +x install.sh update.sh
-chmod +x bin/*
-```
-
-### Backup Restoration
-
-If something goes wrong, you can restore from the automatic backup:
-
-```bash
-# List available backups
-ls -la ~/.dotfiles-backup/
-
-# Restore a specific backup (replace YYYYMMDD-HHMMSS with actual timestamp)
-cp -r ~/.dotfiles-backup/YYYYMMDD-HHMMSS/* ~/
-
-# Or restore the latest backup
-latest=$(ls -t ~/.dotfiles-backup/ | head -1)
-cp -r ~/.dotfiles-backup/$latest/* ~/
-```
-
-**Note**: Be careful when restoring to not overwrite new files you've created since the backup.
-
-## Shellcheck Validation
-
-All shell scripts are validated with Shellcheck in CI. To check locally:
-
-```bash
-# Install shellcheck
-brew install shellcheck  # macOS
-sudo pacman -S shellcheck  # Arch
-
-# Run checks
-shellcheck install.sh
-shellcheck scripts/**/*.sh
-```
-
-## Customization
-
-### Adding New Packages
-
-- **macOS**: Edit `Brewfile` and run `brew bundle`
-- **Arch**: Edit `scripts/linux/arch.sh` in the `core_packages` or `aur_packages` arrays
-
-### Modifying Keyboard Mappings
-
-Edit `config/common/kanata/kanata.kbd` and restart the kanata service.
-
-### Zsh Configuration
-
-- Aliases: `config/common/zsh/.zshrc.d/aliases.zsh`
-- Functions: `config/common/zsh/.zfunctions/`
-- Plugins: `config/common/zsh/.zsh_plugins.txt`
-
-## Uninstallation
-
-To remove dotfiles and restore backups:
-
-```bash
-# Remove symlinks
-./scripts/common/symlinks.sh  # Note: needs modification for removal
-
-# Restore from backup (if available)
-cp -r ~/.dotfiles-backup/latest/* ~/
-
-# Stop services
-# macOS:
-launchctl unload ~/Library/LaunchAgents/com.kanata.kanata.plist
-
-# Arch:
-systemctl --user stop kanata.service
-systemctl --user disable kanata.service
-```
-
-## License
-
-MIT License - Feel free to use and modify as needed.
-
-## Acknowledgments
-
-- [Kanata](https://github.com/jtroo/kanata) for keyboard remapping
-- [Antidote](https://github.com/mattmc3/antidote) for zsh plugin management
-- [Aerospace](https://github.com/nikitabobko/aerospace) for window management
-- [Oh-My-Posh](https://ohmyposh.dev/) for the shell prompt
