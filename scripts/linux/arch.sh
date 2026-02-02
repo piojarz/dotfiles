@@ -27,7 +27,7 @@ setup_arch() {
   local core_packages=(
     kitty zsh firefox vlc
     git xclip git-lfs git-delta
-    sqlite3 stow bat cloc entr eza fd fzf gnupg grep highlight htop jq neovim python ripgrep shellcheck tmux tree wdiff wget zoxide zsh
+    sqlite3 stow bat cloc entr eza fd fzf gnupg grep highlight btop jq neovim python ripgrep shellcheck tmux tree wdiff wget zoxide zsh
     # Hyprland ecosystem
     hyprland hyprpaper hyprlock hypridle
     xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
@@ -63,7 +63,13 @@ setup_arch() {
     stylua
     kanata-bin
     sesh-bin
-    neofetch
+    # Modern replacements
+    mise # fast version manager (replaces asdf)
+    btop # better system monitor (replaces htop)
+    fastfetch # fast system info (replaces neofetch)
+    yazi # blazing fast file manager
+    zellij # modern terminal multiplexer
+    starship # fast shell prompt (replaces oh-my-posh)
     # anki
     # Hyprland AUR packages
     hyprpanel
@@ -96,13 +102,7 @@ setup_arch() {
   source "$(dirname "${BASH_SOURCE[0]}")/fonts.sh"
   setup_fonts
 
-  # fnm (Node.js version manager) - idempotent
-  if ! command -v fnm &> /dev/null; then
-    info "Installing fnm..."
-    curl -fsSL https://fnm.vercel.app/install | bash
-  else
-    info "fnm already installed, skipping..."
-  fi
+  # Note: mise handles all language version management (replaces fnm, asdf, etc.)
 
   # Setup kanata keyboard remapping (idempotent check)
   if ! command -v kanata &> /dev/null; then

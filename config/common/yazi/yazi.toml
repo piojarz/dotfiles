@@ -1,0 +1,175 @@
+# Yazi configuration
+# Modern file manager with async I/O and vim-like keybindings
+
+[manager]
+# Show hidden files by default
+show_hidden = false
+# Sort by modification time (newest first)
+sort_by = "mtime"
+sort_reverse = true
+# Sort directories first
+sort_dir_first = true
+# Show file sizes in human-readable format
+linemode = "size"
+# Show item counts in directories
+show_symlink = true
+
+[preview]
+# Wrap text in preview
+wrap = "yes"
+# Tab size
+tab_size = 2
+# Max preview file size (10MB)
+max_width = 1024
+max_height = 1024
+# Cache directory (use tmpfs for speed if available)
+cache_dir = ""
+# Image preview protocol (supports kitty, iterm2, etc.)
+image_filter = "triangle"
+image_quality = 90
+# Sixel support (for some terminals)
+sixel_fraction = 15
+upscale = true
+
+[opener]
+# Default opener rules
+edit = [
+  { run = 'nvim "$@"', block = true, for = "unix" },
+  { run = 'code "$@"', orphan = true, for = "unix" },
+]
+play = [
+  { run = 'vlc "$@"', orphan = true, for = "linux" },
+  { run = 'open -a VLC "$@"', orphan = true, for = "macos" },
+]
+open = [
+  { run = 'xdg-open "$@"', orphan = true, for = "linux" },
+  { run = 'open "$@"', orphan = true, for = "macos" },
+]
+reveal = [
+  { run = 'open -R "$1"', orphan = true, for = "macos" },
+  { run = 'explorer.exe /select,"$1"', orphan = true, for = "windows" },
+  { run = '''exiftool "$1"; echo "Press enter to exit"; read''', block = true, for = "unix" },
+]
+
+[open]
+# Rules for opening files
+rules = [
+  # Text files - open in editor
+  { name = "*.txt", use = "edit" },
+  { name = "*.md", use = "edit" },
+  { name = "*.mdx", use = "edit" },
+  { name = "*.json", use = "edit" },
+  { name = "*.yaml", use = "edit" },
+  { name = "*.yml", use = "edit" },
+  { name = "*.toml", use = "edit" },
+  { name = "*.ini", use = "edit" },
+  { name = "*.conf", use = "edit" },
+  { name = "*.cfg", use = "edit" },
+  { name = "*.sh", use = "edit" },
+  { name = "*.zsh", use = "edit" },
+  { name = "*.bash", use = "edit" },
+  { name = "*.fish", use = "edit" },
+  { name = "*.py", use = "edit" },
+  { name = "*.js", use = "edit" },
+  { name = "*.ts", use = "edit" },
+  { name = "*.jsx", use = "edit" },
+  { name = "*.tsx", use = "edit" },
+  { name = "*.vue", use = "edit" },
+  { name = "*.rb", use = "edit" },
+  { name = "*.go", use = "edit" },
+  { name = "*.rs", use = "edit" },
+  { name = "*.c", use = "edit" },
+  { name = "*.cpp", use = "edit" },
+  { name = "*.h", use = "edit" },
+  { name = "*.hpp", use = "edit" },
+  { name = "*.java", use = "edit" },
+  { name = "*.kt", use = "edit" },
+  { name = "*.scala", use = "edit" },
+  { name = "*.lua", use = "edit" },
+  { name = "*.php", use = "edit" },
+  { name = "*.sql", use = "edit" },
+  { name = "*.html", use = "edit" },
+  { name = "*.css", use = "edit" },
+  { name = "*.scss", use = "edit" },
+  { name = "*.sass", use = "edit" },
+  { name = "*.less", use = "edit" },
+  { name = "Dockerfile", use = "edit" },
+  { name = "Makefile", use = "edit" },
+  { name = "CMakeLists.txt", use = "edit" },
+  { name = "*.mk", use = "edit" },
+  # Videos
+  { mime = "video/*", use = "play" },
+  # Audio
+  { mime = "audio/*", use = "play" },
+  # Images - reveal
+  { mime = "image/*", use = "reveal" },
+  # PDFs and documents
+  { mime = "application/pdf", use = "open" },
+  # Archives
+  { mime = "application/zip", use = "reveal" },
+  { mime = "application/gzip", use = "reveal" },
+  { mime = "application/x-tar", use = "reveal" },
+  { mime = "application/x-bzip", use = "reveal" },
+  { mime = "application/x-7z-compressed", use = "reveal" },
+  { mime = "application/x-rar", use = "reveal" },
+  # Default - reveal
+  { name = "*", use = "reveal" },
+]
+
+[tasks]
+# Microscopic - no progress bar
+micro_workers = 10
+macro_workers = 15
+# Bizarre - no progress bar
+bizarre_retry = 5
+bizarre_delay = "1s"
+# Image decoding workers
+image_alloc = 536870912  # 512MB
+image_bound = [0, 0]  # Unlimited
+# Plugin workers
+plugin_alloc = 268435456  # 256MB
+plugin_bound = [0, 0]  # Unlimited
+# Preston (preload) workers
+preload_alloc = 268435456  # 256MB
+preload_bound = [0, 0]  # Unlimited
+
+[plugin]
+# Preloaders for better performance
+preloaders = [
+  # Image dimensions
+  { name = "image", cond = "!(mime | startswith 'image/')" },
+  # Video thumbnails
+  { name = "video", cond = "!(mime | startswith 'video/')" },
+  # PDF preview
+  { name = "pdf", cond = "!mime == 'application/pdf'" },
+  # Directory size
+  { name = "folder", cond = "!mime == 'inode/directory'" },
+]
+
+[previewers]
+# Previewers for different file types
+previewers = [
+  { name = "code", cond = "(mime | startswith 'text/') || (name | endswith '.md') || (name | endswith '.json') || (name | endswith '.yaml') || (name | endswith '.toml') || (name | endswith '.ini') || (name | endswith '.conf') || (name | endswith '.sh') || (name | endswith '.py') || (name | endswith '.js') || (name | endswith '.ts') || (name | endswith '.go') || (name | endswith '.rs') || (name | endswith '.lua') || (name | endswith '.rb') || (name | endswith '.php') || (name | endswith '.java') || (name | endswith '.cpp') || (name | endswith '.c') || (name | endswith '.h') || (name | endswith '.html') || (name | endswith '.css') || (name | endswith '.scss') || (name | endswith '.sass') || (name | endswith '.less') || (name | endswith '.sql') || (name | endswith '.Dockerfile') || (name | endswith '.Makefile') || (name | endswith '.mk')", sync = true },
+  { name = "json", cond = "(name | endswith '.json')" },
+  { name = "image", cond = "(mime | startswith 'image/')" },
+  { name = "video", cond = "(mime | startswith 'video/')" },
+  { name = "pdf", cond = "mime == 'application/pdf'" },
+  { name = "archive", cond = "(mime | startswith 'application/zip') || (mime | startswith 'application/gzip') || (mime | startswith 'application/x-tar') || (mime | startswith 'application/x-bzip') || (mime | startswith 'application/x-7z-compressed') || (mime | startswith 'application/x-rar')" },
+  { name = "directory", cond = "mime == 'inode/directory'", sync = true },
+  { name = "fallback" },
+]
+
+[log]
+# Enable logging for debugging
+enabled = false
+
+[headsup]
+# Disable headsup notification
+enabled = false
+
+[notify]
+# Notification settings
+title_info = "Info"
+title_warning = "Warning"
+title_error = "Error"
+duration = 3

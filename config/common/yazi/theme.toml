@@ -1,0 +1,148 @@
+# Tokyo Night theme for Yazi
+# A dark, modern theme matching your existing setup
+
+[manager]
+# Directory styling
+cwd = { fg = "#7aa2f7" }
+
+# Tab styling
+hovered = { bg = "#283457", bold = true }
+preview_hovered = { bg = "#283457", bold = true }
+
+# File styling - by extension
+icon_dirs = { fg = "#7aa2f7" }
+icon_files = { fg = "#c0caf5" }
+icon_exec = { fg = "#9ece6a" }
+icon_link = { fg = "#7dcfff" }
+icon_hidden = { fg = "#565f89" }
+icon_dead = { fg = "#f7768e" }
+icon_unset = { fg = "#c0caf5" }
+
+# Selection
+selected = { bg = "#283457" }
+
+# File type colors
+[filetype]
+rules = [
+  # Images
+  { mime = "image/*", fg = "#7dcfff" },
+  # Videos
+  { mime = "video/*", fg = "#bb9af7" },
+  # Audio
+  { mime = "audio/*", fg = "#e0af68" },
+  # Archives
+  { mime = "application/zip", fg = "#ff9e64" },
+  { mime = "application/gzip", fg = "#ff9e64" },
+  { mime = "application/x-tar", fg = "#ff9e64" },
+  { mime = "application/x-bzip", fg = "#ff9e64" },
+  # Documents
+  { mime = "application/pdf", fg = "#f7768e" },
+  { mime = "application/doc", fg = "#7aa2f7" },
+  { mime = "application/docx", fg = "#7aa2f7" },
+  # Code
+  { name = "*.js", fg = "#e0af68" },
+  { name = "*.ts", fg = "#7aa2f7" },
+  { name = "*.jsx", fg = "#e0af68" },
+  { name = "*.tsx", fg = "#7aa2f7" },
+  { name = "*.vue", fg = "#9ece6a" },
+  { name = "*.py", fg = "#7dcfff" },
+  { name = "*.rb", fg = "#f7768e" },
+  { name = "*.go", fg = "#7dcfff" },
+  { name = "*.rs", fg = "#ff9e64" },
+  { name = "*.lua", fg = "#7aa2f7" },
+  { name = "*.sh", fg = "#9ece6a" },
+  { name = "*.zsh", fg = "#9ece6a" },
+  { name = "*.bash", fg = "#9ece6a" },
+  { name = "*.json", fg = "#e0af68" },
+  { name = "*.yaml", fg = "#e0af68" },
+  { name = "*.yml", fg = "#e0af68" },
+  { name = "*.toml", fg = "#e0af68" },
+  { name = "*.md", fg = "#c0caf5" },
+  { name = "*.mdx", fg = "#c0caf5" },
+  { name = "*.html", fg = "#f7768e" },
+  { name = "*.css", fg = "#7dcfff" },
+  { name = "*.scss", fg = "#7dcfff" },
+  { name = "*.sass", fg = "#7dcfff" },
+  { name = "*.less", fg = "#7dcfff" },
+  # Git
+  { name = ".gitignore", fg = "#f7768e" },
+  { name = ".gitattributes", fg = "#f7768e" },
+  { name = ".gitmodules", fg = "#f7768e" },
+  # Config
+  { name = "*.conf", fg = "#bb9af7" },
+  { name = "*.cfg", fg = "#bb9af7" },
+  { name = "*.ini", fg = "#bb9af7" },
+  # Special files
+  { name = "Dockerfile", fg = "#7dcfff" },
+  { name = "docker-compose.yml", fg = "#7dcfff" },
+  { name = "Makefile", fg = "#e0af68" },
+  { name = "LICENSE", fg = "#c0caf5" },
+  { name = "README*", fg = "#c0caf5" },
+  { name = "CHANGELOG*", fg = "#c0caf5" },
+  { name = "CONTRIBUTING*", fg = "#c0caf5" },
+  # Default
+  { name = "*", fg = "#c0caf5" },
+]
+
+[status]
+separator_style = { bg = "#1a1b26", fg = "#414868" }
+progress_label = { fg = "#c0caf5", bold = true }
+progress_normal = { fg = "#7aa2f7", bg = "#1a1b26" }
+progress_error = { fg = "#f7768e", bg = "#1a1b26" }
+
+# Permissions
+permissions_t = { fg = "#7aa2f7" }
+permissions_r = { fg = "#9ece6a" }
+permissions_w = { fg = "#e0af68" }
+permissions_x = { fg = "#f7768e" }
+permissions_s = { fg = "#bb9af7" }
+
+[select]
+border = { fg = "#7aa2f7" }
+active = { fg = "#c0caf5", bg = "#283457" }
+inactive = { fg = "#c0caf5" }
+
+[input]
+border = { fg = "#7aa2f7" }
+title = { fg = "#c0caf5" }
+value = { fg = "#c0caf5" }
+selected = { bg = "#283457" }
+
+[completion]
+border = { fg = "#7aa2f7" }
+active = { fg = "#c0caf5", bg = "#283457" }
+inactive = { fg = "#c0caf5" }
+icon_file = "󰈙"
+icon_folder = "󰉋"
+icon_command = "󰆍"
+
+[tasks]
+border = { fg = "#7aa2f7" }
+title = { fg = "#c0caf5" }
+hovered = { fg = "#c0caf5", bg = "#283457" }
+
+[which]
+mask = { bg = "#1a1b26" }
+cand = { fg = "#7dcfff" }
+desc = { fg = "#565f89" }
+border = { fg = "#7aa2f7" }
+title = { fg = "#c0caf5" }
+footer = { fg = "#c0caf5", bg = "#283457" }
+
+[help]
+on = { fg = "#9ece6a" }
+run = { fg = "#e0af68" }
+hovered = { bg = "#283457", bold = true }
+footer = { fg = "#c0caf5", bg = "#283457" }
+
+[notify]
+title_info = { fg = "#7aa2f7" }
+title_warning = { fg = "#e0af68" }
+title_error = { fg = "#f7768e" }
+
+[spot]
+border = { fg = "#7aa2f7" }
+title = { fg = "#c0caf5" }
+
+[tag]
+title = { fg = "#c0caf5" }

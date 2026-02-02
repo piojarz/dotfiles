@@ -111,7 +111,7 @@ export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
 export LESS_TERMCAP_mr=$(tput rev)
 export LESS_TERMCAP_mh=$(tput dim)
 
-# Load oh-my-posh prompt
-if [[ "$(uname)" != "Darwin" || "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
-  eval "$(oh-my-posh init zsh)"
-fi
+# Load starship prompt
+# Starship is a fast, customizable prompt written in Rust
+# Replaces oh-my-posh for better async rendering performance
+eval "$(starship init zsh)"

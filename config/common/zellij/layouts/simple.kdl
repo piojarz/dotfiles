@@ -1,0 +1,26 @@
+// Simple Layout
+// Just vertical split - Editor on left, Terminal on right
+
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        
+        pane split_direction="vertical" {
+            // Left - Editor (60%)
+            pane name="editor" size="60%" {
+                command "nvim"
+            }
+            
+            // Right - Terminal (40%)
+            pane name="terminal" size="40%" {
+                command "zsh"
+            }
+        }
+        
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+}

@@ -67,3 +67,19 @@ alias g=git
 
 alias vim="nvim"
 alias nr='node run'
+
+# Modern tool aliases
+alias y='yazi'                        # Open yazi file manager
+alias top='btop'                      # Replace top with btop
+alias htop='btop'                     # Also replace htop with btop
+alias neofetch='fastfetch'            # Replace neofetch with fastfetch
+
+# Zellij aliases
+alias zj='zellij'                     # Short alias for zellij
+alias zjs='zellij attach'             # Attach to zellij session
+alias zjl='zellij list-sessions'      # List zellij sessions
+alias zjd='zellij delete-session'     # Delete zellij session
+
+# Quick zellij layouts
+alias zdev='zellij --layout dev'       # Start zellij with dev layout
+alias zsimple='zellij --layout simple' # Start zellij with simple layout

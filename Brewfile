@@ -2,7 +2,7 @@
 # taps
 tap "koekeishiya/formulae"
 tap "pkgxdev/made"
-tap "jandedobbeleer/oh-my-posh"
+# Note: Using starship instead of oh-my-posh for better performance
 
 brew "antidote"
 
@@ -49,7 +49,7 @@ tap "homebrew/bundle"
 
 # packages
 brew 'atuin' # better history
-brew "asdf" # version manager
+brew "mise" # fast version manager (replaces asdf)
 brew "sqlite" # command-line interface for SQLite
 brew "stow" # symlink farm manager
 brew "bat" # better cat
@@ -68,10 +68,10 @@ brew "glow" # markdown viewer
 brew "gnupg" # GPG
 brew "grep" # grep (latest)
 brew "highlight" # code syntax highlighting
-brew "htop" # a top alternative
+brew "btop" # better system monitor (replaces htop)
 brew "jq" # work with JSON files in shell scripts
 brew "lazygit" # a better git UI
-brew "neofetch" # pretty system info
+brew "fastfetch" # fast system info (replaces neofetch)
 brew "neovim" # A better vim
 brew "python" # python (latest)
 brew "ripgrep" # very fast file searcher
@@ -89,4 +89,8 @@ brew "zsh" # zsh (latest)
 brew "pkgxdev/made/pkgx" # npx, but for anything
 brew "luarocks" # lua package manager
 brew "tpm" # tmux plugin manager
-brew "jandedobbeleer/oh-my-posh/oh-my-posh" # shell prompt
+brew "starship" # fast shell prompt (replaces oh-my-posh)
+
+# New modern tools
+brew "yazi" # blazing fast file manager
+brew "zellij" # modern terminal multiplexer

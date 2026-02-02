@@ -1,0 +1,343 @@
+# Starship configuration with Tokyo Night theme
+# Fast, minimal, and customizable prompt written in Rust
+
+# Tokyo Night color palette
+[palette]
+# Base colors
+tokyo-bg = "#1a1b26"
+tokyo-fg = "#c0caf5"
+
+# Accents
+tokyo-red = "#f7768e"
+tokyo-green = "#9ece6a"
+tokyo-yellow = "#e0af68"
+tokyo-blue = "#7aa2f7"
+tokyo-magenta = "#bb9af7"
+tokyo-cyan = "#7dcfff"
+tokyo-orange = "#ff9e64"
+
+# Grays
+tokyo-gray1 = "#15161e"
+tokyo-gray2 = "#24283b"
+tokyo-gray3 = "#414868"
+tokyo-gray4 = "#565f89"
+
+# Format the main prompt
+# Shows: directory → git status → language versions → prompt character
+format = """
+[](tokyo-bg)$directory$git_branch$git_status$git_state[](tokyo-bg)$fill$cmd_duration$time$line_break$character"""
+
+# Right format - empty for minimal look
+right_format = """$all"""
+
+# Wait 10ms for starship to check files under $HOME
+scan_timeout = 10
+
+# Timeout for commands executed by starship (ms)
+command_timeout = 1000
+
+# Add a blank line between prompts
+add_newline = true
+
+# Directory module
+[directory]
+format = "[$path]($style)[$read_only]($read_only_style)"
+truncation_length = 3
+truncation_symbol = "…/"
+home_symbol = "~"
+style = "fg:tokyo-fg bg:tokyo-bg"
+truncate_to_repo = true
+read_only = " 󰌾"
+read_only_style = "fg:tokyo-red bg:tokyo-bg"
+
+# Git branch module
+[git_branch]
+symbol = ""
+format = "[ $symbol$branch]($style)"
+truncation_length = 20
+truncation_symbol = "…"
+style = "fg:tokyo-magenta bg:tokyo-bg bold"
+
+# Git status module
+[git_status]
+format = '([ $all_status$ahead_behind]($style))'
+style = "fg:tokyo-yellow bg:tokyo-bg"
+conflicted = "=${count}"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕${count}"
+up_to_date = ""
+untracked = "?${count}"
+stashed = "$${count}"
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
+
+# Git state (rebase, merge, etc.)
+[git_state]
+format = '[ \($state( $progress_current/$progress_total)\)]($style)'
+style = "fg:tokyo-red bg:tokyo-bg bold"
+rebase = "REBASING"
+merge = "MERGING"
+revert = "REVERTING"
+cherry_pick = "CHERRY-PICKING"
+bisect = "BISECTING"
+am = "AM"
+am_or_rebase = "AM/REBASE"
+
+# Command duration
+[cmd_duration]
+min_time = 2000
+format = "[ took $duration]($style)"
+style = "fg:tokyo-cyan"
+disabled = false
+
+# Time module (disabled for minimal look)
+[time]
+disabled = true
+format = "[ $time]($style)"
+style = "fg:tokyo-gray4"
+time_format = "%T"
+
+# Fill module (spaces between left and right sides)
+[fill]
+symbol = " "
+
+# Character (the prompt symbol)
+[character]
+success_symbol = "[❯](tokyo-green)"
+error_symbol = "[❯](tokyo-red)"
+vicmd_symbol = "[❮](tokyo-blue)"
+format = "$symbol "
+
+# Language modules - show when relevant
+[nodejs]
+symbol = ""
+format = "[ $symbol$version]($style)"
+style = "fg:tokyo-green"
+detect_extensions = ["js", "mjs", "cjs", "ts", "mts", "cts", "json"]
+detect_files = ["package.json", ".node-version", ".nvmrc"]
+detect_folders = ["node_modules"]
+
+[rust]
+symbol = ""
+format = "[ $symbol$version]($style)"
+style = "fg:tokyo-orange"
+detect_extensions = ["rs"]
+detect_files = ["Cargo.toml"]
+detect_folders = ["target"]
+
+[golang]
+symbol = ""
+format = "[ $symbol$version]($style)"
+style = "fg:tokyo-cyan"
+detect_extensions = ["go"]
+detect_files = ["go.mod", "go.sum", "go.work"]
+detect_folders = ["Godeps", "vendor"]
+
+[python]
+symbol = ""
+format = "[ $symbol$version]($style)"
+style = "fg:tokyo-yellow"
+detect_extensions = ["py"]
+detect_files = [".python-version", "Pipfile", "__init__.py", "pyproject.toml", "requirements.txt", "setup.py", "tox.ini"]
+detect_folders = [".venv", "venv", "env"]
+
+[ruby]
+symbol = ""
+format = "[ $symbol$version]($style)"
+style = "fg:tokyo-red"
+detect_extensions = ["rb"]
+detect_files = ["Gemfile", ".ruby-version"]
+detect_folders = []
+
+[lua]
+symbol = ""
+format = "[ $symbol$version]($style)"
+style = "fg:tokyo-blue"
+detect_extensions = ["lua"]
+detect_files = [".lua-version"]
+detect_folders = []
+
+[docker_context]
+symbol = ""
+format = "[ $symbol$context]($style)"
+style = "fg:tokyo-cyan"
+only_with_files = true
+detect_files = ["Dockerfile", "docker-compose.yml", "docker-compose.yaml"]
+detect_folders = []
+
+[package]
+symbol = ""
+format = "[ $symbol$version]($style)"
+style = "fg:tokyo-magenta"
+disabled = false
+
+# Status module (exit code)
+[status]
+style = "fg:tokyo-red bold"
+symbol = "✖"
+success_symbol = ""
+format = "[ $symbol$status]($style)"
+disabled = false
+map_symbol = true
+pipestatus = true
+pipestatus_separator = "|"
+pipestatus_format = "\[$pipestatus\] => [$symbol$common_meaning$signal_name$maybe_int]($style)"
+
+# AWS profile (show when AWS credentials present)
+[aws]
+symbol = ""
+format = "[ $symbol$profile]($style)"
+style = "fg:tokyo-yellow"
+disabled = false
+
+# Kubernetes context
+[kubernetes]
+symbol = ""
+format = "[ $symbol$context( \\(\\\\($namespace\\))]($style)"
+style = "fg:tokyo-cyan"
+disabled = true  # Enable if you use k8s
+
+# Disabled modules (to keep prompt fast and minimal)
+[aws.region]
+disabled = true
+
+[buf]
+disabled = true
+
+[bun]
+disabled = true
+
+[c]
+disabled = true
+
+[cmake]
+disabled = true
+
+[cobol]
+disabled = true
+
+[conda]
+disabled = true
+
+[crystal]
+disabled = true
+
+[daml]
+disabled = true
+
+[dart]
+disabled = true
+
+[deno]
+disabled = true
+
+[dotnet]
+disabled = true
+
+[elixir]
+disabled = true
+
+[elm]
+disabled = true
+
+[erlang]
+disabled = true
+
+[fennel]
+disabled = true
+
+[gradle]
+disabled = true
+
+[guix_shell]
+disabled = true
+
+[haskell]
+disabled = true
+
+[haxe]
+disabled = true
+
+[helm]
+disabled = true
+
+[java]
+disabled = true
+
+[julia]
+disabled = true
+
+[kotlin]
+disabled = true
+
+[literal]
+disabled = true
+
+[memory_usage]
+disabled = true
+
+[meson]
+disabled = true
+
+[nim]
+disabled = true
+
+[nix_shell]
+disabled = true
+
+[ocaml]
+disabled = true
+
+[opa]
+disabled = true
+
+[openstack]
+disabled = true
+
+[perl]
+disabled = true
+
+[php]
+disabled = true
+
+[pulumi]
+disabled = true
+
+[purescript]
+disabled = true
+
+[raku]
+disabled = true
+
+[red]
+disabled = true
+
+[scala]
+disabled = true
+
+[spack]
+disabled = true
+
+[sudo]
+disabled = true
+
+[swift]
+disabled = true
+
+[terraform]
+disabled = true
+
+[vagrant]
+disabled = true
+
+[vlang]
+disabled = true
+
+[vcsh]
+disabled = true
+
+[zig]
+disabled = true

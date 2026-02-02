@@ -1,0 +1,48 @@
+// Full Development Layout
+// Editor + Terminal + Logs + File Manager
+// Perfect for a complete dev workflow
+
+layout {
+    default_tab_template {
+        // Top pane with file manager (yazi)
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        
+        // Main content area - split into three vertical panes
+        pane split_direction="vertical" {
+            // Left column - Editor (60% width)
+            pane name="editor" size="60%" {
+                command "nvim"
+                args "-c" "cd ."
+            }
+            
+            // Right column - split horizontally
+            pane split_direction="horizontal" {
+                // Top right - Terminal
+                pane name="terminal" size="50%" {
+                    command "zsh"
+                }
+                
+                // Bottom right - split into two
+                pane split_direction="horizontal" {
+                    // Logs/Processes pane
+                    pane name="logs" size="50%" {
+                        command "zsh"
+                        // You can run `btop` or `tail -f` here
+                    }
+                    
+                    // File manager (yazi)
+                    pane name="files" size="50%" {
+                        command "yazi"
+                    }
+                }
+            }
+        }
+        
+        // Status bar at bottom
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+}
