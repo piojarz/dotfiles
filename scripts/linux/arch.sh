@@ -114,6 +114,10 @@ setup_arch() {
 
   # Setup Hyprland
   setup_hyprland
+
+  # Setup Noctalia Shell (optional)
+  source "$(dirname "${BASH_SOURCE[0]}")/noctalia.sh"
+  setup_noctalia_shell
 }
 
 setup_kanata_linux() {
