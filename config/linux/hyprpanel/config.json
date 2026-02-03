@@ -1,15 +1,35 @@
 {
-  "0": {
-    "left": ["workspaces", "windowtitle"],
-    "middle": ["media"],
-    "right": [
-      "systray",
-      "notifications",
-      "volume",
-      "network",
-      "bluetooth",
-      "battery",
-      "clock"
-    ]
+  "layout": {
+    "bar": {
+      "layouts": {
+        "0": {
+          "left": ["workspaces", "windowtitle"],
+          "middle": ["media"],
+          "right": ["systray", "notifications", "volume", "network", "bluetooth", "battery", "clock"]
+        }
+      }
+    }
+  },
+  "bar": {
+    "workspaces": {
+      "show_icons": false,
+      "show_number": true
+    },
+    "windowtitle": {
+      "truncate": true
+    }
+  },
+  "menus": {
+    "clock": {
+      "time": {
+        "military": true
+      }
+    }
+  },
+  "theme": {
+    "font": {
+      "name": "JetBrainsMono Nerd Font",
+      "size": "16px"
+    }
   }
 }
