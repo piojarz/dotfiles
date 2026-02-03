@@ -101,7 +101,7 @@ setup_arch() {
   # System services
   sudo systemctl enable --now bluetooth
   sudo systemctl enable --now NetworkManager
-  sudo systemctl enable ly.service
+  sudo systemctl enable ly@tty2.service
 
   # Docker setup
   install_package "pacman" docker
