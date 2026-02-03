@@ -53,6 +53,10 @@ setup_arch() {
     playerctl
     imv zathura zathura-pdf-mupdf
     papirus-icon-theme
+    # HyprPanel dependencies
+    libgtop upower gtksourceview3 libsoup3
+    # Optional HyprPanel dependencies
+    pacman-contrib power-profiles-daemon
   )
   
   # Install all core packages at once (more efficient)
@@ -85,11 +89,18 @@ setup_arch() {
     # anki
     # Hyprland AUR packages
     hyprpanel
+    aylurs-gtk-shell-git # Core AGS framework for HyprPanel
     rofi-wayland
     hyprls-bin # Hyprland LSP
     ly # TUI Login Manager
     # Wayland utilities (AUR)
     wlogout
+    # HyprPanel optional AUR dependencies
+    grimblast-git # Better screenshots
+    wf-recorder-git # Screen recording
+    matugen-bin # Color theming from wallpapers
+    python-gpustat # GPU usage in dashboard
+    pywal # Pywal hooks for wallpaper changes
   )
   
   # Install all AUR packages at once (more efficient)
