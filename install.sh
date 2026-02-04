@@ -15,7 +15,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/scripts/common/preflight.sh"
 if is_macos; then
   source "$(dirname "${BASH_SOURCE[0]}")/scripts/macos/setup.sh"
 elif is_arch; then
-  source "$(dirname "${BASH_SOURCE[0]}")/scripts/linux/arch.sh"
+  source "$(dirname "${BASH_SOURCE[0]}")/scripts/linux/setup.sh"
 else
   error "Unsupported operating system (only macOS and Arch Linux are supported)"
 fi
@@ -36,7 +36,7 @@ main() {
     setup_homebrew
     setup_macos_preferences
   else
-    setup_arch
+    setup_linux
   fi
 
   # Setup shell
