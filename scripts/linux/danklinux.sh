@@ -15,3 +15,5 @@ setup_danklinux() {
   
   success "Danklinux installation complete!"
 }
+
+setup_danklinux
