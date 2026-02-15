@@ -29,7 +29,7 @@ detect_category() {
   local filename=$(basename "$file")
   
   # Auto-detect based on file location or type
-  if [[ "$file" == *".hammerspoon"* ]] || [[ "$file" == *"aerospace"* ]]; then
+  if [[ "$file" == *".hammerspoon"* ]]; then
     echo "macos"
   elif [[ "$file" == *".config"* ]]; then
     # Check if it's a common tool

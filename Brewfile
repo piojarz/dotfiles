@@ -31,9 +31,6 @@ cask "caffeine"
 # cask "alt-tab" # windows like alt-tab
 cask "anki" # memory training application
 
-# Aerospace
-cask "nikitabobko/tap/aerospace"
-
 # Fonts
 cask "font-fira-code"
 cask "font-hack"
