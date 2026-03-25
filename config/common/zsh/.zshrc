@@ -114,4 +114,12 @@ export LESS_TERMCAP_mh=$(tput dim)
 # Load starship prompt
 # Starship is a fast, customizable prompt written in Rust
 # Replaces oh-my-posh for better async rendering performance
-eval "$(starship init zsh)"
+eval "$(starship init zsh)"export PATH="$HOME/.local/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="/Users/pj/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
