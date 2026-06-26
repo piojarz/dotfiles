@@ -12,19 +12,25 @@ brew "trash" # rm, but put in the trash rather than completely delete
 # Applications
 cask "kitty" # a better terminal emulator
 cask "imageoptim" # a tool to optimize images
+cask "1password"
 cask "1password/tap/1password-cli"
 # cask "wezterm" # a better terminal emulator
 brew "kanata" # keyboard remapping for macOS and Linux
-cask "docker"
+cask "docker-desktop"
 cask "firefox"
 cask "google-chrome"
-cask "hammerspoon"
+# cask "hammerspoon"
 cask "maccy"
 cask "raycast"
 cask "slack"
 cask "sourcetree"
 cask "spotify"
 cask "visual-studio-code"
+cask "cursor"
+cask "claude-code"
+cask "claude"
+cask "codex"
+cask "codex-app"
 cask "vlc"
 cask "notion"
 cask "caffeine"
@@ -42,7 +48,7 @@ cask "font-monaspace"
 
 # cask  "minisim" # A simple way to launch mobile simulators
 
-tap "homebrew/bundle"
+# tap "homebrew/bundle" # Deprecated
 
 # packages
 brew 'atuin' # better history
