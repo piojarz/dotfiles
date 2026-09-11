@@ -29,6 +29,8 @@ setup_arch() {
     kitty zsh firefox vlc
     git xclip git-lfs git-delta
     sqlite3 stow bat cloc entr eza fd fzf gnupg grep highlight btop jq neovim python ripgrep shellcheck tmux tree wdiff wget zoxide zsh
+    # Claude Code OS sandbox (macOS uses built-in Seatbelt; ripgrep above is also required)
+    bubblewrap socat
     # Hyprland ecosystem
     hyprland hyprpaper hyprlock hypridle
     uwsm
