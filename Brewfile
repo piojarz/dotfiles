@@ -39,6 +39,7 @@ cask "notion"
 cask "caffeine"
 # cask "alt-tab" # windows like alt-tab
 cask "anki" # memory training application
+cask "obsidian"
 
 # Fonts
 cask "font-fira-code"
@@ -102,3 +103,5 @@ brew "starship" # fast shell prompt (replaces oh-my-posh)
 # New modern tools
 brew "yazi" # blazing fast file manager
 brew "zellij" # modern terminal multiplexer
+brew "herdr" # agent multiplexer that lives in your terminal
+brew "tuicr" # code review TUI with vim keybindings
