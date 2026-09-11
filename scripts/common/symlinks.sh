@@ -17,6 +17,18 @@ linkables=(
     "config/common/zsh/.zstyles"
 )
 
+# Single files linked to an explicit absolute target, for tools that don't live
+# under $XDG_CONFIG_HOME. Format: "<path relative to dotfiles>:<absolute target>".
+# Only the file is linked, never the parent dir — a Claude Code config dir also
+# holds its own state (projects/, plans/, history) which must stay out of git.
+# Both profiles get the same file: the sandbox rules are machine-wide safety
+# settings, not account-specific. See .zshrc claude-pj / claude-cd aliases,
+# which set CLAUDE_CONFIG_DIR and so bypass ~/.claude entirely.
+explicit_files=(
+    "config/common/claude/settings.json:$HOME/.claude-cd/settings.json"
+    "config/common/claude/settings.json:$HOME/.claude-pj/settings.json"
+)
+
 cleanup_symlinks() {
   title "Cleaning up symlinks"
   
@@ -24,6 +36,11 @@ cleanup_symlinks() {
   for file in "${linkables[@]}"; do
     target="$HOME/$(basename "$file")"
     cleanup_symlink "$target"
+  done
+
+  # Clean up explicit-target file symlinks
+  for entry in "${explicit_files[@]}"; do
+    cleanup_symlink "${entry#*:}"
   done
 
   # Clean up config directory symlinks
@@ -61,6 +78,13 @@ setup_symlinks() {
   for file in "${linkables[@]}"; do
     target="$HOME/$(basename "$file")"
     create_symlink "$DOTFILES/$file" "$target"
+  done
+
+  # Create explicit-target file symlinks
+  for entry in "${explicit_files[@]}"; do
+    target="${entry#*:}"
+    ensure_directory "$(dirname "$target")"
+    create_symlink "$DOTFILES/${entry%%:*}" "$target"
   done
 
   # Create config directory symlinks

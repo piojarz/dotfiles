@@ -1,0 +1,172 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash"
+    ],
+    "deny": [
+      "Read(//Users/piotrjarzabek/work/coursedog/**/.env)",
+      "Read(//Users/piotrjarzabek/work/coursedog/**/.npmrc)",
+      "Bash(docker compose down*)",
+      "Bash(docker-compose down*)",
+      "Bash(docker volume rm*)",
+      "Bash(docker volume prune*)",
+      "Bash(docker system prune*)",
+      "Bash(docker stop*)",
+      "Bash(docker rm*)",
+      "Bash(npm run db:restore*)",
+      "Bash(npm run db:dump-and-restore*)"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "model": "sonnet",
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "permission_prompt|elicitation_dialog",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "workmux set-window-status waiting"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "workmux set-window-status working"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|fork",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "workmux register-agent"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "workmux set-window-status done"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "workmux set-window-status working"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {},
+  "sandbox": {
+    "enabled": false,
+    "network": {
+      "allowedDomains": [
+        "registry.npmjs.org",
+        "npm.pkg.github.com",
+        "npm.taskforce.sh",
+        "npm.jsr.io",
+        "cdn.sheetjs.com",
+        "github.com",
+        "api.github.com",
+        "codeload.github.com",
+        "objects.githubusercontent.com"
+      ]
+    },
+    "filesystem": {
+      "allowWrite": [
+        "~/.npm/_npx",
+        "/var/folders"
+      ],
+      "denyWrite": [
+        "~/work/coursedog/v3/dev/volumes"
+      ],
+      "denyRead": [
+        "~/work/coursedog/**/.env",
+        "~/work/coursedog/**/.npmrc",
+        "~/.ssh"
+      ],
+      "allowRead": [
+        "~/.ssh/sign_ed25519",
+        "~/.ssh/sign_ed25519.pub"
+      ]
+    },
+    "credentials": {
+      "files": [
+        {
+          "path": "~/work/coursedog/**/.env",
+          "mode": "deny"
+        },
+        {
+          "path": "~/work/coursedog/**/.npmrc",
+          "mode": "deny"
+        },
+        {
+          "path": "~/.aws",
+          "mode": "deny"
+        },
+        {
+          "path": "~/.config/gh",
+          "mode": "deny"
+        },
+        {
+          "path": "~/.docker/config.json",
+          "mode": "deny"
+        }
+      ],
+      "envVars": [
+        {
+          "name": "NPM_GITHUB_TOKEN",
+          "mode": "deny"
+        },
+        {
+          "name": "GITHUB_TOKEN",
+          "mode": "deny"
+        },
+        {
+          "name": "TASKFORCE_NPM_TOKEN",
+          "mode": "deny"
+        },
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "mode": "deny"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "mode": "deny"
+        },
+        {
+          "name": "AWS_SESSION_TOKEN",
+          "mode": "deny"
+        },
+        {
+          "name": "OPENAI_API_KEY",
+          "mode": "deny"
+        },
+        {
+          "name": "STRIPE_SECRET_KEY",
+          "mode": "deny"
+        }
+      ]
+    }
+  },
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark"
+}

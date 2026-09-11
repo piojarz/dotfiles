@@ -123,3 +123,8 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# claude
+alias claude-pj="CLAUDE_CONFIG_DIR=~/.claude-pj command claude"
+alias claude-cd="CLAUDE_CONFIG_DIR=~/.claude-cd command claude"
+alias claude="echo 'Use claude code specific commandes : claude-pj or claude-cd'"
