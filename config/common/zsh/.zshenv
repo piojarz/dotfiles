@@ -10,15 +10,26 @@ export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
 export ZDOTDIR=${ZDOTDIR:-$XDG_CONFIG_HOME/zsh}
-# Detect dotfiles repository location
-# Check common locations in order of preference
-if [[ -d "$HOME/dotfiles" ]]; then
-  export DOTFILES=$HOME/dotfiles
-elif [[ -d "$HOME/.dotfiles" ]]; then
-  export DOTFILES=$HOME/.dotfiles
-elif [[ -d "$HOME/.config/dotfiles" ]]; then
-  export DOTFILES=$HOME/.config/dotfiles
-else
+# Detect dotfiles repository location. install.sh/update.sh always write the
+# authoritative location to $XDG_CONFIG_HOME/dotfiles_path; the directory
+# guesses below are only a fallback for before that file exists.
+if [[ -f "$XDG_CONFIG_HOME/dotfiles_path" ]]; then
+  _dotfiles_path=$(<"$XDG_CONFIG_HOME/dotfiles_path")
+  [[ -d "$_dotfiles_path" ]] && export DOTFILES=$_dotfiles_path
+  unset _dotfiles_path
+fi
+if [[ -z "$DOTFILES" ]]; then
+  if [[ -d "$HOME/dotfiles" ]]; then
+    export DOTFILES=$HOME/dotfiles
+  elif [[ -d "$HOME/.dotfiles" ]]; then
+    export DOTFILES=$HOME/.dotfiles
+  elif [[ -d "$HOME/.config/dotfiles" ]]; then
+    export DOTFILES=$HOME/.config/dotfiles
+  elif [[ -d "$HOME/code/dotfiles" ]]; then
+    export DOTFILES=$HOME/code/dotfiles
+  fi
+fi
+if [[ -z "$DOTFILES" ]]; then
   # No dotfiles directory found - set to a sane default but warn user
   export DOTFILES=$HOME/.config
   echo "Warning: Dotfiles directory not found in expected locations." >&2

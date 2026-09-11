@@ -10,6 +10,23 @@ source "$(dirname "${BASH_SOURCE[0]}")/scripts/common/utils.sh"
 
 title "Updating Dotfiles"
 
+# Keep ~/dotfiles symlink and ~/.config/dotfiles_path in sync with the actual location
+_actual_dotfiles="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# The rest of this script (git pull, submodule checks, ...) assumes the
+# dotfiles repo is the working directory, regardless of where it was invoked from.
+cd "$_actual_dotfiles"
+
+_config_dir="${XDG_CONFIG_HOME:-$HOME/.config}"
+echo "$_actual_dotfiles" > "$_config_dir/dotfiles_path"
+if [[ "$_actual_dotfiles" != "$HOME/dotfiles" ]]; then
+  if [[ -L "$HOME/dotfiles" ]] || [[ ! -e "$HOME/dotfiles" ]]; then
+    ln -sf "$_actual_dotfiles" "$HOME/dotfiles"
+    info "Updated ~/dotfiles symlink -> $_actual_dotfiles"
+  fi
+fi
+unset _actual_dotfiles _config_dir
+
 # Pull latest changes from git
 info "Pulling latest changes from git..."
 git pull origin $(git branch --show-current)
