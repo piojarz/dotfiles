@@ -13,6 +13,7 @@ alias zdot='cd $ZDOTDIR'
 # Dotfiles
 alias dotf='cd "$DOTFILES"'
 alias dotfed='cd "$DOTFILES" && ${VISUAL:-${EDITOR:-vim}} .'
+alias dotf-relink='"$DOTFILES/install.sh" --symlinks-only'
 
 # Filesystem aliases
 alias ..='cd ..'

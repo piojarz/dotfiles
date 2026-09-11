@@ -141,4 +141,27 @@ show_backup_summary() {
   fi
 }
 
+# Keep only the most recent N backup directories, since every install run
+# that touches a real (non-symlink) file creates a new timestamped one under
+# ~/.dotfiles-backup and nothing else ever cleans them up.
+prune_old_backups() {
+  local keep=10
+  local backups_root="$HOME/.dotfiles-backup"
+  [ -d "$backups_root" ] || return 0
+
+  local backups=("$backups_root"/*/)
+  [ -d "${backups[0]}" ] || return 0
+
+  local count=${#backups[@]}
+  if (( count > keep )); then
+    local remove_count=$((count - keep))
+    local to_remove
+    to_remove=$(printf '%s\n' "${backups[@]}" | sort | head -n "$remove_count")
+    info "Pruning $remove_count old backup(s) in $backups_root, keeping the $keep most recent..."
+    while IFS= read -r dir; do
+      [ -n "$dir" ] && rm -rf "$dir"
+    done <<< "$to_remove"
+  fi
+}
+
  
