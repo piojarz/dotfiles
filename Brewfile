@@ -1,7 +1,6 @@
 # vim:ft=ruby
 # taps
 tap "koekeishiya/formulae"
-tap "pkgxdev/made"
 tap "felixkratz/formulae"
 tap "nikitabobko/tap"
 tap "raine/workmux"
@@ -97,7 +96,6 @@ brew "wget" # internet file retriever
 brew "workmux" # git worktree + tmux + agent orchestration CLI
 brew "zoxide" # switch between most used directories
 brew "zsh" # zsh (latest)
-brew "pkgxdev/made/pkgx" # npx, but for anything
 brew "luarocks" # lua package manager
 brew "tpm" # tmux plugin manager
 brew "starship" # fast shell prompt (replaces oh-my-posh)
