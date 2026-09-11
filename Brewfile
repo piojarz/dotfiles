@@ -1,6 +1,6 @@
 # vim:ft=ruby
 # taps
-tap "koekeishiya/formulae"
+tap "koekeishiya/formulae", trusted: true
 tap "felixkratz/formulae"
 tap "nikitabobko/tap"
 tap "raine/workmux"
