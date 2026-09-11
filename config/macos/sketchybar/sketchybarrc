@@ -1,0 +1,45 @@
+#!/usr/bin/env sh
+
+CONFIG_DIR="$HOME/.config/sketchybar"
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+ITEM_DIR="$CONFIG_DIR/items"
+
+source "$CONFIG_DIR/colors.sh" # Loads all defined colors
+source "$CONFIG_DIR/icons.sh"  # Loads all defined icons
+
+FONT="SF Pro" # Ships with macOS, needs Regular/Bold/Semibold/Heavy/Black variants
+
+##### Bar Appearance #####
+sketchybar --bar position=top          \
+                 height=40             \
+                 color=$BAR_COLOR      \
+                 blur_radius=30        \
+                 shadow=on
+
+##### Changing Defaults #####
+sketchybar --default icon.font="$FONT:Bold:17.0"                  \
+                     icon.color=$ICON_COLOR                       \
+                     icon.padding_left=4                          \
+                     icon.padding_right=4                         \
+                     label.font="$FONT:Semibold:14.0"              \
+                     label.color=$LABEL_COLOR                     \
+                     label.padding_left=4                         \
+                     label.padding_right=4                        \
+                     popup.background.border_width=2               \
+                     popup.background.corner_radius=11             \
+                     popup.background.border_color=$POPUP_BORDER_COLOR \
+                     popup.background.color=$POPUP_BACKGROUND_COLOR    \
+                     popup.background.shadow.drawing=on
+
+##### Left Items #####
+source "$ITEM_DIR/apple.sh"
+source "$ITEM_DIR/spaces.sh"
+source "$ITEM_DIR/front_app.sh"
+
+##### Right Items #####
+source "$ITEM_DIR/clock.sh"
+source "$ITEM_DIR/volume.sh"
+source "$ITEM_DIR/battery.sh"
+
+##### Force all scripts to run the first time (never do this in a script) #####
+sketchybar --update

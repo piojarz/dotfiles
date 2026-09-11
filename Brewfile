@@ -2,6 +2,8 @@
 # taps
 tap "koekeishiya/formulae"
 tap "pkgxdev/made"
+tap "felixkratz/formulae"
+tap "nikitabobko/tap"
 # Note: Using starship instead of oh-my-posh for better performance
 
 brew "antidote"
@@ -19,7 +21,8 @@ brew "kanata" # keyboard remapping for macOS and Linux
 cask "docker-desktop"
 cask "firefox"
 cask "google-chrome"
-# cask "hammerspoon"
+cask "aerospace" # i3-like tiling window manager
+brew "felixkratz/formulae/sketchybar" # custom macOS statusbar, paired with aerospace
 cask "maccy"
 cask "raycast"
 cask "slack"
@@ -45,6 +48,8 @@ cask "font-cascadia-mono"
 cask "font-symbols-only-nerd-font"
 cask "font-recursive-code"
 cask "font-monaspace"
+cask "font-sketchybar-app-font" # per-app icons in sketchybar's aerospace workspace indicators
+cask "font-sf-pro" # sketchybar's apple-menu icons; installer needs sudo, run manually if bundle install fails
 
 # cask  "minisim" # A simple way to launch mobile simulators
 

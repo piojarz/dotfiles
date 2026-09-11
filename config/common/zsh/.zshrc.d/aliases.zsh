@@ -32,9 +32,13 @@ if [[ "$(uname)" == "Darwin" ]]; then
   # Hide/show all desktop icons (useful when presenting)
   alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
   alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
-  
+
   # Recursively delete `.DS_Store` files (macOS only)
   alias cleanup="find . -name '*.DS_Store' -type f -ls -delete"
+
+  # Reload window-manager/status-bar config without restarting the app
+  alias aero-reload="aerospace reload-config"
+  alias sbar-reload="sketchybar --reload"
 fi
 # remove broken symlinks
 alias clsym="find -L . -name . -o -type d -prune -o -type l -exec rm {} +"
