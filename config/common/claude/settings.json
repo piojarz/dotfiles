@@ -16,7 +16,7 @@
       "Bash(npm run db:restore*)",
       "Bash(npm run db:dump-and-restore*)"
     ],
-    "defaultMode": "acceptEdits"
+    "defaultMode": "auto"
   },
   "model": "sonnet",
   "hooks": {
