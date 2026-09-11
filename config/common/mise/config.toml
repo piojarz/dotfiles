@@ -1,0 +1,6 @@
+# Global mise config, symlinked to ~/.config/mise/config.toml.
+# Per-project versions still win via a project-local .mise.toml/.tool-versions;
+# these are just the defaults for shells outside any pinned project.
+[tools]
+node = "lts"
+python = "latest"
