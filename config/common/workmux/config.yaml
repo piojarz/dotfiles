@@ -1,0 +1,22 @@
+# Personal workmux defaults, shared across every project. Project-specific
+# overrides live in each repo's own .workmux.yaml.
+# See docs/coursedog-worktree-dev-env.md for the coursedogv3 setup this
+# replaces (Worktrunk -> workmux migration).
+
+nerdfont: true
+
+# Named agent commands must be defined here (global-only) -- projects select
+# one by name. `cc-cd` matches the existing `claude-cd` shell alias: plain
+# `claude`, no --dangerously-skip-permissions, just CLAUDE_CONFIG_DIR pointed
+# at the profile that carries the native sandbox + permissions.deny config
+# (~/.claude is never read by this account's Claude Code usage).
+#
+# $HOME, not ~: workmux runs pane commands through a shell that does not
+# tilde-expand a VAR=~/path token the way an interactive login shell does.
+# With `~` here, Claude Code received the literal string "~/.claude-cd" and
+# created a real directory named "~" inside the worktree instead of reading
+# the intended profile -- verified 2026-09-11 during the workmux migration
+# smoke test.
+agents:
+  cc-cd: "env CLAUDE_CONFIG_DIR=$HOME/.claude-cd claude"
+  cc-pj: "env CLAUDE_CONFIG_DIR=$HOME/.claude-pj claude"

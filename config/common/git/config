@@ -106,19 +106,10 @@
 
     remotes = remote -v
 
-    # Worktree creation with smart naming
-    # Usage: git wtc "description" [--jira|--chore|--fix|--refactor]
-    wtc = !"f() { \"$DOTFILES/bin/git-worktree-create\" \"$@\"; }; f"
-    wtcj = !"f() { \"$DOTFILES/bin/git-worktree-create\" --jira \"$@\"; }; f"
-    wtcc = !"f() { \"$DOTFILES/bin/git-worktree-create\" --chore \"$@\"; }; f"
-    wtcf = !"f() { \"$DOTFILES/bin/git-worktree-create\" --fix \"$@\"; }; f"
-    wtcr = !"f() { \"$DOTFILES/bin/git-worktree-create\" --refactor \"$@\"; }; f"
-    
-    # List worktrees with full details
-    wt = worktree
-    wtl = worktree list
-    wtp = worktree prune
-    
+    # Worktree creation/switching/listing/removal is handled by workmux and
+    # the wtc/wtcj/wtcc/wtcf/wtcr shell functions in
+    # config/common/zsh/.zshrc.d/worktree.zsh
+
     # Clone bare repository for worktrees
     # Usage: git bare-clone <repository-url> [destination]
     bare-clone = !"$DOTFILES/bin/git-bare-clone"

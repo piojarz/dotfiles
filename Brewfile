@@ -4,6 +4,7 @@ tap "koekeishiya/formulae"
 tap "pkgxdev/made"
 tap "felixkratz/formulae"
 tap "nikitabobko/tap"
+tap "raine/workmux"
 # Note: Using starship instead of oh-my-posh for better performance
 
 brew "antidote"
@@ -93,6 +94,7 @@ brew "tree" # pretty-print directory contents
 # brew "vim" # Vim (latest)
 brew "wdiff" # word differences in text files
 brew "wget" # internet file retriever
+brew "workmux" # git worktree + tmux + agent orchestration CLI
 brew "zoxide" # switch between most used directories
 brew "zsh" # zsh (latest)
 brew "pkgxdev/made/pkgx" # npx, but for anything
