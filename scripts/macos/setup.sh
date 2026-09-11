@@ -154,10 +154,10 @@ set_system_preferences() {
   echo "Setting system preferences..."
   
   # Computer name
-  sudo scutil --set ComputerName "megatron"
-  sudo scutil --set HostName "megatron"
-  sudo scutil --set LocalHostName "megatron"
-  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "megatron"
+  # sudo scutil --set ComputerName "megatron"
+  # sudo scutil --set HostName "megatron"
+  # sudo scutil --set LocalHostName "megatron"
+  # sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "megatron"
 
   # Battery percentage
   defaults write com.apple.menuextra.battery ShowPercent YES
@@ -251,7 +251,7 @@ set_dock_preferences() {
   defaults write com.apple.dock wvous-tr-corner -int 0
   defaults write com.apple.dock wvous-bl-corner -int 0
   defaults write com.apple.dock wvous-br-corner -int 0
-  defaults write com.Apple.Dock show-recents -bool false
+  defaults write com.apple.dock show-recents -bool false
 }
 
 set_mail_preferences() {

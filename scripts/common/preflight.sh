@@ -21,7 +21,7 @@ preflight_check() {
   if [[ ! -d "$DOTFILES/.git" ]]; then
     error "Dotfiles directory is not a git repository: $DOTFILES"
     info "Please clone the dotfiles repository first:"
-    info "  git clone https://github.com/yourusername/dotfiles.git ~/dotfiles"
+    info "  git clone https://github.com/piojarz/dotfiles.git ~/dotfiles"
     ((errors++))
   else
     success "Dotfiles git repository found"
