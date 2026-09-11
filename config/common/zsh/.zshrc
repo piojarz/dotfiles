@@ -58,16 +58,24 @@ bindkey "^K" history-beginning-search-backward
 # Set any zstyles you might use for configuration.
 [[ ! -f ${ZDOTDIR:-$HOME}/.zstyles ]] || source ${ZDOTDIR:-$HOME}/.zstyles
 
+# Docker Desktop CLI completions (picked up by antidote's compinit call below).
+[[ -d "$HOME/.docker/completions" ]] && fpath=("$HOME/.docker/completions" $fpath)
+
 # Clone antidote if necessary.
 if [[ ! -d ${ZDOTDIR:-$HOME}/.antidote ]]; then
   git clone https://github.com/mattmc3/antidote ${ZDOTDIR:-$HOME}/.antidote
 fi
 
 # Create an amazing Zsh config using antidote plugins.
-# Try multiple locations for antidote (macOS Homebrew, Linux, or local install)
-if [[ -f $(brew --prefix 2>/dev/null)/opt/antidote/share/antidote/antidote.zsh ]]; then
+# Try multiple locations for antidote (macOS Homebrew, Linux, or local install).
+# Only shells out to `brew` when it's actually on PATH, and only once, to
+# avoid a failed fork on every startup on non-Homebrew (e.g. Arch) machines.
+if (( $+commands[brew] )); then
+  _brew_prefix="$(brew --prefix)"
+fi
+if [[ -n "$_brew_prefix" && -f "$_brew_prefix/opt/antidote/share/antidote/antidote.zsh" ]]; then
   # macOS with Homebrew
-  source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
+  source "$_brew_prefix/opt/antidote/share/antidote/antidote.zsh"
 elif [[ -f /usr/share/antidote/antidote.zsh ]]; then
   # Arch Linux system package
   source /usr/share/antidote/antidote.zsh
@@ -78,6 +86,7 @@ else
   echo "Warning: antidote not found. Some zsh features may not work."
   return 1
 fi
+unset _brew_prefix
 antidote load
 
 # Source anything in .zshrc.d.
@@ -114,10 +123,11 @@ export LESS_TERMCAP_mh=$(tput dim)
 # Load starship prompt
 # Starship is a fast, customizable prompt written in Rust
 # Replaces oh-my-posh for better async rendering performance
-eval "$(starship init zsh)"export PATH="$HOME/.local/bin:$PATH"
+eval "$(starship init zsh)"
+export PATH="$HOME/.local/bin:$PATH"
 
 # pnpm
-export PNPM_HOME="/Users/pj/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
