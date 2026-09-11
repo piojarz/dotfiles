@@ -113,11 +113,14 @@ setup_macos_git_credentials() {
   
   # Set up macOS keychain credential helper for Git
   # This stores git credentials securely in macOS Keychain
-  if git config --global credential.helper 2>/dev/null | grep -q osxkeychain; then
+  if git config --file "$HOME/.gitconfig-local" credential.helper 2>/dev/null | grep -q osxkeychain; then
     info "macOS Git credential helper already configured"
   else
     info "Setting up macOS Keychain credential helper for Git..."
-    git config --global credential.helper osxkeychain
+    # Written to ~/.gitconfig-local (not --global), since --global resolves
+    # to ~/.config/git/config — the tracked dotfiles file — on machines
+    # without a ~/.gitconfig.
+    git config --file "$HOME/.gitconfig-local" credential.helper osxkeychain
     success "Git credentials will be stored in macOS Keychain"
   fi
 }

@@ -10,9 +10,11 @@ setup_git_user() {
   local current_name
   local current_email
   
-  # Check if already configured
-  current_name=$(git config --global user.name 2>/dev/null || echo "")
-  current_email=$(git config --global user.email 2>/dev/null || echo "")
+  # Check if already configured. Read from ~/.gitconfig-local directly:
+  # `git config --global --get` does not expand [include] directives, and
+  # identity now lives in the included, untracked ~/.gitconfig-local.
+  current_name=$(git config --file "$HOME/.gitconfig-local" user.name 2>/dev/null || echo "")
+  current_email=$(git config --file "$HOME/.gitconfig-local" user.email 2>/dev/null || echo "")
   
   if [[ -n "$current_name" && -n "$current_email" ]]; then
     info "Git is already configured:"
@@ -76,9 +78,11 @@ setup_git_user() {
     fi
   fi
   
-  # Configure git
-  git config --global user.name "$git_name"
-  git config --global user.email "$git_email"
+  # Configure git — personal identity goes in ~/.gitconfig-local, not the
+  # tracked config (which resolves to ~/.config/git/config and would
+  # otherwise commit it to the dotfiles repo).
+  git config --file "$HOME/.gitconfig-local" user.name "$git_name"
+  git config --file "$HOME/.gitconfig-local" user.email "$git_email"
   
   success "Git user configured:"
   success "  Name:  $git_name"
@@ -104,14 +108,21 @@ setup_git_user() {
 setup_git_defaults() {
   info "Configuring default git settings..."
   
-  # Check if git config file is already symlinked
+  # Check if a git config file is already symlinked. Without ~/.gitconfig,
+  # git falls back to $XDG_CONFIG_HOME/git/config (git >= 2.32) — which is
+  # exactly where this repo's symlinks.sh links config/common/git/config —
+  # so that path has to be checked too, or this always thinks nothing is
+  # configured and re-applies defaults into the tracked file on every run.
+  local xdg_git_config="${XDG_CONFIG_HOME:-$HOME/.config}/git/config"
   local git_config_linked=""
   if [[ -L "$HOME/.gitconfig" ]]; then
     git_config_linked=$(readlink "$HOME/.gitconfig" 2>/dev/null || echo "")
+  elif [[ -L "$xdg_git_config" ]]; then
+    git_config_linked=$(readlink "$xdg_git_config" 2>/dev/null || echo "")
   fi
-  
+
   # Only set defaults that aren't in the config file
-  if [[ ! "$git_config_linked" == *"dotfiles"* ]] && [[ ! -f "$HOME/.gitconfig" ]]; then
+  if [[ ! "$git_config_linked" == *"dotfiles"* ]] && [[ ! -f "$HOME/.gitconfig" ]] && [[ ! -f "$xdg_git_config" ]]; then
     # No gitconfig linked, set basic defaults
     info "No git config file detected, setting basic defaults..."
     
@@ -192,9 +203,9 @@ setup_git_signing() {
     read -p "Enter the key ID to use for signing (or press Enter to skip): " key_id
     
     if [[ -n "$key_id" ]]; then
-      git config --global user.signingkey "$key_id"
-      git config --global commit.gpgSign true
-      git config --global tag.gpgSign true
+      git config --file "$HOME/.gitconfig-local" user.signingkey "$key_id"
+      git config --file "$HOME/.gitconfig-local" commit.gpgSign true
+      git config --file "$HOME/.gitconfig-local" tag.gpgSign true
       success "GPG signing configured with key: $key_id"
       info "Don't forget to add your GPG key to GitHub/GitLab!"
     fi
