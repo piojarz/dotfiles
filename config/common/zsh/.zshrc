@@ -138,3 +138,6 @@ esac
 alias claude-pj="CLAUDE_CONFIG_DIR=~/.claude-pj command claude"
 alias claude-cd="CLAUDE_CONFIG_DIR=~/.claude-cd command claude"
 alias claude="echo 'Use claude code specific commandes : claude-pj or claude-cd'"
+
+# Per-machine overrides/secrets that don't belong in the tracked dotfiles repo.
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
