@@ -695,15 +695,16 @@ plan above got wrong or didn't anticipate:
   `.env` is never touched. Vite picks `.env.local` up on its own; the backend pane does
   `set -a && . ./.env.local && set +a` before starting node, since `env-smart` has no
   `.env.local` awareness of its own.
-- **`.workmux.yaml` lives in `v3/dev`, tracked-but-uncommitted.** workmux resolves project config
-  by walking up the filesystem from the directory you invoke `workmux add` from — not from the
-  new worktree's checked-out tree — so this only needs to exist in `dev` for `workmux add` to work
-  *from `dev`*. Verified live via `--dry-run` before running for real. **It still needs to be
-  committed** (along with the `.env.local` line added to `v3/dev/.gitignore`) for `workmux add` to
-  work when invoked from any of the *other* existing worktrees, and for future worktrees checked
-  out from a commit after that one to carry it automatically. Not yet committed — that's a
-  deliberate follow-up, not an oversight, since it's a `coursedogv3`-repo change made outside a
-  reviewed PR.
+- **`.workmux.yaml` lives in `v3/dev`, deliberately uncommitted.** workmux resolves project
+  config by walking up the filesystem from the directory you invoke `workmux add` from — not from
+  the new worktree's checked-out tree — so it only needs to exist in `dev` for `workmux add` to
+  work *from `dev`*. Verified live via `--dry-run` before running for real. Decided 2026-09-11 to
+  keep it that way rather than commit it: `workmux add`/`workmux remove` are only ever run from
+  `dev` in practice (the `wtc*`/`wtcj` helpers already assume this), so there's no functional gap
+  — and it avoids putting personal dev-environment tooling into `coursedogv3`'s reviewed history.
+  `.env.local` is excluded the same local-only way, via `.bare/info/exclude` rather than
+  `v3/dev/.gitignore` — one shared file that covers every worktree without any repo-tracked
+  change (the same mechanism the old Worktrunk setup used for `mise.local.toml`).
 - **Real bug caught and fixed: `~` doesn't expand in a workmux agent alias.**
   `agents: { cc-cd: "env CLAUDE_CONFIG_DIR=~/.claude-cd claude" }` — matching workmux's own
   documented `cc-personal` example verbatim — does **not** tilde-expand under workmux's pane
