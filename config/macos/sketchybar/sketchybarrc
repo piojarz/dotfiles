@@ -37,9 +37,32 @@ source "$ITEM_DIR/spaces.sh"
 source "$ITEM_DIR/front_app.sh"
 
 ##### Right Items #####
+# Right-side items stack from the right edge inward, so this list reads in
+# reverse of the on-screen left-to-right order: kanata | workmux | battery
+# volume clock (clock ends up at the far-right edge).
 source "$ITEM_DIR/clock.sh"
 source "$ITEM_DIR/volume.sh"
 source "$ITEM_DIR/battery.sh"
+
+sketchybar --add item separator.right.1 right          \
+           --set separator.right.1 icon=              \
+                                    icon.font="Symbols Nerd Font:Regular:16.0" \
+                                    background.padding_left=15  \
+                                    background.padding_right=15 \
+                                    label.drawing=off           \
+                                    icon.color=$WHITE
+
+source "$ITEM_DIR/workmux.sh"
+
+sketchybar --add item separator.right.2 right          \
+           --set separator.right.2 icon=              \
+                                    icon.font="Symbols Nerd Font:Regular:16.0" \
+                                    background.padding_left=15  \
+                                    background.padding_right=15 \
+                                    label.drawing=off           \
+                                    icon.color=$WHITE
+
+source "$ITEM_DIR/kanata.sh"
 
 ##### Force all scripts to run the first time (never do this in a script) #####
 sketchybar --update

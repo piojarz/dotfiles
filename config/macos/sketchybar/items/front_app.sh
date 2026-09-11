@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 sketchybar --add item front_app left \
-           --set front_app icon.drawing=off \
+           --set front_app icon.font="sketchybar-app-font:Regular:16.0" \
+                           icon.padding_right=6 \
                            script="$PLUGIN_DIR/front_app.sh" \
            --subscribe front_app front_app_switched
