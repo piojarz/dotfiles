@@ -4,6 +4,7 @@ tap "koekeishiya/formulae", trusted: true
 tap "felixkratz/formulae"
 tap "nikitabobko/tap"
 tap "raine/workmux"
+tap "malpern/tap", trusted: true
 # Note: Using starship instead of oh-my-posh for better performance
 
 brew "antidote"
@@ -23,6 +24,7 @@ cask "firefox"
 cask "google-chrome"
 cask "aerospace" # i3-like tiling window manager
 brew "felixkratz/formulae/sketchybar" # custom macOS statusbar, paired with aerospace
+brew "malpern/tap/sketchybar-toggle" # hides sketchybar when mouse nears the top, so the native menu bar can show
 cask "maccy"
 cask "raycast"
 cask "slack"

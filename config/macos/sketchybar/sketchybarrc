@@ -14,7 +14,8 @@ sketchybar --bar position=top          \
                  height=40             \
                  color=$BAR_COLOR      \
                  blur_radius=30        \
-                 shadow=on
+                 shadow=on             \
+                 topmost=window
 
 ##### Changing Defaults #####
 sketchybar --default icon.font="$FONT:Bold:17.0"                  \
@@ -66,3 +67,10 @@ source "$ITEM_DIR/kanata.sh"
 
 ##### Force all scripts to run the first time (never do this in a script) #####
 sketchybar --update
+
+##### sketchybar-toggle: hides the bar near the screen top so the native menu #####
+##### bar (set to auto-hide) can appear without overlapping. Requires         #####
+##### topmost=window above; needs the native menu bar's own auto-hide setting #####
+##### turned on in System Settings > Control Center.                         #####
+pkill -x sketchybar-toggle
+sketchybar-toggle &
