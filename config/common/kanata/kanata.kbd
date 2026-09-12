@@ -8,7 +8,7 @@
   linux-dev /dev/input/event*
   
   ;; macOS configuration - uses the kanata macos-invoker
-  macos-devs-include (
+  macos-dev-names-include (
     "Apple Internal Keyboard / Trackpad"
     "Apple Internal Keyboard"
     "Magic Keyboard"

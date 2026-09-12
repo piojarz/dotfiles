@@ -23,9 +23,6 @@ VOLUME_MUTE=󰖁
 # Clock
 CLOCK=
 
-# Kanata
-KEYBOARD=
-
 # workmux agent status
 WORKMUX_WAITING=
 WORKMUX_WORKING=
