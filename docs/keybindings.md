@@ -2,7 +2,10 @@
 
 Quick reference for all keyboard shortcuts across applications.
 
-## System (Kanata)
+## System
+
+Same mapping on both platforms, different tool per-OS: Karabiner-Elements complex modifications
+on macOS, Kanata (`config/common/kanata/kanata.kbd`) on Linux.
 
 | Key | Action |
 |-----|--------|
@@ -177,7 +180,10 @@ focused workspace and show icons for whichever apps are open in it, driven by Ae
 ### Sketchybar (Status Bar)
 
 Top bar showing: an  Apple menu (Preferences / Activity Monitor / Lock Screen), Aerospace
-workspace indicators with per-app icons, the frontmost app name, clock, volume, and battery.
+workspace indicators with per-app icons, the frontmost app name, clock, volume, network
+(Wi-Fi/Ethernet status + SSID, click opens Network settings), battery, and Caffeine.app status
+(click toggles it). `sketchybar-toggle` runs alongside it to auto-hide the bar near the screen
+top so the native (auto-hidden) menu bar can show without overlapping.
 
 ---
 

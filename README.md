@@ -4,7 +4,7 @@ Personal dotfiles for macOS and Arch Linux, managed via symlinks into `$XDG_CONF
 
 ## Layout
 
-- `config/common/` — shared config, symlinked on both platforms (zsh, tmux, git, nvim, kitty, lazygit, yazi, zellij, worktrunk, claude, ...)
+- `config/common/` — shared config, symlinked on both platforms (zsh, tmux, git, nvim, kitty, lazygit, yazi, zellij, workmux, claude, ...)
 - `config/macos/` — macOS-only config (aerospace, sketchybar)
 - `config/linux/` — Linux-only config (hyprland, rofi, hyprpanel, uwsm)
 - `scripts/` — install/update logic, split into `common/`, `macos/`, `linux/`
