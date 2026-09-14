@@ -71,7 +71,7 @@ fi
 alias g=git
 
 alias vim="nvim"
-alias nr='node run'
+alias nr='node --run'
 
 # Modern tool aliases
 alias y='yazi'                        # Open yazi file manager
