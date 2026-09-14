@@ -8,5 +8,14 @@
 ICON_MAP="$(dirname "$0")/icon_map.sh"
 
 if [ "$SENDER" = "front_app_switched" ]; then
-  sketchybar --set "$NAME" label="$INFO" icon="$("$ICON_MAP" "$INFO")"
+  APP="$INFO"
+else
+  # Forced initial run (sketchybar --update) has no $SENDER, so query the
+  # current frontmost app directly instead of sitting blank until the next
+  # app switch.
+  APP="$(aerospace list-windows --focused --format '%{app-name}' 2>/dev/null)"
 fi
+
+[ -z "$APP" ] && exit 0
+
+sketchybar --set "$NAME" label="$APP" icon="$("$ICON_MAP" "$APP")"

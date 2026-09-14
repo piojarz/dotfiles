@@ -3,12 +3,17 @@
 SID="$1"
 ICON_MAP="$(dirname "$0")/icon_map.sh"
 
-if [ "$SENDER" = "aerospace_workspace_change" ]; then
-    if [ "$SID" = "$FOCUSED_WORKSPACE" ]; then
-        sketchybar --set "$NAME" background.drawing=on
-    else
-        sketchybar --set "$NAME" background.drawing=off
-    fi
+# $FOCUSED_WORKSPACE only arrives via the aerospace_workspace_change event;
+# on the forced initial run (sketchybar --update) it's unset, which used to
+# leave every space unhighlighted until the first workspace switch. Fall back
+# to querying aerospace directly so the active space is always correct.
+FOCUSED="$FOCUSED_WORKSPACE"
+[ -z "$FOCUSED" ] && FOCUSED="$(aerospace list-workspaces --focused)"
+
+if [ "$SID" = "$FOCUSED" ]; then
+    sketchybar --set "$NAME" background.drawing=on
+else
+    sketchybar --set "$NAME" background.drawing=off
 fi
 
 icons=""

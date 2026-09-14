@@ -11,9 +11,9 @@ FONT="SF Pro" # Ships with macOS, needs Regular/Bold/Semibold/Heavy/Black varian
 
 ##### Bar Appearance #####
 sketchybar --bar position=top          \
-                 height=40             \
+                 height=37             \
                  color=$BAR_COLOR      \
-                 blur_radius=30        \
+                 blur_radius=0         \
                  shadow=on             \
                  topmost=window
 
@@ -39,11 +39,13 @@ source "$ITEM_DIR/front_app.sh"
 
 ##### Right Items #####
 # Right-side items stack from the right edge inward, so this list reads in
-# reverse of the on-screen left-to-right order: workmux | battery
-# volume clock (clock ends up at the far-right edge).
+# reverse of the on-screen left-to-right order: workmux | caffeine battery
+# network volume clock (clock ends up at the far-right edge).
 source "$ITEM_DIR/clock.sh"
 source "$ITEM_DIR/volume.sh"
+source "$ITEM_DIR/network.sh"
 source "$ITEM_DIR/battery.sh"
+source "$ITEM_DIR/caffeine.sh"
 
 sketchybar --add item separator.right.1 right          \
            --set separator.right.1 icon=              \

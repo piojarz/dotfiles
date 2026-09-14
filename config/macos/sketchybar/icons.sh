@@ -26,3 +26,10 @@ CLOCK=
 # workmux agent status
 WORKMUX_WAITING=
 WORKMUX_WORKING=
+
+# Caffeine.app status (Font Awesome coffee glyph)
+CAFFEINE=
+
+# Network status (Font Awesome wifi glyphs)
+WIFI_CONNECTED=󰖩
+WIFI_DISCONNECTED=󰖪

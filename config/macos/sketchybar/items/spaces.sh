@@ -3,7 +3,13 @@
 sketchybar --add event aerospace_workspace_change
 sketchybar --add event aerospace_window_change
 
-for sid in $(aerospace list-workspaces --all); do
+# Captured once so we know whether AeroSpace is even reachable: if it isn't
+# running, list-workspaces returns nothing and skipping the separator too
+# avoids a bare, orphaned separator (with its own left/right padding) sitting
+# between the Apple menu and front_app with no workspace items around it.
+WORKSPACES="$(aerospace list-workspaces --all 2>/dev/null)"
+
+for sid in $WORKSPACES; do
     sketchybar --add item "space.$sid" left \
         --subscribe "space.$sid" aerospace_workspace_change aerospace_window_change \
         --set "space.$sid" \
@@ -22,10 +28,12 @@ for sid in $(aerospace list-workspaces --all); do
         script="$CONFIG_DIR/plugins/space_windows.sh $sid"
 done
 
-sketchybar   --add item       separator left                          \
-             --set separator  icon=                                  \
-                              icon.font="Symbols Nerd Font:Regular:16.0" \
-                              background.padding_left=15              \
-                              background.padding_right=15             \
-                              label.drawing=off                       \
-                              icon.color=$WHITE
+if [ -n "$WORKSPACES" ]; then
+    sketchybar   --add item       separator left                          \
+                 --set separator  icon=                                  \
+                                  icon.font="Symbols Nerd Font:Regular:16.0" \
+                                  background.padding_left=15              \
+                                  background.padding_right=15             \
+                                  label.drawing=off                       \
+                                  icon.color=$WHITE
+fi
