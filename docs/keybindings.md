@@ -147,22 +147,25 @@ Paired with [Sketchybar](#sketchybar-status-bar) — the bar's workspace indicat
 focused workspace and show icons for whichever apps are open in it, driven by Aerospace's
 `exec-on-workspace-change` and `on-window-detected` hooks.
 
+Uses Ctrl+Alt (not plain Alt) throughout, since plain Alt+letter is used to type Polish
+diacritics (e.g. Alt+L → Ł) on this layout.
+
 | Key | Action |
 |-----|--------|
-| `Alt+H/J/K/L` | Focus window (left/down/up/right) |
-| `Alt+Shift+H/J/K/L` | Move window |
-| `Alt+Shift+H/J/K/L` (join) | Join with window in direction |
-| `Alt+1-4` | Go to workspace |
-| `Alt+Shift+1-4` | Move window to workspace (and follow) |
-| `Alt+Tab` | Workspace back and forth |
-| `Alt+Shift+Tab` | Move workspace to next monitor |
-| `Alt+Slash` | Layout: tiles |
-| `Alt+Comma` | Layout: accordion |
-| `Alt+Ctrl+F` | Toggle floating/tiling |
-| `Alt+Ctrl+Shift+F` | Fullscreen |
-| `Alt+Shift+Minus/Equal` | Resize window |
-| `Alt+Shift+;` | Service mode |
-| `Alt+Shift+Enter` | Apps mode |
+| `Ctrl+Alt+H/J/K/L` | Focus window (left/down/up/right) |
+| `Ctrl+Alt+Shift+H/J/K/L` | Move window |
+| `Ctrl+Alt+Shift+H/J/K/L` (join) | Join with window in direction |
+| `Ctrl+Alt+1-4` | Go to workspace |
+| `Ctrl+Alt+Shift+1-4` | Move window to workspace (and follow) |
+| `Ctrl+Alt+Tab` | Workspace back and forth |
+| `Ctrl+Alt+Shift+Tab` | Move workspace to next monitor |
+| `Ctrl+Alt+Slash` | Layout: tiles |
+| `Ctrl+Alt+Comma` | Layout: accordion |
+| `Ctrl+Alt+F` | Toggle floating/tiling |
+| `Ctrl+Alt+Shift+F` | Fullscreen |
+| `Ctrl+Alt+Shift+Minus/Equal` | Resize window |
+| `Ctrl+Alt+Shift+;` | Service mode |
+| `Ctrl+Alt+Shift+Enter` | Apps mode |
 
 **Service Mode:**
 | Key | Action |
@@ -175,7 +178,7 @@ focused workspace and show icons for whichever apps are open in it, driven by Ae
 **Apps Mode:**
 | Key | Action |
 |-----|--------|
-| `Alt+W` | Open WezTerm |
+| `Ctrl+Alt+W` | Open WezTerm |
 
 ### Sketchybar (Status Bar)
 
