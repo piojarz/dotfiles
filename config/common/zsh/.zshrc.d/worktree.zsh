@@ -10,18 +10,46 @@ _wt_kebab() {
   echo "$1" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -s '-' | sed 's/^-//;s/-$//'
 }
 
+# Pulls a --base/--base=<ref> option out of "$@", leaving the rest in
+# _WT_REST. Sets globals rather than returning values because zsh functions
+# can't hand back an array otherwise; callers read _WT_BASE/_WT_REST right
+# after calling.
+_wt_parse_base() {
+  _WT_BASE=""
+  _WT_REST=()
+  while (( $# )); do
+    case "$1" in
+      --base)
+        _WT_BASE="$2"
+        shift 2
+        ;;
+      --base=*)
+        _WT_BASE="${1#--base=}"
+        shift
+        ;;
+      *)
+        _WT_REST+=("$1")
+        shift
+        ;;
+    esac
+  done
+}
+
 _wt_create() {
   local prefix="$1"
   shift
-  local input="$*"
+  _wt_parse_base "$@"
+  local input="${_WT_REST[*]}"
+  local -a base_args=()
+  [[ -n "$_WT_BASE" ]] && base_args=(--base "$_WT_BASE")
 
   # Input with a slash is treated as an explicit branch name, used as-is.
   if [[ "$input" == *"/"* ]]; then
-    workmux add "$input"
+    workmux add "${base_args[@]}" "$input"
     return
   fi
 
-  workmux add "${prefix}/$(_wt_kebab "$input")"
+  workmux add "${base_args[@]}" "${prefix}/$(_wt_kebab "$input")"
 }
 
 wtc()  { _wt_create "feature" "$@" }
@@ -39,18 +67,21 @@ wtr() {
 }
 
 wtcj() {
-  local input="$*"
+  _wt_parse_base "$@"
+  local input="${_WT_REST[*]}"
+  local -a base_args=()
+  [[ -n "$_WT_BASE" ]] && base_args=(--base "$_WT_BASE")
 
   if [[ "$input" == *"/"* ]]; then
-    workmux add "$input"
+    workmux add "${base_args[@]}" "$input"
     return
   fi
 
   if [[ "$input" =~ ^([A-Z]+-[0-9]+)[[:space:]]+(.+)$ ]]; then
-    workmux add "${match[1]}/$(_wt_kebab "${match[2]}")"
+    workmux add "${base_args[@]}" "${match[1]}/$(_wt_kebab "${match[2]}")"
   else
     echo "Warning: No JIRA ticket pattern found (e.g., SM-123). Using as-is." >&2
-    workmux add "$(_wt_kebab "$input")"
+    workmux add "${base_args[@]}" "$(_wt_kebab "$input")"
   fi
 }
 
