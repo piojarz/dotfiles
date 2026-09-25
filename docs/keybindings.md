@@ -11,7 +11,7 @@ on macOS, Kanata (`config/common/kanata/kanata.kbd`) on Linux.
 |-----|--------|
 | `Caps` (tap) | Escape |
 | `Caps` (hold) | Control |
-| `Right Alt` | Hyper (⌘⌥⇧⌃) |
+| `Left Alt`/`Left Option` | Hyper (⌘⌥⇧⌃) |
 
 ---
 
@@ -147,21 +147,24 @@ Paired with [Sketchybar](#sketchybar-status-bar) — the bar's workspace indicat
 focused workspace and show icons for whichever apps are open in it, driven by Aerospace's
 `exec-on-workspace-change` and `on-window-detected` hooks.
 
-Uses Ctrl+Alt (not plain Alt) throughout, since plain Alt+letter is used to type Polish
-diacritics (e.g. Alt+L → Ł) on this layout.
+Used Ctrl+Alt (not plain Alt) throughout, since plain Alt+letter is used to type Polish
+diacritics (e.g. Alt+L → Ł) on this layout. The plain ctrl-alt bindings (no Shift) below now
+trigger off the Hyper key instead (Hyper's modifiers are Cmd+Ctrl+Alt+Shift); the Ctrl+Alt+Shift
+bindings are unchanged and still need that physical 3-key chord — Hyper always carries Shift, so
+there's no collision between the two tiers.
 
 | Key | Action |
 |-----|--------|
-| `Ctrl+Alt+H/J/K/L` | Focus window (left/down/up/right) |
+| `Hyper+H/J/K/L` | Focus window (left/down/up/right) |
 | `Ctrl+Alt+Shift+H/J/K/L` | Move window |
 | `Ctrl+Alt+Shift+H/J/K/L` (join) | Join with window in direction |
-| `Ctrl+Alt+1-4` | Go to workspace |
+| `Hyper+1-4` | Go to workspace |
 | `Ctrl+Alt+Shift+1-4` | Move window to workspace (and follow) |
-| `Ctrl+Alt+Tab` | Workspace back and forth |
+| `Hyper+Tab` | Workspace back and forth |
 | `Ctrl+Alt+Shift+Tab` | Move workspace to next monitor |
-| `Ctrl+Alt+Slash` | Layout: tiles |
-| `Ctrl+Alt+Comma` | Layout: accordion |
-| `Ctrl+Alt+F` | Toggle floating/tiling |
+| `Hyper+Slash` | Layout: tiles |
+| `Hyper+Comma` | Layout: accordion |
+| `Hyper+F` | Toggle floating/tiling |
 | `Ctrl+Alt+Shift+F` | Fullscreen |
 | `Ctrl+Alt+Shift+Minus/Equal` | Resize window |
 | `Ctrl+Alt+Shift+;` | Service mode |
@@ -178,7 +181,7 @@ diacritics (e.g. Alt+L → Ł) on this layout.
 **Apps Mode:**
 | Key | Action |
 |-----|--------|
-| `Ctrl+Alt+W` | Open WezTerm |
+| `Hyper+W` | Open Kitty |
 
 ### Sketchybar (Status Bar)
 

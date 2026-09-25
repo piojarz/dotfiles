@@ -185,7 +185,7 @@ ctrl-alt-shift-enter = 'mode apps'
 # alt-b = 'exec-and-forget open -a /Applications/Brain.fm.app'
 # alt-s = 'exec-and-forget open -a /Applications/Slack.app'
 # alt-q = 'exec-and-forget open -a "/System/Applications/QuickTime Player.app"'
-# alt-w = 'exec-and-forget open -a /Applications/WezTerm.app'
+# alt-w = 'exec-and-forget open -a /Applications/kitty.app'
 # alt-f = 'exec-and-forget open -a /System/Library/CoreServices/Finder.app'
 # alt-e = 'exec-and-forget open -a "/Applications/Final Cut Pro.app"'
 # alt-z = 'exec-and-forget open -a /Applications/Zen.app'
@@ -200,7 +200,7 @@ f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling
 backspace = ['close-all-windows-but-current', 'mode main']
 
 [mode.apps.binding]
-cmd-ctrl-alt-shift-w = ['exec-and-forget open -a /Applications/WezTerm.app', 'mode main']
+cmd-ctrl-alt-shift-w = ['exec-and-forget open -a /Applications/kitty.app', 'mode main']
 
 [workspace-to-monitor-force-assignment]
 1 = '^Built-in.*$'
