@@ -30,12 +30,21 @@ explicit_files=(
     "config/common/herdr/config.toml:$HOME/.config/herdr/config.toml"
 )
 
-# config/common dirs to skip in the generic "symlink the whole directory"
-# loop below, because the tool writes its own runtime state (logs, sockets,
-# session files) into the same directory -- only specific files inside are
-# linked, via explicit_files above.
+# Same as explicit_files above, but for macOS-only tools -- only linked when
+# is_macos is true, so Linux machines don't grow config dirs for apps that
+# only exist on macOS.
+explicit_files_macos=(
+    "config/macos/karabiner/karabiner.json:$HOME/.config/karabiner/karabiner.json"
+)
+
+# config/common (and config/macos, config/linux) dirs to skip in the generic
+# "symlink the whole directory" loops below, because the tool writes its own
+# runtime state (logs, sockets, session/backup files) into the same
+# directory -- only specific files inside are linked, via explicit_files /
+# explicit_files_macos above.
 directory_excludes=(
     "herdr"
+    "karabiner"
 )
 
 is_directory_excluded() {
@@ -73,9 +82,15 @@ cleanup_symlinks() {
 
   # Clean up macOS specific symlinks
   if is_macos; then
+    for entry in "${explicit_files_macos[@]}"; do
+      cleanup_symlink "${entry#*:}"
+    done
+
     mac_config_files=$(find "$DOTFILES/config/macos" -maxdepth 1 2>/dev/null)
     for config in $mac_config_files; do
-      target="$config_home/$(basename "$config")"
+      name="$(basename "$config")"
+      is_directory_excluded "$name" && continue
+      target="$config_home/$name"
       cleanup_symlink "$target"
     done
   fi
@@ -122,9 +137,17 @@ setup_symlinks() {
 
   # Create macOS specific symlinks
   if is_macos; then
+    for entry in "${explicit_files_macos[@]}"; do
+      target="${entry#*:}"
+      ensure_directory "$(dirname "$target")"
+      create_symlink "$DOTFILES/${entry%%:*}" "$target"
+    done
+
     mac_config_files=$(find "$DOTFILES/config/macos" -maxdepth 1 2>/dev/null)
     for config in $mac_config_files; do
-      target="$config_home/$(basename "$config")"
+      name="$(basename "$config")"
+      is_directory_excluded "$name" && continue
+      target="$config_home/$name"
       create_symlink "$config" "$target"
     done
   fi
