@@ -1,0 +1,63 @@
+# Personal herdr config. Mirrors config/common/tmux/.tmux.conf where herdr's
+# keybinding system allows it, so muscle memory carries over between the two.
+#
+# ~/.config/herdr/ also holds herdr's own runtime state (logs, sockets,
+# session.json) written on every launch, so unlike most config/common/*
+# dirs this one is NOT symlinked wholesale -- only this file is, via
+# explicit_files in scripts/common/symlinks.sh (same pattern as the Claude
+# Code settings.json symlinks, and for the same reason).
+
+onboarding = false
+
+[ui]
+status_indicators = "symbols"
+
+[ui.sound]
+enabled = true
+
+[keys]
+prefix = "ctrl+a"                          # match tmux's prefix (see .tmux.conf)
+
+# vi-style pane movement, matching tmux's `bind h/j/k/l select-pane -L/-D/-U/-R`
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+
+# Launch Claude Code under a specific profile. Uses `env CLAUDE_CONFIG_DIR=...
+# claude` directly rather than the claude-pj/claude-cd shell aliases from
+# .zshrc: custom command bindings run through a non-interactive shell that
+# won't see interactive-shell aliases or tilde-expand a `VAR=~/path` token
+# (same issue documented in config/common/workmux/config.yaml, found
+# 2026-09-11). $HOME is used for the same reason.
+#
+# prefix+alt+p / prefix+alt+c (not plain prefix+p/prefix+c) because herdr's
+# defaults already bind prefix+c to new_tab and prefix+p to previous_tab.
+# launch claude-pj
+[[keys.command]]
+key = "prefix+alt+p"
+type = "pane"
+command = "env CLAUDE_CONFIG_DIR=$HOME/.claude-pj claude"
+
+# launch claude-cd
+[[keys.command]]
+key = "prefix+alt+c"
+type = "pane"
+command = "env CLAUDE_CONFIG_DIR=$HOME/.claude-cd claude"
+
+# Matches tmux's `bind-key g display-popup ... -E "lazygit"`.
+[[keys.command]]
+key = "prefix+alt+g"
+type = "popup"
+command = "lazygit"
+width = "80%"
+height = "80%"
+
+# Matches tmux's `bind-key s display-popup ... sesh connect ...`.
+# prefix+alt+s (not plain prefix+s) because herdr's default `settings` action
+# already owns prefix+s.
+[[keys.command]]
+key = "prefix+alt+s"
+type = "popup"
+command = "sesh connect \"$(sesh list -i | gum filter --limit 1 --no-sort --fuzzy --placeholder 'Pick a sesh' --height 50 --prompt='⚡')\""
+width = "40%"

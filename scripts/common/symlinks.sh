@@ -27,7 +27,24 @@ linkables=(
 explicit_files=(
     "config/common/claude/settings.json:$HOME/.claude-cd/settings.json"
     "config/common/claude/settings.json:$HOME/.claude-pj/settings.json"
+    "config/common/herdr/config.toml:$HOME/.config/herdr/config.toml"
 )
+
+# config/common dirs to skip in the generic "symlink the whole directory"
+# loop below, because the tool writes its own runtime state (logs, sockets,
+# session files) into the same directory -- only specific files inside are
+# linked, via explicit_files above.
+directory_excludes=(
+    "herdr"
+)
+
+is_directory_excluded() {
+  local name=$1
+  for excl in "${directory_excludes[@]}"; do
+    [[ "$name" == "$excl" ]] && return 0
+  done
+  return 1
+}
 
 cleanup_symlinks() {
   title "Cleaning up symlinks"
@@ -48,7 +65,9 @@ cleanup_symlinks() {
   info "installing to $config_home"
   config_files=$(find "$DOTFILES/config" -maxdepth 1 2>/dev/null)
   for config in $config_files; do
-    target="$config_home/$(basename "$config")"
+    name="$(basename "$config")"
+    is_directory_excluded "$name" && continue
+    target="$config_home/$name"
     cleanup_symlink "$target"
   done
 
@@ -95,7 +114,9 @@ setup_symlinks() {
 
   config_files=$(find "$DOTFILES/config/common" -maxdepth 1 2>/dev/null)
   for config in $config_files; do
-    target="$config_home/$(basename "$config")"
+    name="$(basename "$config")"
+    is_directory_excluded "$name" && continue
+    target="$config_home/$name"
     create_symlink "$config" "$target"
   done
 
