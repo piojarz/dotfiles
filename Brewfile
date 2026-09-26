@@ -89,6 +89,7 @@ brew "shellcheck" # diagnostics for shell sripts
 brew "stylua" # lua code formatter
 brew "tmux" # terminal multiplexer
 brew "sesh" # tmux session manager
+brew "gum" # fuzzy picker used by the tmux prefix+s session switcher
 brew "tree" # pretty-print directory contents
 # neovim
 # brew "vim" # Vim (latest)

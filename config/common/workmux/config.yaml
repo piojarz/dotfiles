@@ -5,6 +5,11 @@
 
 nerdfont: true
 
+# Session mode: each worktree gets its own tmux session instead of a window
+# in the current one. Window mode got noisy once more than a couple of
+# worktrees were open at the same time.
+mode: session
+
 # Named agent commands must be defined here (global-only) -- projects select
 # one by name. `cc-cd` matches the existing `claude-cd` shell alias: plain
 # `claude`, no --dangerously-skip-permissions, just CLAUDE_CONFIG_DIR pointed
