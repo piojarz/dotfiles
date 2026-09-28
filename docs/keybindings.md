@@ -158,8 +158,8 @@ there's no collision between the two tiers.
 | `Hyper+H/J/K/L` | Focus window (left/down/up/right) |
 | `Ctrl+Alt+Shift+H/J/K/L` | Move window |
 | `Ctrl+Alt+Shift+H/J/K/L` (join) | Join with window in direction |
-| `Hyper+1-4` | Go to workspace |
-| `Ctrl+Alt+Shift+1-4` | Move window to workspace (and follow) |
+| `Hyper+1-9` | Go to workspace |
+| `Ctrl+Alt+Shift+1-9` | Move window to workspace (and follow) |
 | `Hyper+Tab` | Workspace back and forth |
 | `Ctrl+Alt+Shift+Tab` | Move workspace to next monitor |
 | `Hyper+Slash` | Layout: tiles |
