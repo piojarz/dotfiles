@@ -19,6 +19,7 @@ cask "1password"
 cask "1password/tap/1password-cli"
 cask "karabiner-elements" # keyboard remapping for macOS (kanata's DriverKit dependency lags behind macOS, so using Karabiner directly instead)
 cask "docker-desktop"
+cask "mongodb-compass" # GUI for MongoDB
 cask "firefox"
 cask "google-chrome"
 cask "aerospace" # i3-like tiling window manager
