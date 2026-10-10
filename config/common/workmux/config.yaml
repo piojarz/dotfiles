@@ -10,6 +10,11 @@ nerdfont: true
 # worktrees were open at the same time.
 mode: session
 
+# Prefix session names with the project instead of workmux's default "wm-",
+# so the same branch name in two repos doesn't map to one tmux session name.
+# Projects can still override it (coursedog's .workmux.yaml uses "coursedog-").
+window_prefix: "{project}-"
+
 # Named agent commands must be defined here (global-only) -- projects select
 # one by name. `cc-cd` matches the existing `claude-cd` shell alias: plain
 # `claude`, no --dangerously-skip-permissions, just CLAUDE_CONFIG_DIR pointed

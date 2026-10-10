@@ -70,7 +70,7 @@ brew "eza" # ls alternative
 brew "fd" # find alternative
 # asdf does this
 # brew "fnm" # Fast Node version manager
-brew "fzf" # Fuzzy file searcher, used in scripts and in vim
+brew "fzf" # Fuzzy file searcher, used in scripts (tmux workspace/PR pickers) and in vim
 brew "gh" # GitHub CLI
 brew "git" # Git version control (latest version)
 brew "git-delta" # a better git diff
@@ -90,7 +90,7 @@ brew "shellcheck" # diagnostics for shell sripts
 brew "stylua" # lua code formatter
 brew "tmux" # terminal multiplexer
 brew "sesh" # tmux session manager
-brew "gum" # fuzzy picker used by the tmux prefix+s session switcher
+brew "gum" # fuzzy picker used by the herdr prefix+alt+s session switcher
 brew "tree" # pretty-print directory contents
 # neovim
 # brew "vim" # Vim (latest)

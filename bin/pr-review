@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+# Review a GitHub PR in its own worktree + tmux session. Bound to tmux
+# prefix + P and to ctrl-p in the workspace picker (bin/sesh-pick); also works
+# from a plain shell inside any checkout of the repo.
+#
+# Picks an open PR with fzf, then hands it to `workmux add --pr N
+# --open-if-exists`, which reuses the PR's worktree/session if it already
+# exists and otherwise checks it out via gh and runs the project's workmux
+# setup (file copies, ports, panes). Deliberately not raw
+# `gh pr checkout --worktree`: that would skip the .workmux.yaml setup a
+# worktree needs to actually run.
+
+set -Eeuo pipefail
+
+die() {
+  echo >&2 "pr-review: $1"
+  # Keep the message readable when running in a tmux popup that closes on exit.
+  [[ -n "${TMUX-}" ]] && read -rsn1 -p "(press any key)" </dev/tty
+  exit 1
+}
+
+command -v gh >/dev/null 2>&1 || die "gh is not installed"
+command -v workmux >/dev/null 2>&1 || die "workmux is not installed"
+git rev-parse --git-dir >/dev/null 2>&1 || die "not inside a git repository ($PWD)"
+gh auth status >/dev/null 2>&1 || die "gh is not authenticated, run: gh auth login"
+
+prs=$(gh pr list --limit 100 --json number,title,author,headRefName \
+  --template '{{range .}}{{printf "%v\t%s\t@%s\t%s\n" .number .title .author.login .headRefName}}{{end}}') \
+  || die "gh pr list failed"
+[[ -n "$prs" ]] || die "no open pull requests"
+
+pr=$(fzf --delimiter '\t' --with-nth '1..3' --no-sort \
+  --border-label ' review PR ' --prompt '  ' \
+  --preview 'GH_FORCE_TTY=1 gh pr view {1}' --preview-window 'right:60%:wrap' \
+  --accept-nth 1 <<<"$prs") || exit 0
+
+# workmux resolves .workmux.yaml by walking up from the cwd, and a project's
+# (uncommitted) config may live only in its main worktree -- e.g. coursedog's
+# is only in v3/dev. Run from the first non-bare worktree so it's always found.
+main=$(git worktree list --porcelain | awk '
+  /^worktree / { path = substr($0, 10); bare = 0; next }
+  /^bare$/     { bare = 1; next }
+  /^$/         { if (path != "" && !bare) { print path; done = 1; exit } path = "" }
+  END          { if (!done && path != "" && !bare) print path }')
+[[ -n "$main" ]] && cd "$main"
+
+workmux add --pr "$pr" --open-if-exists

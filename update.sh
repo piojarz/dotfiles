@@ -68,11 +68,17 @@ if is_arch && command -v yay &> /dev/null; then
   yay -Syu --noconfirm
 fi
 
-# Update TPM plugins (Tmux)
-if [ -d "$HOME/.config/tmux/plugins/tpm" ]; then
-  info "Updating Tmux plugins..."
-  "$HOME/.config/tmux/plugins/tpm/bin/update_plugins" all || true
-fi
+# Update TPM plugins (Tmux). TPM is either cloned under XDG data (Arch) or
+# installed by Homebrew; see the TPM section of config/common/tmux/.tmux.conf.
+for _tpm in "$HOME/.local/share/tmux/plugins/tpm" "$(brew --prefix 2>/dev/null)/opt/tpm/share/tpm"; do
+  if [ -x "$_tpm/bin/update_plugins" ]; then
+    info "Updating Tmux plugins..."
+    "$_tpm/bin/install_plugins" || true
+    "$_tpm/bin/update_plugins" all || true
+    break
+  fi
+done
+unset _tpm
 
 # Update fnm (Fast Node Manager)
 if command -v fnm &> /dev/null; then

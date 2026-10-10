@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# Workspace picker, bound to tmux prefix + s (and usable from a plain shell).
+# Lists tmux sessions, sesh.toml [[session]] entries and zoxide dirs via sesh,
+# filters them with fzf, and hands the pick to `sesh connect`, which switches
+# to an existing session or creates one in the right directory.
+#
+#   ctrl-a / ctrl-t / ctrl-g / ctrl-x   all / tmux sessions / config / zoxide
+#   ctrl-f                              git repos + worktrees under the code dirs (fd scan)
+#   ctrl-d                              kill the highlighted tmux session
+#   ctrl-p                              review a GitHub PR instead (bin/pr-review)
+
+set -Eeuo pipefail
+
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Roots for the on-demand git scan; only the ones that exist on this machine.
+roots=()
+for dir in "$HOME/code" "$HOME/Developer" "$HOME/work"; do
+  [[ -d "$dir" ]] && roots+=("$dir")
+done
+(( ${#roots[@]} )) || roots=("$HOME")
+
+# `.git` is a directory in normal clones and a file in linked worktrees, so
+# match both; --prune stops fd from descending into the .git dirs themselves.
+find_repos="fd --hidden --no-ignore --prune --max-depth 4 --type d --type f '^\\.git\$' ${roots[*]} --exec dirname"
+
+selection=$(
+  sesh list --icons --hide-duplicates | fzf \
+    --ansi --no-sort --exit-0 \
+    --border-label ' workspaces ' --prompt '⚡  ' \
+    --header '^a all  ^t tmux  ^g config  ^x zoxide  ^f git repos  ^d kill  ^p PR review' \
+    --bind 'tab:down,btab:up' \
+    --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list --icons --hide-duplicates)' \
+    --bind 'ctrl-t:change-prompt(🪟  )+reload(sesh list --icons --tmux)' \
+    --bind 'ctrl-g:change-prompt(⚙️  )+reload(sesh list --icons --config)' \
+    --bind 'ctrl-x:change-prompt(📁  )+reload(sesh list --icons --zoxide)' \
+    --bind "ctrl-f:change-prompt(  )+reload($find_repos)" \
+    --bind 'ctrl-d:execute-silent(tmux kill-session -t {2..})+reload(sesh list --icons --hide-duplicates)' \
+    --bind 'ctrl-p:print(__pr_review__)+accept' \
+    --preview-window 'right:55%' \
+    --preview 'sesh preview {}'
+) || exit 0
+
+# print() puts the marker ahead of the highlighted row; only the first line matters.
+selection=${selection%%$'\n'*}
+
+if [[ "$selection" == "__pr_review__" ]]; then
+  exec "$here/pr-review"
+fi
+
+[[ -n "$selection" ]] && exec sesh connect "$selection"

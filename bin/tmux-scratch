@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# Toggle a persistent scratch terminal for the current tmux session, bound to
+# prefix + f. Each workspace gets its own `<session>-scratch` session (lazygit,
+# gh, test runs, logs...), started in the pane's directory and shown in a
+# popup; pressing the key again from inside the popup detaches it, leaving
+# whatever runs there alive. sesh.toml blacklists `-scratch$` so these never
+# show up in the workspace picker.
+#
+# Same mechanism as tmux-floax (run-shell -> `tmux popup` attaching a nested
+# client), minus its global single session and its habit of typing `cd` into
+# whatever happens to be running in the scratch pane.
+
+set -Eeuo pipefail
+
+# The tmux binding passes the pressing client's #{client_name},
+# #{session_name} and #{pane_current_path} (run-shell expands them for that
+# client), so the popup opens on -- and the toggle detaches -- the right
+# client even with several attached. Run by hand, it falls back to tmux's
+# idea of the current client.
+client="${1:-$(tmux display-message -p '#{client_name}')}"
+session="${2:-$(tmux display-message -p '#{session_name}')}"
+path="${3:-$(tmux display-message -p '#{pane_current_path}')}"
+
+if [[ "$session" == *-scratch ]]; then
+  tmux detach-client -t "$client"
+  exit 0
+fi
+
+scratch="${session}-scratch"
+
+if ! tmux has-session -t "=$scratch" 2>/dev/null; then
+  tmux new-session -d -s "$scratch" -c "$path"
+  tmux set-option -t "=$scratch:" status off
+  # Killing the scratch shell should close the popup, not hop to another session.
+  tmux set-option -t "=$scratch:" detach-on-destroy on
+fi
+
+tmux display-popup -c "$client" -E -w 85% -h 85% -b rounded -T " $session: scratch " \
+  "tmux attach-session -t '=$scratch'"

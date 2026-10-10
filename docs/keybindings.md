@@ -97,10 +97,28 @@ on macOS, Kanata (`config/common/kanata/kanata.kbd`) on Linux.
 | `Ctrl+a r` | Reload config |
 | `Ctrl+a y` | Sync panes |
 | `Ctrl+a g` | Lazygit popup |
-| `Ctrl+a s` | Session switcher (sesh) |
+| `Ctrl+a s` | Workspace picker (sesh + fzf, `bin/sesh-pick`) |
+| `Ctrl+a Tab` | Previous workspace (`sesh last`) |
+| `Ctrl+a f` | Toggle this workspace's scratch terminal popup (`bin/tmux-scratch`) |
+| `Ctrl+a P` | Review a GitHub PR in its own worktree session (`bin/pr-review`) |
+| `Ctrl+a F` | tmux-fzf menu (windows, panes, sessions, processes, ...) |
 | `Ctrl+a T` | Toggle status bar |
-| `Ctrl+a [` | Enter copy mode |
+| `Ctrl+a Escape` | Enter copy mode |
 | `Ctrl+a p` | Paste |
+
+**Workspace picker (`Ctrl+a s`)** lists tmux sessions, the `[[session]]` entries in
+`config/common/sesh/sesh.toml` and zoxide dirs. Picking one switches to its session, or creates
+it in that directory.
+
+| Key | Action |
+|-----|--------|
+| `Ctrl+a` / `Ctrl+t` / `Ctrl+g` / `Ctrl+x` | All / tmux sessions / config entries / zoxide |
+| `Ctrl+f` | Git repos and worktrees under `~/code`, `~/Developer`, `~/work` |
+| `Ctrl+d` | Kill the highlighted session |
+| `Ctrl+p` | Review a GitHub PR instead (same as `Ctrl+a P`) |
+
+PR review runs `workmux add --pr <N> --open-if-exists` from the repo's main worktree, so an
+already-checked-out PR just reopens its session and a new one gets the project's workmux setup.
 
 ### Kitty
 

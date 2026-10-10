@@ -1,2 +1,41 @@
-# don't show these directories in the sesh
-blacklist = ['~/.local/share/*']
+# sesh config: the source list behind the tmux prefix + s workspace picker
+# (bin/sesh-pick). Worktree/PR sessions are created by workmux, not sesh --
+# see config/common/workmux/config.yaml and bin/pr-review.
+
+# Regexes (not globs), matched against session names:
+# - XDG data dirs
+# - per-workspace scratch sessions from bin/tmux-scratch
+# - unnamed sessions from a bare `tmux` (0, 1, ...)
+blacklist = ['^~/\.local/share', '-scratch$', '^[0-9]+$']
+
+sort_order = ["tmux", "config", "zoxide"]
+
+[default_session]
+preview_command = "eza --all --git --icons --color=always {}"
+
+# Name sesh-created sessions for coursedog worktrees exactly like workmux does
+# (window_prefix "coursedog-" + directory), so opening a worktree from zoxide
+# reuses workmux's session instead of starting a second one on the same path.
+# Applied to the ~-shortened path, before sesh's git-based naming.
+[[name_substitution]]
+find = '^~/work/coursedog/v3/([^/]+)$'
+replace = 'coursedog-$1'
+regex = true
+
+# Config workspaces. Paths go through ~/dotfiles, which install.sh/update.sh
+# keep pointing at the repo on every machine. Names avoid spaces so the
+# picker's ctrl-d can kill them by name.
+[[session]]
+name = "dotfiles"
+path = "~/dotfiles"
+startup_command = "nvim"
+
+[[session]]
+name = "nvim-config"
+path = "~/dotfiles/config/common/nvim"
+startup_command = "nvim init.lua"
+
+[[session]]
+name = "tmux-config"
+path = "~/dotfiles/config/common/tmux"
+startup_command = "nvim .tmux.conf"

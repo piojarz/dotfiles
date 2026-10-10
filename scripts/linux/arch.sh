@@ -29,6 +29,8 @@ setup_arch() {
     kitty zsh firefox vlc
     git xclip git-lfs git-delta
     sqlite3 stow bat cloc entr eza fd fzf gnupg grep highlight btop jq neovim python ripgrep shellcheck tmux tree wdiff wget zoxide zsh
+    # tmux workspace workflow (bin/sesh-pick, bin/pr-review)
+    github-cli gum
     # Claude Code OS sandbox (macOS uses built-in Seatbelt; ripgrep above is also required)
     bubblewrap socat
     # Hyprland ecosystem
@@ -81,6 +83,7 @@ setup_arch() {
     stylua
     kanata-bin
     sesh-bin
+    workmux-bin # git worktree + tmux + agent orchestration CLI
     # Modern replacements
     mise # fast version manager (replaces asdf)
     btop # better system monitor (replaces htop)
@@ -121,10 +124,12 @@ setup_arch() {
   sudo systemctl enable --now docker
   sudo usermod -aG docker ${USER}
 
-  # Tmux Plugin Manager (idempotent check)
-  if [[ ! -d ~/.config/tmux/plugins/tpm ]]; then
+  # Tmux Plugin Manager (idempotent check). Lives under XDG data, not
+  # ~/.config/tmux, which is a symlink into the dotfiles repo; must match
+  # TMUX_PLUGIN_MANAGER_PATH in config/common/tmux/.tmux.conf.
+  if [[ ! -d ~/.local/share/tmux/plugins/tpm ]]; then
     info "Installing Tmux Plugin Manager (TPM)..."
-    git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+    git clone https://github.com/tmux-plugins/tpm ~/.local/share/tmux/plugins/tpm
   else
     info "TPM already installed, skipping..."
   fi
