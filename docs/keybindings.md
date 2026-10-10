@@ -101,6 +101,7 @@ on macOS, Kanata (`config/common/kanata/kanata.kbd`) on Linux.
 | `Ctrl+a Tab` | Previous workspace (`sesh last`) |
 | `Ctrl+a f` | Toggle this workspace's scratch terminal popup (`bin/tmux-scratch`) |
 | `Ctrl+a P` | Review a GitHub PR in its own worktree session (`bin/pr-review`) |
+| `Ctrl+a N` | Jump to the workmux agent that most recently finished or is waiting (`workmux last-done`) |
 | `Ctrl+a F` | tmux-fzf menu (windows, panes, sessions, processes, ...) |
 | `Ctrl+a T` | Toggle status bar |
 | `Ctrl+a Escape` | Enter copy mode |
@@ -116,6 +117,12 @@ it in that directory.
 | `Ctrl+f` | Git repos and worktrees under `~/code`, `~/Developer`, `~/work` |
 | `Ctrl+d` | Kill the highlighted session |
 | `Ctrl+p` | Review a GitHub PR instead (same as `Ctrl+a P`) |
+
+**Status line** (top): the session name turns yellow while the prefix is pressed, and clicking it
+opens the workspace picker. Each window shows an icon for its running command, the workmux agent
+status, and a red 󰂞 when a Claude hook rang its bell. The right side shows the directory, git
+branch and time, plus a red `SYNC` while panes are synchronized. Pane titles show only in windows
+with more than one pane.
 
 PR review runs `workmux add --pr <N> --open-if-exists` from the repo's main worktree, so an
 already-checked-out PR just reopens its session and a new one gets the project's workmux setup.

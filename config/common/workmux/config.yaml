@@ -15,6 +15,11 @@ mode: session
 # Projects can still override it (coursedog's .workmux.yaml uses "coursedog-").
 window_prefix: "{project}-"
 
+# Don't rewrite each session's window-status-format: the tmux status line
+# (config/common/tmux/.tmux.conf, "Status Line") already shows
+# #{@workmux_status} in its own format, which workmux's rewrite would replace.
+status_format: false
+
 # Named agent commands must be defined here (global-only) -- projects select
 # one by name. `cc-cd` matches the existing `claude-cd` shell alias: plain
 # `claude`, no --dangerously-skip-permissions, just CLAUDE_CONFIG_DIR pointed
